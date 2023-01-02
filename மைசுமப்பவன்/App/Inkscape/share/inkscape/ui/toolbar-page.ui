@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.22.2 -->
+<interface>
+  <requires lib="gtk+" version="3.22"/>
+  <object class="GtkToolbar" id="page-toolbar">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkToolButton" id="page_new">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="action_name">doc.page-new</property>
+        <property name="label" translatable="yes">New Page</property>
+        <property name="icon_name">pages-add</property>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="homogeneous">True</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkToolItem" id="page_sizes_container">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <child>
+          <object class="GtkComboBoxText" id="page_sizes">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="active">0</property>
+            <property name="has_entry">True</property>
+            <property name="active_id">-1</property>
+            <items>
+              <item id="-1" translatable="yes">Custom</item>
+            </items>
+            <child internal-child="entry">
+              <object class="GtkEntry">
+                <property name="can_focus">True</property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="homogeneous">True</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkToolButton" id="page_fit">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="action_name">app.page-fit-to-selection</property>
+        <property name="label" translatable="yes">Fit Page to Selection</property>
+        <property name="icon_name">pages-resize</property>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="homogeneous">True</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkSeparatorToolItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="homogeneous">False</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkToolButton" id="page_backward">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="action_name">doc.page-move-backward</property>
+        <property name="label" translatable="yes">Move Before Previous</property>
+        <property name="icon_name">pages-order-backwards</property>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="homogeneous">True</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkToolItem" id="page_pos_container">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <child>
+          <object class="GtkLabel" id="page_pos">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <!--TRANSLATORS: This is a fixed value meaning a single page document-->
+            <property name="label" translatable="yes">1/-</property>
+          </object>
+        </child>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="homogeneous">True</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkToolButton" id="page_foreward">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="action_name">doc.page-move-forward</property>
+        <property name="label" translatable="yes">Move After Next</property>
+        <property name="icon_name">pages-order-forwards</property>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="homogeneous">True</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkToolItem" id="page_label_container">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <child>
+          <object class="GtkEntry" id="page_label">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="placeholder_text" translatable="yes">Page Label</property>
+          </object>
+        </child>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="homogeneous">True</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkToolButton" id="page_delete">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="action_name">doc.page-delete</property>
+        <property name="label" translatable="yes">New Page</property>
+        <property name="icon_name">pages-remove</property>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="homogeneous">True</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkSeparatorToolItem" id="sep1">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="homogeneous">False</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkToggleToolButton" id="page_move_objects">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="action_name">doc.page-move-objects</property>
+        <property name="label" translatable="yes">Move Objects</property>
+        <property name="use_underline">True</property>
+        <property name="icon_name">pages-move-toggle</property>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="homogeneous">True</property>
+      </packing>
+    </child>
+  </object>
+</interface>

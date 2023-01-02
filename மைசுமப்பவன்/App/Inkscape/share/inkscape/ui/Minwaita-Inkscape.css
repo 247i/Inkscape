@@ -1,0 +1,135 @@
+/* Minwaita-Inkscape SPECIFIC STYLE */
+
+
+/*
+ * Keep as small as possible
+ */
+
+toolbar toolbutton > button:disabled, toolbar toolbutton > button:backdrop:disabled, .toolbar toolbutton > button:disabled, .toolbar toolbutton > button:backdrop:disabled {
+    -gtk-icon-effect: dim;
+}
+
+scrollbar {
+  margin: -1px;
+}
+
+filechooser #pathbarbox button {
+   color: #2e3436;
+   outline-color: rgba(46, 52, 54, 0.3);
+   border-color: #c4c4bf;
+   border-bottom-color: #a0a097;
+   background-image: linear-gradient(to bottom, #f5f5f4, #ebebe9 60%, #ddddd9);
+   text-shadow: 0 1px rgba(255, 255, 255, 0.769231);
+   -gtk-icon-shadow: 0 1px rgba(255, 255, 255, 0.769231);
+   box-shadow: inset 0 1px white;
+}
+
+filechooser #pathbarbox button:hover {
+   color: #2e3436;
+   outline-color: rgba(46, 52, 54, 0.3);
+   border-color: #c4c4bf;
+   border-bottom-color: #a0a097;
+   text-shadow: 0 1px rgba(255, 255, 255, 0.769231);
+   -gtk-icon-shadow: 0 1px rgba(255, 255, 255, 0.769231);
+   box-shadow: inset 0 1px white;
+   background-image: linear-gradient(to bottom, white, #f5f5f4 60%, #ebebe9);
+}
+
+filechooser #pathbarbox button:active {
+  color: #2e3436;
+  outline-color: rgba(46, 52, 54, 0.3);
+  border-color: #c4c4bf;
+  background-image: image(#e6e6e4);
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0);
+  text-shadow: none;
+  -gtk-icon-shadow: none;
+}
+
+filechooser #pathbarbox button:disabled {
+  border-color: #c4c4bf;
+  background-image: image(#f9f9f8);
+  text-shadow: none;
+  -gtk-icon-shadow: none;
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0);
+}
+
+filechooser #pathbarbox button:disabled label, filechooser #pathbarbox button:disabled {
+  color: #313739;
+}
+
+filechooser #pathbarbox button:backdrop {
+  border-color: #cecec9;
+  background-image: image(#f5f5f4);
+  text-shadow: none;
+  -gtk-icon-shadow: none;
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0);
+}
+
+filechooser #pathbarbox button:backdrop label, filechooser #pathbarbox button:backdrop {
+  color: #313739;
+}
+
+filechooser #pathbarbox button:backdrop:disabled {
+  border-color: #cecec9;
+  background-image: image(#f9f9f8);
+  text-shadow: none;
+  -gtk-icon-shadow: none;
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0);
+}
+
+filechooser #pathbarbox button:backdrop:disabled label, filechooser #pathbarbox button:backdrop:disabled {
+  color: #566164;
+}
+
+button.titlebutton {
+  color:inherit;
+  border-style: none;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: -gtk-scaled(url("assets/window-buttons/titlebutton.png"), url("assets/window-buttons/titlebutton@2.png"));
+  text-shadow: none;
+  -gtk-icon-shadow:none;
+}
+
+window.nautilus-desktop-window box.searchbar-container.vertical > searchbar, window.nautilus-desktop-window box.searchbar-container.vertical > searchbar:backdrop {
+  background-color: transparent;
+}
+
+viewport.frame > list.tweak-categories label:backdrop {
+  color: #313739;
+}
+
+.primary-toolbar button.raised {
+  margin: 0px;
+}
+
+scrolledwindow undershoot.top,scrolledwindow undershoot.bottom,scrolledwindow undershoot.left,scrolledwindow undershoot.right {
+    background-image: none;
+}
+
+#AuxToolbox {
+  min-height:38px;
+}
+
+notebook notebook header label {
+    font-weight:normal;
+}
+
+notebook notebook header image {
+    -gtk-icon-transform:scale(0.75);
+    margin:-1px 0 -1px -3px;
+}
+
+/* checked buttons: light theme version */
+button.radio:checked,
+button.toggle:checked {
+    background-color: transparent;
+    background-image: image(linear-gradient(rgba(0,0,0,0.16), rgba(0,0,0,0.04)));
+}
+
+/* checked buttons: dark theme version */
+.dark button.radio:checked,
+.dark button.toggle:checked {
+    background-color: transparent;
+    background-image: image(@theme_selected_bg_color);
+}

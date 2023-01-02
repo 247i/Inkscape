@@ -1,0 +1,9 @@
+include import_web_image.ui
+include import_web_image.py
+include import_web_image.inx
+include import_web_image.svg
+include import_sources.py
+include README.md
+include LICENSE.txt
+include sources/*.py
+include sources/*.svg
