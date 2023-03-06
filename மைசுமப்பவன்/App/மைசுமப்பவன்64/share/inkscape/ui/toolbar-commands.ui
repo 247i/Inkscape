@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<interface>
+  <requires lib="gtk+" version="3.22"/>
+
+  <!-- Commands Toolbar -->
+
+  <object class="GtkToolbar" id="commands-toolbar">
+    <property name="visible">True</property>
+
+    <child>
+      <object class="GtkToolButton">
+        <property name="visible">True</property>
+        <property name="action_name">win.document-new</property>
+        <property name="icon_name">document-new</property>
+        <property name="label" translatable="true">_New</property>
+        <property name="use-underline">True</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkToolButton">
+        <property name="visible">True</property>
+        <property name="action_name">win.document-open</property>
+        <property name="icon_name">document-open</property>
+        <property name="label" translatable="true">_Open...</property>
+        <property name="use-underline">True</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkToolButton">
+        <property name="visible">True</property>
+        <property name="action_name">win.document-save</property>
+        <property name="icon_name">document-save</property>
+        <property name="label" translatable="true">_Save</property>
+        <property name="use-underline">True</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkToolButton">
+        <property name="visible">True</property>
+        <property name="action_name">win.document-print</property>
+        <property name="icon_name">document-print</property>
+        <property name="label" translatable="true">_Print...</property>
+        <property name="use-underline">True</property>
+      </object>
+    </child>
+
+    <child>
+      <object class="GtkSeparatorToolItem">
+        <property name="visible">True</property>
+      </object>
+    </child>
+
+    <child>
+      <object class="GtkToolButton">
+        <property name="visible">True</property>
+        <property name="action_name">win.document-import</property>
+        <property name="icon_name">document-import</property>
+        <property name="label" translatable="true">_Import...</property>
+        <property name="use-underline">True</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkToolButton">
+        <property name="visible">True</property>
+        <property name="action_name">win.dialog-open</property>
+        <property name='action-target'>'Export'</property>
+        <property name="icon_name">document-export</property>
+        <property name="label" translatable="true">_Export...</property>
+        <property name="use-underline">True</property>
+      </object>
+    </child>
+
+    <child>
+      <object class="GtkSeparatorToolItem">
+        <property name="visible">True</property>
+      </object>
+    </child>
+
+    <child>
+      <object class="GtkToolButton">
+        <property name="visible">True</property>
+        <property name="action_name">doc.undo</property>
+        <property name="icon_name">edit-undo</property>
+        <property name="label" translatable="true">_Undo</property>
+        <property name="use-underline">True</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkToolButton">
+        <property name="visible">True</property>
+        <property name="action_name">doc.redo</property>
+        <property name="icon_name">edit-redo</property>
+        <property name="label" translatable="true">_Redo</property>
+        <property name="use-underline">True</property>
+      </object>
+    </child>
+
+    <child>
+      <object class="GtkSeparatorToolItem">
+        <property name="visible">True</property>
+      </object>
+    </child>
+
+    <child>
+      <object class="GtkToolButton">
+        <property name="visible">True</property>
+        <property name="action_name">app.copy</property>
+        <property name="icon_name">edit-copy</property>
+        <property name="label" translatable="true">_Copy</property>
+        <property name="use-underline">True</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkToolButton">
+        <property name="visible">True</property>
+        <property name="action_name">app.cut</property>
+        <property name="icon_name">edit-cut</property>
+        <property name="label" translatable="true">Cu_t</property>
+        <property name="use-underline">True</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkToolButton">
+        <property name="visible">True</property>
+        <property name="action_name">win.paste</property>
+        <property name="icon_name">edit-paste</property>
+        <property name="label" translatable="true">_Paste</property>
+        <property name="use-underline">True</property>
+      </object>
+    </child>
+
+    <child>
+      <object class="GtkSeparatorToolItem">
+        <property name="visible">True</property>
+      </object>
+    </child>
+
+    <child>
+      <object class="GtkToolButton">
+        <property name="visible">True</property>
+        <property name="action_name">win.canvas-zoom-selection</property>
+        <property name="icon_name">zoom-fit-selection</property>
+        <property name="label" translatable="true">Zoom _Selection</property>
+        <property name="use-underline">True</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkToolButton">
+        <property name="visible">True</property>
+        <property name="action_name">win.canvas-zoom-drawing</property>
+        <property name="icon_name">zoom-fit-drawing</property>
+        <property name="label" translatable="true">Zoom _Drawing</property>
+        <property name="use-underline">True</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkToolButton">
+        <property name="visible">True</property>
+        <property name="action_name">win.canvas-zoom-page</property>
+        <property name="icon_name">zoom-fit-page</property>
+        <property name="label" translatable="true">Zoom _Page</property>
+        <property name="use-underline">True</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkToolButton">
+        <property name="visible">True</property>
+        <property name="action_name">win.canvas-zoom-center-page</property>
+        <property name="icon_name">zoom-center-page</property>
+        <property name="label" translatable="true">Zoom _Center Page</property>
+        <property name="use-underline">True</property>
+      </object>
+    </child>
+
+    <child>
+      <object class="GtkSeparatorToolItem">
+        <property name="visible">True</property>
+      </object>
+    </child>
+
+    <child>
+      <object class="GtkToolButton">
+        <property name="visible">True</property>
+        <property name="action_name">app.duplicate</property>
+        <property name="icon_name">edit-duplicate</property>
+        <property name="label" translatable="true">Duplic_ate</property>
+        <property name="use-underline">True</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkToolButton">
+        <property name="visible">True</property>
+        <property name="action_name">app.clone</property>
+        <property name="icon_name">edit-clone</property>
+        <property name="label" translatable="true">Create Clo_ne</property>
+        <property name="use-underline">True</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkToolButton">
+        <property name="visible">True</property>
+        <property name="action_name">app.clone-unlink</property>
+        <property name="icon_name">edit-clone-unlink</property>
+        <property name="label" translatable="true">Unlin_k Clone</property>
+        <property name="use-underline">True</property>
+      </object>
+    </child>
+
+    <child>
+      <object class="GtkSeparatorToolItem">
+        <property name="visible">True</property>
+      </object>
+    </child>
+
+    <child>
+      <object class="GtkToolButton">
+        <property name="visible">True</property>
+        <property name="action_name">app.selection-group</property>
+        <property name="icon_name">object-group</property>
+        <property name="label" translatable="true">_Group</property>
+        <property name="use-underline">True</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkToolButton">
+        <property name="visible">True</property>
+        <property name="action_name">app.selection-ungroup</property>
+        <property name="icon_name">object-ungroup</property>
+        <property name="label" translatable="true">_Ungroup</property>
+        <property name="use-underline">True</property>
+      </object>
+    </child>
+
+    <child>
+      <object class="GtkSeparatorToolItem">
+        <property name="visible">True</property>
+      </object>
+    </child>
+
+    <child>
+      <object class="GtkToolButton">
+        <property name="visible">True</property>
+        <property name="action_name">win.dialog-open</property>
+        <property name='action-target'>'FillStroke'</property>
+        <property name="icon_name">dialog-fill-and-stroke</property>
+        <property name="label" translatable="true">_Fill and Stroke...</property>
+        <property name="use-underline">True</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkToolButton">
+        <property name="visible">True</property>
+        <property name="action_name">win.dialog-open</property>
+        <property name='action-target'>'Text'</property>
+        <property name="icon_name">dialog-text-and-font</property>
+        <property name="label" translatable="true">_Text and Font...</property>
+        <property name="use-underline">True</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkToolButton">
+        <property name="visible">True</property>
+        <property name="action_name">win.dialog-open</property>
+        <property name='action-target'>'Objects'</property>
+        <property name="icon_name">dialog-objects</property>
+        <property name="label" translatable="true">Layers and Objects...</property>
+        <property name="use-underline">True</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkToolButton">
+        <property name="visible">True</property>
+        <property name="action_name">win.dialog-open</property>
+        <property name='action-target'>'XMLEditor'</property>
+        <property name="icon_name">dialog-xml-editor</property>
+        <property name="label" translatable="true">_XML Editor...</property>
+        <property name="use-underline">True</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkToolButton">
+        <property name="visible">True</property>
+        <property name="action_name">win.dialog-open</property>
+        <property name='action-target'>'Selectors'</property>
+        <property name="icon_name">dialog-selectors</property>
+        <property name="label" translatable="true">_Selectors and CSS...</property>
+        <property name="use-underline">True</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkToolButton">
+        <property name="visible">True</property>
+        <property name="action_name">win.dialog-open</property>
+        <property name='action-target'>'AlignDistribute'</property>
+        <property name="icon_name">dialog-align-and-distribute</property>
+        <property name="label" translatable="true">_Align and Distribute...</property>
+        <property name="use-underline">True</property>
+      </object>
+    </child>
+
+    <child>
+      <object class="GtkSeparatorToolItem">
+        <property name="visible">True</property>
+      </object>
+    </child>
+
+    <child>
+      <object class="GtkToolButton">
+        <property name="visible">True</property>
+        <property name="action_name">win.dialog-open</property>
+        <property name='action-target'>'DocumentProperties'</property>
+        <property name="icon_name">document-properties</property>
+        <property name="label" translatable="true">_Document Properties...</property>
+        <property name="use-underline">True</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkToolButton">
+        <property name="visible">True</property>
+        <property name="action_name">win.dialog-open</property>
+        <property name='action-target'>'Preferences'</property>
+        <property name="icon_name">preferences-system</property>
+        <property name="label" translatable="true">P_references...</property>
+        <property name="use-underline">True</property>
+      </object>
+    </child>
+
+  </object>
+</interface>

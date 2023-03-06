@@ -1,0 +1,12 @@
+
+[docs]
+furo>=2022.6.21
+sphinx>=5.1.1
+sphinx-autodoc-typehints>=1.19.1
+
+[testing]
+covdefaults>=2.2
+coverage>=6.4.2
+pytest>=7.1.2
+pytest-cov>=3
+pytest-timeout>=2.1

@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "inkman"
+version = "1.0.0"
+description = "A GTK3 based extension manager for Inkscape."
+authors = ["Martin Owens <doctormo@geek-2.com>"]
+maintainers = ["Martin Owens <doctormo@geek-2.com>"]
+license = "GPL-3.0-or-later"
+
+# The dependencies below are NOT used for packaging, they are abstract.
+# They are merely for packagers' convenience and are used in CI for extensions.
+[tool.poetry.dependencies]
+python = ">=3.7"
+appdirs = "1.4.4"
+requests = "*"
+CacheControl = {extras = ["filecache"], version = "*"}
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

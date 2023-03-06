@@ -1,0 +1,51 @@
+[tool.poetry]
+name = "inkex"
+version = "1.2.0"
+description = "Python extensions for Inkscape core, separated out from main repository."
+authors = ["Inkscape Authors <inkscape-devel@lists.inkscape.org>"]
+maintainers = [
+    "Martin Owens <doctormo@geek-2.com>",
+    "Jonathan Neuhauser <jonathan.neuhauser@outlook.com>",
+]
+license = "GPL-2.0-or-later"
+readme = "README.md"
+repository = "https://gitlab.com/inkscape/extensions"
+keywords = ["extensions", "graphics", "inkscape", "svg", "vector"]
+classifiers=[
+    "Development Status :: 6 - Mature",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Multimedia :: Graphics :: Editors :: Vector-Based",
+]
+
+[tool.poetry.dependencies]
+python = "^3.6"
+PyGObject = {version = ">=3.36", markers = "platform_system!='Windows'"}
+pySerial = "^3.4"
+lxml = "^4.5.0"
+cssselect = "^1.1.0"
+numpy = [
+    #numpy incorrectly specifies its required Python version until 1.21.2
+    {version = "^1.17.0", python = "^3.6, <3.10"},
+    {version = "^1.21.2", python = "^3.10"},
+]
+Pillow = ">=7.0.0" # Used by RasterOutputExtension
+scour = "^0.37" # Used by Optimized SVG Extension
+packaging = ">=20.3" # Used by Optimized SVG Extension to compare scour versions
+
+[tool.poetry.dev-dependencies]
+pytest = "^7.0.1"
+pytest-cov = "^3.0.0"
+pytest-xvfb = "^2.0.0"
+coverage = "^6.2"
+tox = "^3.24.5"
+# Documentation dependencies
+# Move to [tool.poetry.group.docs.dependencies] in the future
+Sphinx = "^4.4.0"
+sphinx-autodoc-typehints = "^1.12.0"
+pydata-sphinx-theme = ">=0.7.2"
+typed-ast = "^1.5.2"
+
+[build-system]
+requires = ["poetry_core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

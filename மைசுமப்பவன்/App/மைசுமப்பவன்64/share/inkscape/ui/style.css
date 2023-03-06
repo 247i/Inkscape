@@ -1,0 +1,737 @@
+/* GTK3 WIDGET STYLING */
+
+
+/*
+ * Keep in order of:
+ *   General -> Specific
+ *   Order of appearance in widget tree.
+ *   See GtkInspector
+ *     GTK_DEBUG=interactive ~/path_to_gtk3/bin/inkscape
+ *
+ * We need a standardized naming scheme.
+ *
+ * As of Gtk 3.20, you cannot use widget names.
+ */
+
+
+/* Standard theme based colors. Prefer these.
+ *
+ * @theme_bg_color
+ * @theme_fg_color
+ * @theme_base_color
+ * @theme_text_color
+ * @theme_selected_bg_color
+ * @theme_selected_fg_color
+ * @theme_tooltip_bg_color
+ * @theme_tooltip_fg_color
+ *
+ */
+
+
+/* Our own custom shades... better not to use.
+ * Lightest to darkest based on linear rgb.
+ */
+
+@define-color bg_color0 #ffffff;
+
+/* White */
+
+@define-color bg_color05 #f8f8f8;
+
+/* Slightly off white */
+
+@define-color bg_color1 #f0f0f0;
+@define-color bg_color2 #e0e0e0;
+@define-color bg_color3 #d0d0d0;
+@define-color bg_color4 #bbbbbb;
+
+/* 50% Gray */
+
+@define-color bg_color5 #a5a5a5;
+@define-color bg_color6 #898989;
+@define-color bg_color7 #636363;
+@define-color bg_color8 #000000;
+
+/* Black */
+
+@import url("highlight-colors.css");
+
+/* Inkscape CSS helper
+    * to add a class to a widget do some thing like
+    * widget->get_style_context()->add_class("mycoolclass");
+    * we define a bunch of helper CSS styles
+    * Each Inkscape desktop has some classes in top level window
+    * called "dark|bright" (syncked with dark or brighrt themes) and "symbolic|regular" (defined by the user in themes preferences) 
+    * so you can style using this clases 
+    * by this way you can always know if the UI is in dark mode or using symbolic icons
+    * Also added some helper clases:
+    * ".inverted" invert colors fon widhet and childs
+    * ".highlight-dark" highlights with red tint
+    * ".highlight-light" highlights with yellow tint
+    * ".symbolic" Force icon symbolic
+    * ".regular" Force colorful icons
+    * " .forcebright Force darlk even if the towp wingow has clas dark (happends when theme is dark)
+    * " .forcedark" Force darlk even if the towp wingow has clas bright
+    * :::::::: Combo box.
+    * "..combobright" Combo bright
+    */
+
+*{
+    font-feature-settings: "tnum=1";
+}
+
+*:disabled image {
+    opacity: 0.4;
+}
+
+.symbolic image {
+    -gtk-icon-style: symbolic;
+}
+
+.regular image {
+    -gtk-icon-style: regular;
+}
+
+.regular .symbolic image {
+    -gtk-icon-style: symbolic;
+}
+
+.titlebutton > image {
+    -gtk-icon-style: requested;
+}
+
+.inverted,
+.dark .forcebright,
+.bright .forcedark {
+    color: @theme_bg_color;
+    background-color: @theme_fg_color;
+    background-image: image(@theme_fg_color);
+    caret-color: @theme_bg_color;
+    -gtk-secondary-caret-color: @theme_fg_color;
+}
+
+.highlight {
+    color: @theme_fg_color;
+    background-color: alpha(@theme_selected_bg_color,0.5);
+    background-image: image(alpha(@theme_selected_bg_color,0.5));
+    caret-color: @theme_bg_color;
+    border-radius:4px;
+    -gtk-secondary-caret-color: @theme_fg_color;
+}
+
+.noborder{
+    border-width:0;
+}
+
+/* blinking animation for dialogs */
+@keyframes blink_border {
+  from { border-color: @theme_selected_fg_color; }
+  to   { border-color: @theme_selected_bg_color; }
+}
+@keyframes blink_background {
+  from { background-color: @theme_bg_color; }
+  to   { background-color: @theme_selected_bg_color; }
+}
+notebook.blink {
+  animation: blink_border 333ms ease-in-out infinite;
+}
+notebook.blink > header > tabs > tab:checked {
+  animation: blink_background 333ms ease-in-out infinite;
+}
+
+
+.inverted :not(menuitem):not(.rawstyle):not(overshoot):not(undershoot):not(selection),
+.bright .forcedark :not(menuitem):not(.rawstyle):not(overshoot):not(undershoot):not(selection),
+.dark .forcebright :not(menuitem):not(.rawstyle):not(overshoot):not(undershoot):not(selection) {
+    color: inherit;
+    background-color: inherit;
+    background-image: inherit;
+}
+
+.dark .combobright .combo,
+.dark .combobright menu{
+    background-color: @theme_text_color;
+    background-image: linear-gradient(to top, @theme_text_color, @theme_fd_color);
+    caret-color: @theme_base_color;
+    -gtk-secondary-caret-color: @theme_base_color;
+}
+.dark .combobright box *{
+    color: @theme_base_color;
+}
+.dark .combobright .combo *,
+.dark .combobright menu *{
+    color: inherit;
+}
+
+/* attribute dialog popup size */
+.attrpop textview {
+    font-size: 13px;
+}
+
+/* 
+*to get system default colors
+* with Gdk::RGBA success =_symbolic_error_color.get_stseparatole_context()->get_color();
+* _symbolic_error_color has one of this classes applied
+*/
+
+.system_base_color {
+    color: @theme_fg_color;
+    background-color: @theme_bg_color;
+}
+
+.system_error_color {
+    color: @error_color;
+}
+
+.system_warning_color {
+    color: @warning_color;
+}
+
+.system_success_color {
+    color: @success_color;
+}
+
+iconview *:hover {
+    border-width: 1px;
+    border-color: @theme_fg_color;
+    border-style: solid;
+    border-radius: 4px;
+}
+
+.dark iconview *:hover {
+    border-color: @theme_bg_color;
+}
+
+#startscreennotebook iconview *:hover{
+    background-color:@theme_selected_bg_color;
+    border-radius:5px;
+    border-width:0;
+}
+
+#start-screen-window .combo {
+    padding:15px 20px;
+}
+#start-screen-window notebook > *:nth-child(2) label{
+    font-size:12px;
+}
+
+.inksmall {
+    font-size: 11px;
+}
+
+.menu-category {
+    font-size: small;
+    font-weight: bold;
+}
+
+.small-heading {
+    font-size: small;
+    font-weight: bold;
+    opacity: 0.5;
+}
+
+.halfrem-vert-space {
+    margin-top: 0.5rem;
+}
+
+#CommandPaletteBase {
+    background-color: @theme_base_color; /* some themes don't seem to have a background color for list rows defined and would end up transparent otherwise */
+    border: 5px solid @theme_bg_color;
+    border-radius: 5px;
+}
+
+#CommandPaletteBase list row:not(:last-child) {
+    border-bottom: 1px solid @bg_color5;
+}
+
+/* LPE Dialog add */
+#LPESelectorFlowBox GtkFlowBoxChild,
+#LPESelectorFlowBox flowboxchild {
+    border-width: 0px;
+    border-radius: 6px;
+    margin: 10px;
+    padding: 10px;
+    margin-bottom: 0px;
+    padding-bottom: 10px;
+    outline: none;
+}
+
+#LPESelectorFlowBox flowboxchild * {
+    color: @theme_fg_color;
+}
+
+#LPESelectorFlowBox flowboxchild image,
+#LPESelectorFlowBox flowboxchild label {
+    background-color: transparent;
+    background-image: image(transparent);
+}
+
+#LPESelectorFlowBox flowboxchild:selected image,
+#LPESelectorFlowBox flowboxchild:selected label {
+    color: @theme_selected_fg_color;
+}
+
+#LPESelectorFlowBox *:selected #LPESelectorEffectFavTop,
+#LPESelectorFlowBox *:selected:focus #LPESelectorEffectFavTop {
+    opacity: 0;
+}
+
+#LPESelectorFlowBox .lpename {
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+#LPESelectorFlowBox .lpeinfo {
+    font-size: 16px;
+    padding: 20px;
+}
+
+#LPESelectorFlowBox .lpedisabled {
+    opacity: 0.3;
+}
+
+#LPESelectorEffectInfoPop {
+    padding: 15px;
+}
+
+#LPESelectorEffectInfoName {
+    font-weight: bold;
+    padding: 15px;
+}
+
+#LPEDialogSelector .lpeinfo {
+    padding: 8px;
+    background-color: @theme_bg_color;
+    color: @theme_selected_fg_color;
+    border-color: @theme_selected_bg_color;
+    border-style: solid;
+    margin: 0px 0px 10px 0px;
+    border-radius: 0px;
+    border-width: 0 0 1px 0;
+    padding:5px;
+}
+
+#LPESelectorFlowBox image{
+    background-color:@theme_bg_color;
+    border-color:transparent;
+}
+
+#LPEExperimental image {
+    color: transparent;
+}
+
+#LPEDialogSelector .searchbar entry image,
+#LPEDialogSelector .searchbar label,
+#LPEDialogSelector .searchbar #LPESelectorEffectFavShowImage {
+    color: @theme_fg_color;
+}
+
+#LPEDialogSelector.LPEPackMore flowboxchild {
+margin:5px 1px 0px;
+padding:3px 3px 10px 3px;
+}
+
+#LPEDialogSelector.LPEPackMore flowboxchild label {
+font-size:14px;
+}
+
+#LPEDialogSelector.LPEPackMore #LPESelectorEffectInfoPop label{
+font-size:13px;
+}
+
+#LPEDialogSelector.LPEList .lpename {
+    margin-bottom: 1px;
+    font-weight:bold;
+}
+
+#LPEDialogSelector.LPEList flowboxchild {
+    padding:3px 1px 3px 10px;
+    margin:1px 0px 1px;
+    border-radius:0;
+    border-style:dotted;
+    border-color:@theme_fg_color;
+    border-width: 0 0 1px 0;
+}
+
+#LPEDialogSelector.LPEList flowboxchild:selected {
+    border-style:none;
+    margin:-3px 0px 0px;
+    padding:4px 1px 4px 10px;
+}
+
+#LPEDialogSelector.LPEList #LPESelectorFlowBox *:selected #LPESelectorEffectFavTop,
+#LPEDialogSelector.LPEList #LPESelectorFlowBox *:selected:focus #LPESelectorEffectFavTop {
+    opacity: 1;
+}
+
+/* Selector and XML dialog */
+#SelectorsAndStyleDialog button {
+    padding: 4px;
+    min-height: 16px;
+    margin: 2px;
+    padding: 2px;
+}
+
+#XMLAndAttributesDialog .toggle,
+#SelectorsAndStyleDialog .toggle {
+    min-width: 18px;
+    padding-left: 6px;
+    padding-right: 6px;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+#XMLAndAttributesDialog .radio.image-button,
+#SelectorsAndStyleDialog .radio.image-button {
+    margin: 0;
+    padding: 0px;
+    border-radius: 2px 0 0 2px;
+}
+
+#XMLAndAttributesDialog .radio.image-button:last-child,
+#SelectorsAndStyleDialog .radio.image-button:last-child {
+    border-radius: 0 2px 2px 0;
+    border-left-width: 0;
+}
+
+#SelectorsAndStyleDialog treeview button {
+    border-width: 0;
+    margin: 0 0 1px 0;
+}
+
+#SelectorsAndStyleDialog treeview button:nth-child(3),
+#SelectorsAndStyleDialog treeview.style_sheet button:nth-child(4) {
+    border-width: 0 0 0 2px;
+    border-color: @theme_fg_color;
+    border-style: solid;
+    opacity: 0.5;
+}
+
+#SelectorsAndStyleDialog treeview.style_sheet button:nth-child(3) {
+    border-width: 0;
+}
+
+#SelectorsAndStyleDialog #StyleDialog treeview button *{
+    font-size:5px;
+    min-height:1px;
+    padding:0;
+    margin:0;
+}
+
+#SelectorsAndStyleDialog #StyleDialog treeview button {
+    padding:0;
+    min-height:1px;
+    border-left-width:4px;
+    border-color:@success_color;
+}
+
+#InkRuler {
+    /* make size relative */
+    font-size: smaller;
+    opacity: 0.6;
+}
+
+/* The actual canvas (Inkscape's drawing area). */
+SPCanvas {
+    background-color: white;
+}
+
+#TextFontFamilyAction_combobox {
+    -GtkComboBox-appears-as-list: true;
+}
+
+#LockGuides,
+#StickyZoom,
+#CMS_Adjust {
+    padding: 0;
+}
+
+/* Keep palette scrollbar from generating warnings. */
+#PreviewHolderScroller .vertical slider {
+    min-height: 15px;
+}
+
+/* Override minimum size of container children for palette. */
+#ColorItemPreview {
+    min-height: 5px;
+    min-width: 5px;
+}
+
+/* Reduce width of Fill and Stroke dialog */
+#ColorModeButton {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+/* InkSpinScale */
+#InkSpinScale {
+    background: @theme_bg_color;
+    padding: 0px;
+    margin: 2px 4px;
+}
+
+#InkSpinScale trough,
+#InkSpinScale slider,
+#InkSpinScale highlight {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+/* Hide slider */
+#InkSpinScale slider {
+    background: none;
+    border: none;
+    outline: none;
+    min-width: 0px;
+    min-height: 0px;
+    padding: 0px;
+    margin: 0px;
+}
+
+#InkSpinScale scale {
+    padding: 0px;
+    margin:0;
+}
+
+#InkSpinScale trough {
+    min-height: 26px;
+    padding: 2px; /* some themes have humongous scale margins; rein in */
+}
+
+#InkSpinScale box.active {
+    box-shadow: 0 0 0 1px rgb(74, 144, 217);
+}
+
+#InkSpinScale spinbutton {
+    box-shadow: none;
+    min-height: 10px;
+    border-left:0;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+#InkSpinScale spinbutton entry {
+    min-height: 30px;
+    outline-style: none;
+}
+
+#UnicodeIconView {
+    font-size: 16px;
+}
+
+/* GtkTreeView: clarify drop locations (especially important for XML editor) */
+treeview.view:drop(active) {
+    border-style: solid;
+    border-width: 2px;
+}
+
+treeview.view:drop(active).after {
+    border-style: none none solid none;
+}
+
+treeview.view:drop(active).before {
+    border-style: solid none none none;
+}
+
+treeview.view:drop(active).after,
+treeview.view:drop(active).before {
+    border-width: 4px;
+    border-radius: 10px;
+}
+
+button.close-button{
+    background-image: none;
+    padding: 0px;
+    min-height: 1px;
+    min-width: 1px;
+    border: none;
+    opacity: 0.5;
+    box-shadow: none;
+}
+
+button.close-button:hover{
+    box-shadow: none;
+    opacity: 1;
+}
+
+/*
+ * Inkscape start dialog styles
+ */
+button.primary {
+    background-image: linear-gradient(to bottom, rgba(22, 169, 249, 1), rgba(2, 135, 204, 1));
+    box-shadow: 0 1px rgba(255, 255, 255, 0.3) inset;
+    text-shadow: none;
+}
+button.primary:hover {
+    background-image: linear-gradient(to bottom, rgba(32, 179, 255, 1), rgba(12, 145, 214, 1));
+}
+button.primary:active {
+    background-image: linear-gradient(to top, rgba(12, 149, 219, 1), rgba(0, 115, 184, 1));
+}
+button.primary label {
+    color: white;
+}
+button.link:hover image {
+    -gtk-icon-effect: dim;
+}
+
+.marker-item.box {
+    padding: 4px;
+}
+.marker-separator {
+    padding: 0;
+}
+
+.tight-button {
+    padding: 5px 3px;
+}
+
+.link-edit-button {
+    padding: 5px 3px;
+    min-width: 0.5em;
+}
+
+/* In some themes stack switcher buttons are extra wide forcing dialogs too wide */
+stackswitcher button {
+    padding-left: 1px;
+    padding-right: 1px;
+    min-width: 40px;
+}
+
+/*removes dashed line (scrolling indicator) on color palette for all themes */
+.color-palette-main-box scrolledwindow undershoot.top,
+.color-palette-main-box scrolledwindow undershoot.right,
+.color-palette-main-box scrolledwindow undershoot.bottom,
+.color-palette-main-box scrolledwindow undershoot.left {
+    background-image: none;
+}
+
+.backgnd-passive {
+    background-color: @theme_bg_color;
+    opacity: 0.5;
+    transition: background-color 300ms linear;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0.3;
+  }
+}
+
+.backgnd-active {
+  animation-name: pulse;
+  background-color: @theme_selected_bg_color;
+  animation-duration: 1s;
+  animation-timing-function: ease;
+  animation-iteration-count: infinite;
+}
+
+.nb-highlight > header.top {
+  background-color: @theme_selected_bg_color;
+}
+
+.tight-flowbox flowboxchild {
+    margin: 0;
+    padding: 0px;
+}
+.tight-flowbox button {
+    margin: 0;
+    padding: 4px;
+}
+
+/* add .small-marks class to Gtk::Scale to have smaller font used, since markup didn't work there */
+scale.small-marks.marks-after {
+    font-size: small;
+}
+
+/* Square toolbar buttons: request square buttons for all toolbars. */
+button.square-button {
+    padding: 3px;
+}
+
+button.square-button image {
+    padding: 0;
+    min-width: 16px;
+    min-height: 16px;
+}
+
+/* Give layer selector button label a highlight color */
+#LayerSelector label
+{
+    padding-left: 6px;
+    border-left: 3px solid white;
+}
+
+#StyleSwatch label {
+    font-size: small;
+}
+
+#DocumentProperties #NotebookPage {
+    margin-left: 4px;
+    margin-right: 4px;
+}
+
+/* heading label in dialogs */
+.heading {
+    font-weight: bold;
+    font-size: 1.1em; /* make it optically comparable with non-bold */
+    margin-top: 0.5em;
+}
+/* topmost heading in dialogs */
+.heading.top {
+    margin-top: 0.2em;
+}
+
+/* single-level indentation for labels in a dialog */
+.indent {
+    margin-left: 1em;
+}
+
+.small-font {
+    font-size: small;
+}
+
+.toolbar-separator {
+    margin: 7px 3px;
+}
+
+/* for dialogs with "Apply" button (or equivalent) - larger hit target */
+.wide-apply-button {
+    min-width: 150px;
+}
+
+#DockedDialogNotebook {
+    border: none;
+}
+
+#DialogMenuButton {
+    padding: 3px;
+    border: none;
+    opacity: 0.5;
+}
+
+#DialogMenuButton:hover {
+    opacity: 1;
+}
+
+#DesktopStatusBar {
+    margin-right: 1em;
+}
+/*
+ * Inkscape Export Dialog
+ */
+#ExportDialog #export_selection{
+    border-radius: 0px;
+}
+#ExportDialog #export_preview_single {
+    border: 1px solid;
+}
+#ExportDialog #export_preview_batch {
+    border: 1px solid;
+}

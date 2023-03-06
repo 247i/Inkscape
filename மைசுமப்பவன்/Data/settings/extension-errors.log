@@ -1,8 +1,26 @@
+Extension "Optimized PNG" failed to load because ஒரு சார்பு நிலை சந்திக்கப்படவில்லை
+Dependency:
+	type: executable
+	location: பாதை
+	string: optipng
+
+Extension "Export to PDF via Scribus" failed to load because ஒரு சார்பு நிலை சந்திக்கப்படவில்லை
+Dependency:
+	type: executable
+	location: பாதை
+	string: scribus
+
 Extension "EPS Input" failed to load because ஒரு சார்பு நிலை சந்திக்கப்படவில்லை
 Dependency:
 	type: executable
 	location: பாதை
 	string: ps2pdf
+
+Extension "Formula (pdflatex)" failed to load because ஒரு சார்பு நிலை சந்திக்கப்படவில்லை
+Dependency:
+	type: executable
+	location: பாதை
+	string: pdflatex
 
 Extension "XFIG Input" failed to load because ஒரு சார்பு நிலை சந்திக்கப்படவில்லை
 Dependency:
@@ -16,27 +34,9 @@ Dependency:
 	location: பாதை
 	string: gimp
 
-Extension "Formula (pdflatex)" failed to load because ஒரு சார்பு நிலை சந்திக்கப்படவில்லை
-Dependency:
-	type: executable
-	location: பாதை
-	string: pdflatex
-
 Extension "PostScript Input" failed to load because ஒரு சார்பு நிலை சந்திக்கப்படவில்லை
 Dependency:
 	type: executable
 	location: பாதை
 	string: ps2pdf
-
-Extension "Optimized PNG" failed to load because ஒரு சார்பு நிலை சந்திக்கப்படவில்லை
-Dependency:
-	type: executable
-	location: பாதை
-	string: optipng
-
-Extension "Export to PDF via Scribus" failed to load because ஒரு சார்பு நிலை சந்திக்கப்படவில்லை
-Dependency:
-	type: executable
-	location: பாதை
-	string: scribus
 
