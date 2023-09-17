@@ -22,6 +22,12 @@ Dependency:
 	location: பாதை
 	string: pdflatex
 
+Extension "Plot" failed to load because ஒரு சார்பு நிலை சந்திக்கப்படவில்லை
+Dependency:
+	type: file
+	location: inx
+	string: hpgl_decoder.py
+
 Extension "PostScript Input" failed to load because ஒரு சார்பு நிலை சந்திக்கப்படவில்லை
 Dependency:
 	type: executable
