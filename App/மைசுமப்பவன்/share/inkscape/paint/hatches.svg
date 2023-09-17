@@ -23,7 +23,7 @@
     </hatch>
     <hatch inkscape:collect="always"
 		id="hatch4" hatchUnits="userSpaceOnUse" pitch="15">
-     <hatchpath stroke="#000000" offset="5" d="L 0,0 5,10" />
+     <hatchpath stroke="#000000" offset="5" d="M 0,0 5,10" />
     </hatch>
     <hatch inkscape:collect="always"
 		id="hatch5" hatchUnits="userSpaceOnUse" pitch="15">
@@ -35,24 +35,24 @@
     </hatch>
     <hatch inkscape:collect="always"
 		id="hatch7" hatchUnits="userSpaceOnUse" pitch="15">
-     <hatchpath stroke="#000000" offset="5" d="L 0,0 5,10 0,20" />
+     <hatchpath stroke="#000000" offset="5" d="M 0,0 5,10 0,20" />
     </hatch>
     <hatch inkscape:collect="always"
 		id="hatch8" hatchUnits="userSpaceOnUse" pitch="15" rotate="30">
-     <hatchpath stroke="#000000" offset="10" d="L 0,0 5,10 0,20" />
+     <hatchpath stroke="#000000" offset="10" d="M 0,0 5,10 0,20" />
     </hatch>
     <hatch inkscape:collect="always"
 		id="hatch9" hatchUnits="userSpaceOnUse" pitch="15" rotate="45">
-     <hatchpath stroke="#000000" offset="10" d="L 0,0 5,10 0,20" />
+     <hatchpath stroke="#000000" offset="10" d="M 0,0 5,10 0,20" />
     </hatch>
     <hatch inkscape:collect="always"
 		id="hatch10" hatchUnits="userSpaceOnUse" pitch="15" x="-5" y="-10" rotate="30">
-     <hatchpath stroke="#000000" offset="10" d="L 0,0 5,10 0,20" />
+     <hatchpath stroke="#000000" offset="10" d="M 0,0 5,10 0,20" />
     </hatch>
     <hatch inkscape:collect="always"
 		id="hatch11" hatchUnits="userSpaceOnUse" pitch="15" rotate="30" x="-5" y="-10"
       hatchTransform="matrix(0.96592583,-0.25881905,0.25881905,0.96592583,-8.4757068,43.273395)">
-     <hatchpath stroke="#000000" offset="10" d="L 0,0 5,10 0,20" />
+     <hatchpath stroke="#000000" offset="10" d="M 0,0 5,10 0,20" />
     </hatch>
     <hatch inkscape:collect="always"
 		id="hatch12" hatchUnits="userSpaceOnUse" pitch="15">
@@ -62,12 +62,12 @@
     <hatch inkscape:collect="always"
 		id="hatch13" hatchUnits="userSpaceOnUse" pitch="15">
      <hatchpath stroke="#000000" offset="5" />
-     <hatchpath stroke="#000000" offset="10" d="L 0,0 5,10" />
+     <hatchpath stroke="#000000" offset="10" d="M 0,0 5,10" />
     </hatch>
     <hatch inkscape:collect="always"
 		id="hatch14" hatchUnits="userSpaceOnUse" pitch="15">
-     <hatchpath stroke="#000000" offset="5" d="L 0,0 5,17" />
-     <hatchpath stroke="#000000" offset="10" d="L 0,0 5,10" />
+     <hatchpath stroke="#000000" offset="5" d="M 0,0 5,17" />
+     <hatchpath stroke="#000000" offset="10" d="M 0,0 5,10" />
     </hatch>
     <hatch inkscape:collect="always"
 		id="hatch15" hatchUnits="userSpaceOnUse" pitch="15">

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # coding=utf-8
 #
 # Copyright (C) 2010 Craig Marshall, craig9 [at] gmail.com
@@ -59,7 +59,7 @@ class Guillotine(inkex.EffectExtension):
         """
         for guide in self.svg.namedview.get_guides():
             if guide.is_horizontal:
-                yield guide.point.y
+                yield guide.raw_position.y
 
     def get_all_vertical_guides(self):
         """
@@ -68,7 +68,7 @@ class Guillotine(inkex.EffectExtension):
         """
         for guide in self.svg.namedview.get_guides():
             if guide.is_vertical:
-                yield guide.point.x
+                yield guide.raw_position.x
 
     def get_horizontal_slice_positions(self):
         """

@@ -22,11 +22,12 @@ import re
 
 from import_sources import RemoteSource
 
-TAG_REX = re.compile(r'<[^<]+?>')
+TAG_REX = re.compile(r"<[^<]+?>")
+
 
 class Reactome(RemoteSource):
-    name = 'Reactome (Bio)'
-    icon = 'sources/reactome.svg'
+    name = "Reactome (Bio)"
+    icon = "sources/reactome.svg"
     search_url = "https://reactome.org/ContentService/search/query"
     file_url = "https://reactome.org/icon/{stId}.svg"
     icon_url = "https://reactome.org/icon/{stId}.png"
@@ -46,19 +47,18 @@ class Reactome(RemoteSource):
         except Exception:
             pass
 
-        if 'messages' in response and 'No entries' in response['messages'][0]:
+        if "messages" in response and "No entries" in response["messages"][0]:
             return
-        for cats in response.get('results', []):
-            for entry in cats['entries']:
+        for cats in response.get("results", []):
+            for entry in cats["entries"]:
                 yield {
-                    'id': entry['dbId'],
-                    'name': TAG_REX.sub('', entry['name']),
-                    'author': 'Reactome/'+entry.get('iconDesignerName', "Unknown"),
-                    'summary': TAG_REX.sub('', entry.get('summation', '')),
-                    'created': None, # No data
-                    'popularity': 0, # No data
-                    'thumbnail': self.icon_url.format(**entry),
-                    'file': self.file_url.format(**entry),
-                    'license': self.all_licence,
+                    "id": entry["dbId"],
+                    "name": TAG_REX.sub("", entry["name"]),
+                    "author": "Reactome/" + entry.get("iconDesignerName", "Unknown"),
+                    "summary": TAG_REX.sub("", entry.get("summation", "")),
+                    "created": None,  # No data
+                    "popularity": 0,  # No data
+                    "thumbnail": self.icon_url.format(**entry),
+                    "file": self.file_url.format(**entry),
+                    "license": self.all_licence,
                 }
-

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # coding=utf-8
 #
 # Copyright (C) 2013 <Public Domain>
@@ -70,13 +70,13 @@ class HpglOutput(inkex.OutputExtension):
     def save(self, stream):
         self.options.debug = False
         # get hpgl data
+        if len(self.svg.xpath("//svg:use|//svg:flowRoot|//svg:text")) > 0:
+            self.preprocess(["flowRoot", "text"])
         encoder = hpgl_encoder.hpglEncoder(self)
         try:
             hpgl = encoder.getHpgl()
         except hpgl_encoder.NoPathError:
-            raise inkex.AbortExtension(
-                _("No paths were found. Please convert objects you want into paths.")
-            )
+            raise inkex.AbortExtension(_("No convertible objects were found"))
         # convert raw HPGL to HPGL
         hpgl_init = "IN"
         # if self.options.force > 0:

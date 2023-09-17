@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # coding=utf-8
 #
 # Copyright (C) 2009 Kazuhiko Arase (http://www.d-project.com/)
@@ -87,7 +87,6 @@ class QRCode(object):
         return pattern
 
     def _make(self, test, maskPattern):
-
         self.moduleCount = self.typeNumber * 4 + 17
         self.modules = [[None] * self.moduleCount for i in range(self.moduleCount)]
 
@@ -110,7 +109,6 @@ class QRCode(object):
         self._mapData(data, maskPattern)
 
     def _mapData(self, data, maskPattern):
-
         rows = list(range(self.moduleCount))
         cols = [
             col - 1 if col <= 6 else col for col in range(self.moduleCount - 1, 0, -2)
@@ -125,7 +123,6 @@ class QRCode(object):
             for row in rows:
                 for c in range(2):
                     if self.modules[row][col - c] is None:
-
                         dark = False
                         if byteIndex < len(data):
                             dark = ((data[byteIndex] >> bitIndex) & 1) == 1
@@ -192,7 +189,6 @@ class QRCode(object):
             )
 
     def _setupTypeInfo(self, test, maskPattern):
-
         data = (self.errorCorrectLevel << 3) | maskPattern
         bits = QRUtil.getBCHTypeInfo(data)
 
@@ -221,7 +217,6 @@ class QRCode(object):
 
     @staticmethod
     def _createData(typeNumber, errorCorrectLevel, dataArray):
-
         rsBlocks = RSBlock.getRSBlocks(typeNumber, errorCorrectLevel)
 
         buffer = BitBuffer()
@@ -260,7 +255,6 @@ class QRCode(object):
 
     @staticmethod
     def _createBytes(buffer, rsBlocks):
-
         offset = 0
 
         maxDcCount = 0
@@ -270,7 +264,6 @@ class QRCode(object):
         ecdata = [None] * len(rsBlocks)
 
         for r in range(len(rsBlocks)):
-
             dcCount = rsBlocks[r].getDataCount()
             ecCount = rsBlocks[r].getTotalCount() - dcCount
 
@@ -424,7 +417,6 @@ class QRUtil(object):
 
     @staticmethod
     def getLostPoint(qrcode):
-
         moduleCount = qrcode.getModuleCount()
         lostPoint = 0
 
@@ -671,7 +663,6 @@ class QRMath(object):
 
     @staticmethod
     def _init():
-
         QRMath.EXP_TABLE = [0] * 256
         for i in range(256):
             QRMath.EXP_TABLE[i] = (
@@ -1114,7 +1105,6 @@ class QrCode(inkex.GenerateExtension):
         pars.add_argument("--groupid", default="")
 
     def generate(self):
-
         scale = self.svg.unittouu("1px")  # convert to document units
         opt = self.options
 
@@ -1157,7 +1147,6 @@ class QrCode(inkex.GenerateExtension):
         return grp
 
     def render_adv(self, greedy):
-
         verts = self.draw.createVertexesForAdvDrawer()
         qrPathStr = ""
         while len(verts) > 0:

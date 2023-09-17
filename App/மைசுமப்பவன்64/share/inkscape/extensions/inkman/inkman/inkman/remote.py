@@ -105,13 +105,17 @@ class RemoteArchive(object):
         self.url = self.URL.format(category=category)
         self.session = requests.session()
         if CacheControl is not None:
-            self.session.mount(
-                "https://",
-                CacheControlAdapter(
-                    cache=FileCache(CACHE_DIR),
-                    heuristic=ExpiresAfter(days=1),
-                ),
-            )
+            try:
+                self.session.mount(
+                    "https://",
+                    CacheControlAdapter(
+                        cache=FileCache(CACHE_DIR),
+                        heuristic=ExpiresAfter(days=1),
+                    ),
+                )
+            except ImportError:
+                # This happens when python-lockfile is missing
+                pass
 
     def _remote_file(self, url):
         return RemoteFile(self.session, url)

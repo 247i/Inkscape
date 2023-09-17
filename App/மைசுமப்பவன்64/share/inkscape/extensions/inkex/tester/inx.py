@@ -1,8 +1,12 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # coding=utf-8
 """
 Test elements extra logic from svg xml lxml custom classes.
 """
+import os
+from importlib import resources
+
+from lxml import etree
 
 from ..utils import PY3
 from ..inx import InxFile
@@ -126,3 +130,33 @@ class InxMixin:
             "default": param.text,
             "choices": None,
         }
+
+    def assertInxSchemaValid(self, inx_file):  # pylint: disable=invalid-name
+        """Validate inx file schema."""
+        self.assertTrue(INX_SCHEMAS, "no schema files found")
+        with open(inx_file, "rb") as fp:
+            inx_doc = etree.parse(fp)
+
+        for schema_name, schema in INX_SCHEMAS.items():
+            with self.subTest(schema_file=schema_name):
+                schema.assert_(inx_doc)
+
+
+def _load_inx_schemas():
+    _SCHEMA_CLASSES = {
+        ".rng": etree.RelaxNG,
+        ".schema": etree.Schematron,  # "pre-ISO-Schematron"
+    }
+
+    for name in resources.contents(__package__):
+        _, ext = os.path.splitext(name)
+        schema_class = _SCHEMA_CLASSES.get(ext)
+        if schema_class is None:
+            continue
+
+        with resources.open_binary(__package__, name) as fp:
+            schema_doc = etree.parse(fp)
+        yield name, schema_class(schema_doc)
+
+
+INX_SCHEMAS = dict(_load_inx_schemas())

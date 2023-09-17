@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """Custom color function per channel of selected objects"""
 
 import ast

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
 # Copyright (C) 2010 Tavmjong Bah
@@ -55,12 +55,13 @@ class DvdCover(inkex.TemplateExtension):
         super(DvdCover, self).set_namedview(width, height, unit)
         (width, _, height, unit) = self.get_size()
         bleed, spine = self.options.bleed, self.options.spine
-        self.svg.namedview.new_guide(bleed, True, "bottom")
-        self.svg.namedview.new_guide(height - bleed, True, "top")
-        self.svg.namedview.new_guide(bleed, False, "left edge")
-        self.svg.namedview.new_guide((width - spine) / 2.0, False, "left spline")
-        self.svg.namedview.new_guide((width + spine) / 2.0, False, "right spline")
-        self.svg.namedview.new_guide(width - bleed, False, "top")
+        guidebase = self.svg.viewbox_height
+        self.svg.namedview.add_guide(guidebase - bleed, True, "bottom")
+        self.svg.namedview.add_guide(guidebase - height + bleed, True, "top")
+        self.svg.namedview.add_guide(bleed, False, "left edge")
+        self.svg.namedview.add_guide((width - spine) / 2.0, False, "left spline")
+        self.svg.namedview.add_guide((width + spine) / 2.0, False, "right spline")
+        self.svg.namedview.add_guide(width - bleed, False, "top")
 
 
 if __name__ == "__main__":

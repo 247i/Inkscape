@@ -25,7 +25,7 @@ is ready to be made available in Inkscape:
 #. Check all of your dependencies
 
    * Your extension MUST be python based (except for template extensions)
-   * It MUST work with python 3.6 or later
+   * It MUST work with python 3.7 or later
    * Any dependency not shipped with Inkscape MUST be packaged along side your
      extension. For example jinja2 would be included in a folder.
 

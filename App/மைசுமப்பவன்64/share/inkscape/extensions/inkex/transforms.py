@@ -858,6 +858,9 @@ class BoundingBox:  # pylint: disable=too-few-public-methods
     right = property(lambda self: self.x.maximum)
     center_x = property(lambda self: self.x.center)
     center_y = property(lambda self: self.y.center)
+    diagonal_length = property(
+        lambda self: (self.width**2 + self.height**2) ** (0.5)
+    )
 
     @overload
     def __init__(self, other=None):

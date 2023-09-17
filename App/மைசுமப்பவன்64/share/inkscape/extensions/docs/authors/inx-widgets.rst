@@ -181,7 +181,7 @@ attributes ``width/heigth`` to override the default size (in this case
 
 Images are aligned in the horizontal center of the current box; different alignment
 can be realized by wrapping the image in a `hbox <#hbox-vbox>`__ and adding a 
-`spacer <#spacer>`__ with ``size=expand``
+`spacer <#spacer>`__ with ``size="expand"``
 before (for right alignment) or after (for left alignment) of the image.
 
 *Implementation note: Loadable image formats are determined by GdkPixbuf
@@ -205,8 +205,8 @@ the text content that will be rendered.
    <label>Some text here.</label>
 
 *Note: Labels are intended to provide additional information / help. For
-labeling parameters use the ``gui-text`` attribute; for short help texts
-that are specific to a single parameter prefer ``gui-description`` which
+labeling parameters use the* ``gui-text`` *attribute; for short help texts
+that are specific to a single parameter prefer* ``gui-description`` *which
 will render as a tooltip.*
 
 -  When setting the attribute ``appearance="header"`` the text is styled
@@ -287,7 +287,7 @@ Creates a checkbox to set a **boolean value**. Allowed values are
 
 .. code:: xml
 
-   <param name="name" type="boolean" gui-text="Some label text">false</param>
+   <param name="name" type="bool" gui-text="Some label text">false</param>
 
 .. figure:: widgets/bool.png
    :alt: Checkbox
@@ -344,7 +344,8 @@ the value can be adjusted dynamically over the full range.
 .. figure:: widgets/float.png
    :alt: Rendering of float parameter
 
-   Rendering of ``float`` parameters: default and with ``appearance="full"``
+   Rendering of ``float`` parameters: default and with ``appearance="full"``. 
+   On the bottom parameter, ``precision="1"`` has been set.
 
 ``int``
 ~~~~~~~
@@ -425,8 +426,7 @@ selected.
    :alt: Rendering of float parameter
 
    Rendering of ``optionsgroup`` parameters: ``appearance="radio"`` and 
-   ``appearance="combo"``. On the bottom parameter, ``precision="1"`` 
-   has been set.
+   ``appearance="combo"``. 
 
 
 ``path``

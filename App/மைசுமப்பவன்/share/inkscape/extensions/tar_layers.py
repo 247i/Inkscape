@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # coding=utf-8
 #
 # Copyright (C) 2014 Martin Owens, email@doctormo.org
@@ -40,7 +40,7 @@ class TarLayers(inkex.OutputExtension):
     def make_template(self):
         """Returns the current document as a new empty document with the same defs"""
         newdoc = copy.deepcopy(self.document)
-        for (name, layer) in self.layers(newdoc):
+        for name, layer in self.layers(newdoc):
             layer.getparent().remove(layer)
         return newdoc
 
@@ -74,7 +74,7 @@ class TarLayers(inkex.OutputExtension):
         template = self.make_template()
 
         previous = None
-        for (name, _layer) in self.layers(self.document):
+        for name, _layer in self.layers(self.document):
             layer = copy.deepcopy(_layer)
             if previous != None:
                 template.getroot().replace(previous, layer)

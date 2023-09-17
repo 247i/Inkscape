@@ -29,10 +29,11 @@ from ..paths import Path
 from ..transforms import Transform
 
 from ._utils import addNS
-from ._base import ShapeElement
+from ._base import ShapeElement, ViewboxMixin
+from ._polygons import PathElement
 
 try:
-    from typing import Optional  # pylint: disable=unused-import
+    from typing import Optional, List  # pylint: disable=unused-import
 except ImportError:
     pass
 
@@ -56,6 +57,29 @@ class GroupBase(ShapeElement):
                 if child_bbox is not None:
                     bbox += child_bbox
         return bbox
+
+    def bake_transforms_recursively(self, apply_to_paths=True):
+        """Bake transforms, i.e. each leaf node has the effective transform (starting
+        from this group) set, and parent transforms are removed.
+
+        .. versionadded:: 1.4
+
+        Args:
+            apply_to_paths (bool, optional): For path elements, the
+                path data is transformed with its effective transform. Nodes and handles
+                will have the same position as before, but visual appearance of the
+                stroke may change (stroke-width is not touched). Defaults to True.
+        """
+        # pylint: disable=attribute-defined-outside-init
+        self.transform: Transform
+        for element in self:
+            if isinstance(element, PathElement) and apply_to_paths:
+                element.path = element.path.transform(self.transform)
+            else:
+                element.transform = self.transform @ element.transform
+                if isinstance(element, GroupBase):
+                    element.bake_transforms_recursively(apply_to_paths)
+        self.transform = None
 
 
 class Group(GroupBase):
@@ -110,17 +134,26 @@ class ClipPath(GroupBase):
     tag_name = "clipPath"
 
 
-class Marker(GroupBase):
+class Marker(GroupBase, ViewboxMixin):
     """The <marker> element defines the graphic that is to be used for drawing
     arrowheads or polymarkers on a given <path>, <line>, <polyline> or <polygon>
     element."""
 
     tag_name = "marker"
 
+    def get_viewbox(self) -> List[float]:
+        """Returns the viewbox of the Marker, falling back to
+        [0 0 markerWidth markerHeight]
 
-class Mask(GroupBase):
-    """An alpha mask for compositing an object into the background
-
-    .. versionadded:: 1.2"""
-
-    tag_name = "mask"
+        .. versionadded:: 1.3"""
+        vbox = self.get("viewBox", None)
+        result = self.parse_viewbox(vbox)
+        if result is None:
+            # use viewport, https://www.w3.org/TR/SVG11/painting.html#MarkerElement
+            return [
+                0,
+                0,
+                self.to_dimensionless(self.get("markerWidth")),
+                self.to_dimensionless(self.get("markerHeight")),
+            ]
+        return result

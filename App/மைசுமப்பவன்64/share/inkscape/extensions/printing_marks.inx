@@ -36,7 +36,7 @@
   <effect needs-live-preview="false">
     <object-type>all</object-type>
     <effects-menu>
-      <submenu name="Render">
+      <submenu name="Document">
         <submenu name="Layout"/>
       </submenu>
     </effects-menu>

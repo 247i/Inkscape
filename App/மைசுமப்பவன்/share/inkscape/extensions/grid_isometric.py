@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # coding=utf-8
 #
 # Copyright (C) 2010 Jean-Luc JOULIN "JeanJouX" jean-luc.joulin@laposte.net

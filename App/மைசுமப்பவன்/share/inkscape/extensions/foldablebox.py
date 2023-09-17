@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 # coding=utf-8
 #
 # Copyright (C) 2009 Aurelio A. Heckert <aurium (a) gmail dot com>
@@ -43,11 +43,11 @@ class FoldableBox(inkex.EffectExtension):
     def guide(self, value, orient):
         """Create a guideline conditionally"""
         if self.options.guide:
-            self.svg.namedview.new_guide(value, orient)
+            self.svg.namedview.add_guide(value, orient)
 
     def effect(self):
-        doc_w = self.svg.unittouu(self.document.getroot().get("width"))
-        doc_h = self.svg.unittouu(self.document.getroot().get("height"))
+        doc_w = self.svg.viewbox_width
+        doc_h = self.svg.viewbox_height
 
         box_w = self.svg.unittouu(str(self.options.width) + self.options.unit)
         box_h = self.svg.unittouu(str(self.options.height) + self.options.unit)
@@ -63,7 +63,7 @@ class FoldableBox(inkex.EffectExtension):
             "stroke-width": str(self.svg.unittouu("1px")),
         }
 
-        self.guide(doc_h, True)
+        self.guide(0, True)
 
         # Inner Close Tab
         line = group.add(inkex.PathElement(id=box_id + "-inner-close-tab"))
@@ -81,7 +81,7 @@ class FoldableBox(inkex.EffectExtension):
         lower_pos = box_d + tab_h
         left_pos = 0
 
-        self.guide(doc_h - tab_h, True)
+        self.guide(tab_h, True)
 
         # Upper Close Tab
         line = group.add(inkex.PathElement(id=box_id + "-upper-close-tab"))
@@ -128,7 +128,7 @@ class FoldableBox(inkex.EffectExtension):
 
         left_pos = 0
 
-        self.guide(doc_h - tab_h - box_d, True)
+        self.guide(tab_h + box_d, True)
 
         # Right Tab
         line = group.add(inkex.PathElement(id=box_id + "-left-tab"))

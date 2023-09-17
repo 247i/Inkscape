@@ -99,7 +99,7 @@ def load_svg(stream):
     if len(SVG_PARSER.error_log) > 0:
         errormsg(
             _(
-                "A parsing error occured, which means you are likely working with "
+                "A parsing error occurred, which means you are likely working with "
                 "a non-conformant SVG file. The following errors were found:\n"
             )
         )

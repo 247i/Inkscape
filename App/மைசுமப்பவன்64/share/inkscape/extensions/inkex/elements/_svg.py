@@ -40,16 +40,19 @@ from ._selected import ElementList
 from ..transforms import BoundingBox
 from ..styles import StyleSheets
 
-from ._base import BaseElement
-from ._meta import StyleElement
+from ._base import BaseElement, ViewboxMixin
+from ._meta import StyleElement, NamedView
+from ._utils import registerNS
 
-from typing import Optional, List
+from typing import Optional, List, Tuple
 
 if False:  # pylint: disable=using-constant-test
     import typing  # pylint: disable=unused-import
 
 
-class SvgDocumentElement(DeprecatedSvgMixin, ISVGDocumentElement, BaseElement):
+class SvgDocumentElement(
+    DeprecatedSvgMixin, ISVGDocumentElement, BaseElement, ViewboxMixin
+):
     """Provide access to the document level svg functionality"""
 
     # pylint: disable=too-many-public-methods
@@ -119,11 +122,27 @@ class SvgDocumentElement(DeprecatedSvgMixin, ISVGDocumentElement, BaseElement):
         self.ids.add(new_id)
         return new_id
 
-    def get_page_bbox(self):
-        """Gets the page dimensions as a bbox"""
-        return BoundingBox(
-            (0, float(self.viewbox_width)), (0, float(self.viewbox_height))
-        )
+    def get_page_bbox(self, page=None) -> BoundingBox:
+        """Gets the page dimensions as a bbox. For single-page documents, the viewbox
+        dimensions are returned.
+
+        Args:
+            page (int, optional): Page number. Defaults to the first page.
+
+                .. versionadded:: 1.3
+
+        Raises:
+            IndexError: if the page number provided does not exist in the document.
+
+        Returns:
+            BoundingBox: the bounding box of the page
+        """
+        if page is None:
+            page = 0
+        pages = self.namedview.get_pages()
+        if 0 <= page < len(pages):
+            return pages[page].bounding_box
+        raise IndexError("Invalid page number")
 
     def get_current_layer(self):
         """Returns the currently selected layer"""
@@ -131,6 +150,36 @@ class SvgDocumentElement(DeprecatedSvgMixin, ISVGDocumentElement, BaseElement):
         if layer is None:
             return self
         return layer
+
+    def add_namespace(self, prefix, url):
+        """Adds an xml namespace to the xml parser with the desired prefix.
+
+        If the prefix or url are already in use with different values, this
+        function will raise an error. Remove any attributes or elements using
+        this namespace before calling this function in order to rename it.
+
+        .. versionadded:: 1.3
+        """
+        if self.nsmap.get(prefix, None) == url:
+            registerNS(prefix, url)
+            return
+
+        # Attempt to clean any existing namespaces
+        if prefix in self.nsmap or url in self.nsmap.values():
+            nskeep = [k for k, v in self.nsmap.items() if k != prefix and v != url]
+            etree.cleanup_namespaces(self, keep_ns_prefixes=nskeep)
+            if prefix in self.nsmap:
+                raise KeyError("ns prefix already used with a different url")
+            if url in self.nsmap.values():
+                raise ValueError("ns url already used with a different prefix")
+
+        # These are globals, but both will overwrite previous uses.
+        registerNS(prefix, url)
+        etree.register_namespace(prefix, url)
+
+        # Set and unset an attribute to add the namespace to this root element.
+        self.set(f"{prefix}:temp", "1")
+        self.set(f"{prefix}:temp", None)
 
     def getElement(self, xpath):  # pylint: disable=invalid-name
         """Gets a single element from the given xpath or returns None"""
@@ -168,23 +217,26 @@ class SvgDocumentElement(DeprecatedSvgMixin, ISVGDocumentElement, BaseElement):
         return self.xpath(ConditionalRule(f".{class_name}").to_xpath())
 
     def getElementsByHref(
-        self, eid: str, attribute="xlink:href"
+        self, eid: str, attribute="href"
     ):  # pylint: disable=invalid-name
         """Get elements that reference the element with id eid.
 
         Args:
             eid (str): _description_
             attribute (str, optional): Attribute to look for.
-                Valid choices: "xlink:href", "mask", "clip-path".
-                Defaults to "xlink:href".
+                Valid choices: "href", "xlink:href", "mask", "clip-path".
+                Defaults to "href".
 
                 .. versionadded:: 1.2
+
+            attribute set to "href" or "xlink:href" handles both cases.
+                .. versionchanged:: 1.3
 
         Returns:
             Any: list of elements
         """
-        if attribute == "xlink:href":
-            return self.xpath(f'//*[@xlink:href="#{eid}"]')
+        if attribute == "href" or attribute == "xlink:href":
+            return self.xpath(f'//*[@href|@xlink:href="#{eid}"]')
         elif attribute == "mask":
             return self.xpath(f'//*[@mask="url(#{eid})"]')
         elif attribute == "clip-path":
@@ -203,7 +255,7 @@ class SvgDocumentElement(DeprecatedSvgMixin, ISVGDocumentElement, BaseElement):
         return self.get("sodipodi:docname", "")
 
     @property
-    def namedview(self):
+    def namedview(self) -> NamedView:
         """Return the sp namedview meta information element"""
         return self.get_or_create("//sodipodi:namedview", prepend=True)
 
@@ -217,17 +269,9 @@ class SvgDocumentElement(DeprecatedSvgMixin, ISVGDocumentElement, BaseElement):
         """Return the svg defs meta element container"""
         return self.get_or_create("//svg:defs", prepend=True)
 
-    def get_viewbox(self):
+    def get_viewbox(self) -> List[float]:
         """Parse and return the document's viewBox attribute"""
-        try:
-            ret = [
-                float(unit) for unit in re.split(r",\s*|\s+", self.get("viewBox", "0"))
-            ]
-        except ValueError:
-            ret = ""
-        if len(ret) != 4:
-            return [0, 0, 0, 0]
-        return ret
+        return self.parse_viewbox(self.get("viewBox", "0")) or [0, 0, 0, 0]
 
     @property
     def viewbox_width(self) -> float:  # getDocumentWidth(self):

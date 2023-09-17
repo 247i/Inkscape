@@ -29,6 +29,7 @@ import tempfile
 import hashlib
 import random
 import uuid
+import io
 from typing import List, Union, Tuple, Type, TYPE_CHECKING
 
 from io import BytesIO, StringIO
@@ -37,7 +38,7 @@ import xml.etree.ElementTree as xml
 from unittest import TestCase as BaseCase
 from inkex.base import InkscapeExtension
 
-from .. import Transform
+from .. import Transform, load_svg, SvgDocumentElement
 from ..utils import to_bytes
 from .xmldiff import xmldiff
 from .mock import MockCommandMixin, Capture
@@ -215,7 +216,7 @@ class TestCase(MockCommandMixin, BaseCase):
             places = 7
         if isinstance(first, (list, tuple)):
             assert len(first) == len(second)
-            for (f, s) in zip(first, second):
+            for f, s in zip(first, second):
                 self.assertDeepAlmostEqual(f, s, places, msg, delta)
         else:
             self.assertAlmostEqual(first, second, places, msg, delta)
@@ -238,6 +239,22 @@ class TestCase(MockCommandMixin, BaseCase):
         if self._effect is None:
             self._effect = self.effect_class()
         return self._effect
+
+    def import_string(self, string, *args) -> SvgDocumentElement:
+        """Runs a string through an import extension, with optional arguments
+        provided as "--arg=value" arguments"""
+        stream = io.BytesIO(string.encode())
+        reader = self.effect_class()
+        out = io.BytesIO()
+        reader.parse_arguments([*args])
+        reader.options.input_file = stream
+        reader.options.output = out
+        reader.load_raw()
+        reader.save_raw(reader.effect())
+        out.seek(0)
+        decoded = out.read().decode("utf-8")
+        document = load_svg(decoded)
+        return document
 
 
 class InkscapeExtensionTestMixin:

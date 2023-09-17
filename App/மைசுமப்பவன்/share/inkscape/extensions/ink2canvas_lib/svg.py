@@ -176,7 +176,6 @@ class Circle(AbstractShape):
         self.command = "arc"
 
     def get_data(self):
-
         cx = self.attr("cx")
         cy = self.attr("cy")
         r = self.attr("r")

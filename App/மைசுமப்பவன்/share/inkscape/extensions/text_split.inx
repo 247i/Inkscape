@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <inkscape-extension xmlns="http://www.inkscape.org/namespace/inkscape/extension">
-    <name>Split text</name>
+    <name>Split Text</name>
     <id>org.inkscape.text_split</id>
     <param name="tab" type="notebook">
         <page name="Options" gui-text="Options">

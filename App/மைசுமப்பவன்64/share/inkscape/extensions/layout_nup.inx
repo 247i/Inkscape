@@ -61,7 +61,7 @@ Parameters:
   <effect needs-live-preview="true">
     <object-type>all</object-type>
     <effects-menu>
-      <submenu name="Render">
+      <submenu name="Document">
         <submenu name="Layout"/>
       </submenu>
     </effects-menu>

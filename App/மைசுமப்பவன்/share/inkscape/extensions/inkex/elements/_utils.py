@@ -41,7 +41,13 @@ NSS = {
 SSN = dict((b, a) for (a, b) in NSS.items())
 
 
-def addNS(tag, ns=None):  # pylint: disable=invalid-name
+def registerNS(prefix, url):
+    """Register the given prefix as a namespace url."""
+    NSS[prefix] = url
+    SSN[url] = prefix
+
+
+def addNS(tag, ns=None, namespaces=NSS):  # pylint: disable=invalid-name
     """Add a known namespace to a name for use with lxml"""
     if tag.startswith("{") and ns:
         _, tag = removeNS(tag)
@@ -49,26 +55,28 @@ def addNS(tag, ns=None):  # pylint: disable=invalid-name
         tag = tag.replace("__", ":")
         if ":" in tag:
             (ns, tag) = tag.rsplit(":", 1)
-        ns = NSS.get(ns, None) or ns
+        ns = namespaces.get(ns, None) or ns
         if ns is not None:
             return f"{{{ns}}}{tag}"
     return tag
 
 
-def removeNS(name):  # pylint: disable=invalid-name
+def removeNS(
+    name, reverse_namespaces=SSN, default="svg"
+):  # pylint: disable=invalid-name
     """The reverse of addNS, finds any namespace and returns tuple (ns, tag)"""
     if name[0] == "{":
         (url, tag) = name[1:].split("}", 1)
-        return SSN.get(url, "svg"), tag
+        return reverse_namespaces.get(url, default), tag
     if ":" in name:
         return name.rsplit(":", 1)
-    return "svg", name
+    return default, name
 
 
-def splitNS(name):  # pylint: disable=invalid-name
+def splitNS(name, namespaces=NSS):  # pylint: disable=invalid-name
     """Like removeNS, but returns a url instead of a prefix"""
     (prefix, tag) = removeNS(name)
-    return (NSS[prefix], tag)
+    return (namespaces[prefix], tag)
 
 
 def natural_sort_key(key, _nsre=re.compile("([0-9]+)")):

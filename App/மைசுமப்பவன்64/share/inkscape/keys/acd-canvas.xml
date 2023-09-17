@@ -1,24 +1,8 @@
 <?xml version="1.0"?>
-<keys name="ACD Systems Canvas 11">
+<keys name="ACD Systems Canvas 11" xmlns:xi="http://www.w3.org/2001/XInclude">
 
-<!--  
-This file contains ACD Systems Canvas 11 keyboard shortcuts. In each "bind" element:
-
-- The "key" attribute contains the key name. The names are the same as those in the
-<gdk/gdkkeysyms.h> header file but without the leading "GDK_". If you don't have GDK
-source locally, you can view that file at:
-
-  http://git.gnome.org/browse/gtk+/plain/gdk/gdkkeysyms.h
-
-- The "modifiers" attribute contains a comma-separated list of modifiers, which can be
-one or more of: "Ctrl", "Shift", "Alt".
-
-In case of conflict, those bindings that come later override those before them. This
-file resides in the share/keys directory of your Inkscape installation, but you may also
-have a default.xml in your personal Inkscape profile directory (e.g. ~/.inkscape
-on Unix). The bindings in that personal file are added to (or, if there's a conflict,
-override) the bindings in the main default.xml.
--->
+<!-- inherit -->
+<xi:include href="inkscape.xml" />
 
 <!-- TOOLS -->
 
@@ -243,7 +227,7 @@ Path -> Unsmooth - Ctrl+Alt+U
 Display -> Size - Shift+F8
 -->
 
-  <bind gaction="win.canvas-show-grid"    keys="&lt;shift&gt;F9" />
+  <bind gaction="doc.show-grids"          keys="&lt;shift&gt;F9" />
 
   <bind gaction="win.canvas-rulers"       keys="&lt;shift&gt;F11" />
 

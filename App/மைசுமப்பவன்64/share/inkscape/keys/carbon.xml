@@ -7,6 +7,45 @@ This file contains the Inkscape keyboard shortcuts for MacOSX.
 See "inkscape.xml" for information about file structure.
 -->
 
+  <modifier action="canvas-pan-x" />
+  <modifier action="canvas-pan-y" />
+  <modifier action="canvas-rotate" />
+  <modifier action="canvas-zoom" />
+  <modifier action="move-confine" />
+  <modifier action="move-increment" />
+  <modifier action="select-add-to" />
+  <modifier action="select-always-box" />
+  <modifier action="select-cycle" />
+  <modifier action="select-first-hit" />
+  <modifier action="select-force-drag" />
+  <modifier action="select-in-groups" />
+  <modifier action="select-touch-path" />
+  <modifier action="trans-confine" />
+  <modifier action="trans-increment" />
+  <modifier action="trans-off-center" />
+  <modifier action="trans-snapping" />
+
+  <bind gaction="app.duplicate-transform" />
+  <bind gaction="app.object-release-mask" />
+  <bind gaction="app.object-set-mask" />
+  <bind gaction="app.path-flatten" />
+  <bind gaction="app.path-fracture" />
+  <bind gaction="app.path-split" />
+  <bind gaction="app.transform-grow-screen(-2.0)" />
+  <bind gaction="app.transform-grow-screen(2.0)" />
+  <bind gaction="app.transform-grow-step(-1.0)" />
+  <bind gaction="app.transform-grow-step(1.0)" />
+  <bind gaction="app.transform-reapply" />
+  <bind gaction="app.transform-remove" />
+  <bind gaction="app.transform-scale(0.5)" />
+  <bind gaction="app.transform-scale(2.0)" />
+  <bind gaction="win.help-url-keys" />
+  <bind gaction="win.help-url-manual" />
+  <bind gaction="win.select-invert-all" />
+  <bind gaction="win.tool-switch('Booleans')" />
+  <bind gaction="win.view-focus-toggle" />
+  <bind gaction="win.view-full-screen-focus" />
+
 <!-- ACTIONS -->
 
   <!-- Base -->
@@ -55,7 +94,7 @@ See "inkscape.xml" for information about file structure.
 
   <bind gaction="win.tool-switch('Pencil')"              keys="F6, p, P" />
   <bind gaction="win.tool-switch('Pen')"                 keys="&lt;shift&gt;F6, b, B" />
-  <bind gaction="win.tool-switch('Caligraphic')"         keys="&lt;primary&gt;F6, c, C" />
+  <bind gaction="win.tool-switch('Calligraphic')"        keys="&lt;primary&gt;F6, c, C" />
   <bind gaction="win.tool-switch('Text')"                keys="F8, t, T" />
 
   <bind gaction="win.tool-switch('Gradient')"            keys="&lt;primary&gt;F1, g, G" />
@@ -164,7 +203,7 @@ See "inkscape.xml" for information about file structure.
   <bind gaction="win.canvas-color-manage" />
 
   <!-- View - Other -->
-  <bind gaction="win.canvas-show-grid"                   keys="&lt;shift&gt;numbersign, numbersign" /> <!-- # -->
+  <bind gaction="doc.show-grids"                         keys="&lt;shift&gt;numbersign, numbersign" /> <!-- # -->
   <bind gaction="doc.show-all-guides"                    keys="&lt;shift&gt;bar,        bar" />        <!-- | -->
   <bind gaction="win.canvas-commands-bar" />
   <bind gaction="win.canvas-snap-controls-bar" />
@@ -184,7 +223,9 @@ See "inkscape.xml" for information about file structure.
   <bind gaction="win.layer-new"                          keys="&lt;primary&gt;&lt;shift&gt;N,         &lt;primary&gt;&lt;shift&gt;n" />
   <bind gaction="win.layer-rename" />
   <bind gaction="win.layer-hide-toggle" />
+  <bind gaction="win.layer-hide-toggle-others" />
   <bind gaction="win.layer-lock-toggle" />
+  <bind gaction="win.layer-lock-toggle-others" />
   <bind gaction="win.layer-previous"                     keys="&lt;primary&gt;Page_Up,                &lt;primary&gt;KP_Page_Up" />
   <bind gaction="win.layer-next"                         keys="&lt;primary&gt;Page_Down,              &lt;primary&gt;KP_Page_Down" />
   <bind gaction="win.selection-move-to-layer-above"      keys="&lt;shift&gt;Page_Up,                  &lt;shift&gt;KP_Page_Up" />
@@ -198,12 +239,8 @@ See "inkscape.xml" for information about file structure.
   <bind gaction="win.layer-delete" />
   <bind gaction="win.layer-hide-all" />
   <bind gaction="win.layer-unhide-all" />
-  <bind gaction="win.layer-hide-toggle" />
-  <bind gaction="win.layer-hide-toggle-others" />
   <bind gaction="win.layer-lock-all" />
   <bind gaction="win.layer-unlock-all" />
-  <bind gaction="win.layer-lock-toggle" />
-  <bind gaction="win.layer-lock-toggle-others" />
 
   <!-- Object -->
   <bind gaction="app.selection-group"                    keys="&lt;primary&gt;g, &lt;primary&gt;G, &lt;primary&gt;&lt;shift&gt;u, &lt;primary&gt;&lt;shift&gt;U" />
@@ -213,9 +250,7 @@ See "inkscape.xml" for information about file structure.
   <bind gaction="app.object-set-clip" />
   <bind gaction="app.object-set-inverse-clip" />
   <bind gaction="app.object-release-clip" />
-  <bind gaction="app.object-set-clip-mask" />
   <bind gaction="app.object-set-inverse-mask" />
-  <bind gaction="app.object-release-clip-mask" />
   
   <bind gaction="app.object-to-pattern"                  keys="&lt;alt&gt;i, &lt;alt&gt;I" />
   <bind gaction="app.pattern-to-object"                  keys="&lt;alt&gt;&lt;shift&gt;i, &lt;alt&gt;&lt;shift&gt;I" />

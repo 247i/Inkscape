@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # coding=utf-8
 #
 # Copyright (C) 2005,2007 Aaron Spike, aaron@ekips.org
@@ -110,6 +110,10 @@ class DxfTwelve(inkex.OutputExtension):
         self.dxf_point(layer, x, y)
 
     def save(self, stream):
+        # This extension only supports paths. Everything is converted to path.
+        if len(self.svg.xpath("//svg:use|//svg:flowRoot|//svg:text")) > 0:
+            self.preprocess(["flowRoot", "text"])
+
         self._stream = stream
         self.dxf_insert_code("999", '"DXF R12 Output" (www.mydxf.blogspot.com)')
         self.dxf_add(r12_header)
@@ -118,8 +122,20 @@ class DxfTwelve(inkex.OutputExtension):
         scale = self.svg.scale / inkex.units.convert_unit("1mm", "px")
         h = self.svg.viewbox_height
 
-        path = "//svg:path"
-        for node in self.svg.xpath(path):
+        for node in self.svg.iterdescendants():
+            if not isinstance(
+                node,
+                (
+                    inkex.PathElement,
+                    inkex.Rectangle,
+                    inkex.Circle,
+                    inkex.Polygon,
+                    inkex.Polyline,
+                    inkex.Ellipse,
+                    inkex.Line,
+                ),
+            ):
+                continue
             visible = True
             for parent in node.iterancestors():
                 if isinstance(parent, (inkex.ClipPath, inkex.Mask)):
@@ -140,8 +156,7 @@ class DxfTwelve(inkex.OutputExtension):
                 inkex.Transform([[scale, 0, 0], [0, -scale, h * scale]])
                 @ node.transform
             )
-            node.apply_transform()
-            path = node.path.to_superpath()
+            path = node.path.transform(node.transform).to_superpath()
 
             if re.search("drill$", layer, re.I) is None:
                 # if layer == 'Brackets Drill':

@@ -17,7 +17,7 @@
 #
 """
 Gtk Application base classes, providing a way to load a GtkBuilder
-with a specific glade/ui file conaining windows, and building
+with a specific glade/ui file containing windows, and building
 a usable pythonic interface from them.
 """
 import os
@@ -91,7 +91,7 @@ class GtkApp:
             self.run()
 
     def run(self):
-        """Run the gtk mainloop with ctrl+C and keyboard interupt additions"""
+        """Run the gtk mainloop with ctrl+C and keyboard interrupt additions"""
         if not Gtk.init_check()[0]:  # pragma: no cover
             raise RuntimeError(
                 "Gtk failed to start." " Make sure $DISPLAY variable is set.\n"
@@ -101,7 +101,7 @@ class GtkApp:
             signal.signal(signal.SIGINT, signal.SIG_DFL)
             Gtk.main()
         except KeyboardInterrupt:  # pragma: no cover
-            logging.info("User Interputed")
+            logging.info("User Interrupted")
         logging.debug("Exiting %s", self.app_name)
 
     def get_ui_file(self, window):
@@ -116,7 +116,7 @@ class GtkApp:
         raise FileNotFoundError(f"Gtk Builder file is missing: {paths}")
 
     def init_gui(self):
-        """Initalise all of our windows and load their signals"""
+        """Initialise all of our windows and load their signals"""
         if self.windows:
             for cls in self.windows:
                 window = cls
@@ -143,7 +143,7 @@ class GtkApp:
 
     def proto_window(self, name):
         """
-        Loads a glade window as a window without initialisation, used for
+        Loads a Glade window as a window without initialisation, used for
         extracting widgets from windows without loading them as windows.
         """
         logging.debug("Loading '%s' from %s", name, self._initial)

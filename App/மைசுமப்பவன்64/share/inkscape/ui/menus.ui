@@ -81,6 +81,12 @@
         <attribute name='action'>win.document-cleanup</attribute>
         <attribute name='icon'>document-cleanup</attribute>
       </item>
+      <item>
+        <attribute name='label' translatable="yes">Document Resources</attribute>
+        <attribute name='action'>win.dialog-open</attribute>
+        <attribute name='target'>DocumentResources</attribute>
+        <attribute name='icon'>document-resources</attribute>
+      </item>
     </section>
     <section>
       <item>
@@ -110,12 +116,12 @@
     <section>
       <item>
         <attribute name='label' translatable="yes">_Undo</attribute>
-        <attribute name='action'>app.undo</attribute>
+        <attribute name='action'>doc.undo</attribute>
         <attribute name='icon'>edit-undo</attribute>
       </item>
       <item>
         <attribute name='label' translatable="yes">_Redo</attribute>
-        <attribute name='action'>app.redo</attribute>
+        <attribute name='action'>doc.redo</attribute>
         <attribute name='icon'>edit-redo</attribute>
       </item>
       <item>
@@ -141,47 +147,55 @@
         <attribute name='action'>win.paste</attribute>
         <attribute name='icon'>edit-paste</attribute>
       </item>
-      <item>
-        <attribute name='label' translatable="yes">Paste _In Place</attribute>
-        <attribute name='action'>win.paste-in-place</attribute>
-        <attribute name='icon'>edit-paste-in-place</attribute>
-      </item>
-      <item>
-        <attribute name='label' translatable="yes">Paste _Style</attribute>
-        <attribute name='action'>app.paste-style</attribute>
-        <attribute name='icon'>edit-paste-style</attribute>
-      </item>
     </section>
     <submenu id="paste-size">
-      <attribute name='label' translatable="yes">Paste Si_ze</attribute>
+      <attribute name='label' translatable="yes">P_aste...</attribute>
       <section>
         <item>
-          <attribute name='label' translatable="yes">Paste Si_ze</attribute>
+          <attribute name='label' translatable="yes">_In Place</attribute>
+          <attribute name='action'>win.paste-in-place</attribute>
+          <attribute name='icon'>edit-paste-in-place</attribute>
+        </item>
+        <item>
+          <attribute name='label' translatable="yes">_On Page</attribute>
+          <attribute name='action'>win.paste-on-page</attribute>
+        </item>
+        <item>
+          <attribute name='label' translatable="yes">_Style</attribute>
+          <attribute name='action'>app.paste-style</attribute>
+          <attribute name='icon'>edit-paste-style</attribute>
+        </item>
+      </section>
+      <section>
+        <item>
+          <attribute name='label' translatable="yes">Si_ze</attribute>
           <attribute name='action'>app.paste-size</attribute>
           <attribute name='icon'>edit-paste-size</attribute>
         </item>
         <item>
-          <attribute name='label' translatable="yes">Paste _Width</attribute>
+          <attribute name='label' translatable="yes">_Width</attribute>
           <attribute name='action'>app.paste-width</attribute>
           <attribute name='icon'>edit-paste-width</attribute>
         </item>
         <item>
-          <attribute name='label' translatable="yes">Paste _Height</attribute>
+          <attribute name='label' translatable="yes">_Height</attribute>
           <attribute name='action'>app.paste-height</attribute>
           <attribute name='icon'>edit-paste-height</attribute>
         </item>
+      </section>
+      <section>
         <item>
-          <attribute name='label' translatable="yes">Paste Size Separately</attribute>
+          <attribute name='label' translatable="yes">Size Separately</attribute>
           <attribute name='action'>app.paste-size-separately</attribute>
           <attribute name='icon'>edit-paste-size-separately</attribute>
         </item>
         <item>
-          <attribute name='label' translatable="yes">Paste Width Separately</attribute>
+          <attribute name='label' translatable="yes">Width Separately</attribute>
           <attribute name='action'>app.paste-width-separately</attribute>
           <attribute name='icon'>edit-paste-width-separately</attribute>
         </item>
         <item>
-          <attribute name='label' translatable="yes">Paste Height Separately</attribute>
+          <attribute name='label' translatable="yes">Height Separately</attribute>
           <attribute name='action'>app.paste-height-separately</attribute>
           <attribute name='icon'>edit-paste-height-separately</attribute>
         </item>
@@ -315,7 +329,7 @@
     </section>
     <section>
       <item>
-        <attribute name='label' translatable="yes">Create _Guides Around the Page</attribute>
+        <attribute name='label' translatable="yes">Create _Guides Around the Current Page</attribute>
         <attribute name='action'>doc.create-guides-around-page</attribute>
       </item>
       <item>
@@ -475,20 +489,22 @@
           <attribute name='target' type='i'>1</attribute>
         </item>
         <item>
-          <attribute name='label' translatable="yes">No Filters</attribute>
-          <attribute name='action'>win.canvas-display-mode</attribute>
-          <attribute name='target' type='i'>2</attribute>
-        </item>
-        <item>
-          <attribute name='label' translatable="yes">Visible Hairlines</attribute>
-          <attribute name='action'>win.canvas-display-mode</attribute>
-          <attribute name='target' type='i'>3</attribute>
-        </item>
-        <item>
           <attribute name='label' translatable="yes">Outline Overlay</attribute>
           <attribute name='action'>win.canvas-display-mode</attribute>
           <attribute name='target' type='i'>4</attribute>
         </item>
+        <item>
+          <attribute name='label' translatable="yes">Enhance Thin Lines</attribute>
+          <attribute name='action'>win.canvas-display-mode</attribute>
+          <attribute name='target' type='i'>3</attribute>
+        </item>
+        <item>
+          <attribute name='label' translatable="yes">No Filters</attribute>
+          <attribute name='action'>win.canvas-display-mode</attribute>
+          <attribute name='target' type='i'>2</attribute>
+        </item>
+      </section>
+      <section>
         <item>
           <attribute name='label' translatable="yes">Cycle</attribute>
           <attribute name='action'>win.canvas-display-mode-cycle</attribute>
@@ -531,7 +547,7 @@
     </section>
     <item>
       <attribute name='label' translatable="yes">Page _Grid</attribute>
-      <attribute name='action'>win.canvas-show-grid</attribute>
+      <attribute name='action'>doc.show-grids</attribute>
     </item>
     <item>
       <attribute name='label' translatable="yes">G_uides</attribute>
@@ -1014,6 +1030,18 @@
         <attribute name='label' translatable="yes">Split Pat_h</attribute>
         <attribute name='action'>app.path-split</attribute>
         <attribute name='icon'>path-split</attribute>
+        <attribute name='use-icon'>true</attribute>
+      </item>
+      <item>
+        <attribute name='label' translatable="yes">_Fracture</attribute>
+        <attribute name='action'>app.path-fracture</attribute>
+        <attribute name='icon'>path-fracture</attribute>
+        <attribute name='use-icon'>true</attribute>
+      </item>
+      <item>
+        <attribute name='label' translatable="yes">_Flatten</attribute>
+        <attribute name='action'>app.path-flatten</attribute>
+        <attribute name='icon'>path-flatten</attribute>
         <attribute name='use-icon'>true</attribute>
       </item>
     </section>

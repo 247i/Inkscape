@@ -61,8 +61,8 @@
     * widget->get_style_context()->add_class("mycoolclass");
     * we define a bunch of helper CSS styles
     * Each Inkscape desktop has some classes in top level window
-    * called "dark|bright" (syncked with dark or brighrt themes) and "symbolic|regular" (defined by the user in themes preferences) 
-    * so you can style using this clases 
+    * called "dark|bright" (syncked with dark or brighrt themes) and "symbolic|regular" (defined by the user in themes preferences)
+    * so you can style using this clases
     * by this way you can always know if the UI is in dark mode or using symbolic icons
     * Also added some helper clases:
     * ".inverted" invert colors fon widhet and childs
@@ -123,20 +123,25 @@
     border-width:0;
 }
 
-/* blinking animation for dialogs */
+/* blinking animation for dialogs reopen*/
 @keyframes blink_border {
-  from { border-color: @theme_selected_fg_color; }
-  to   { border-color: @theme_selected_bg_color; }
+  0% { border-color: @theme_selected_fg_color;}
+  90%   { border-color: @theme_selected_bg_color; }
+  100%   { border-color: @theme_selected_fg_color;  }
 }
 @keyframes blink_background {
-  from { background-color: @theme_bg_color; }
-  to   { background-color: @theme_selected_bg_color; }
+  0% { background-color: @theme_bg_color;  }
+  90%   { background-color: @theme_selected_bg_color; }
+  100%   { background-color: @theme_bg_color;  }
 }
+
+
 notebook.blink {
-  animation: blink_border 333ms ease-in-out infinite;
+  animation: 0.5s blink_border 0.1s ease 1;
 }
+
 notebook.blink > header > tabs > tab:checked {
-  animation: blink_background 333ms ease-in-out infinite;
+  animation: 0.5s blink_background 0.1s ease 1;
 }
 
 
@@ -163,12 +168,17 @@ notebook.blink > header > tabs > tab:checked {
     color: inherit;
 }
 
-/* attribute dialog popup size */
+
+/* atribute dialog popup size */
 .attrpop textview {
-    font-size: 13px;
+    font-size: 1em;
 }
 
-/* 
+.mono-font {
+    /* note: monospaced font is set by ThemeContext::adjust_global_font_scale() */
+}
+
+/*
 *to get system default colors
 * with Gdk::RGBA success =_symbolic_error_color.get_stseparatole_context()->get_color();
 * _symbolic_error_color has one of this classes applied
@@ -211,21 +221,18 @@ iconview *:hover {
 #start-screen-window .combo {
     padding:15px 20px;
 }
-#start-screen-window notebook > *:nth-child(2) label{
-    font-size:12px;
-}
 
 .inksmall {
-    font-size: 11px;
+    font-size: 0.8em;
 }
 
 .menu-category {
-    font-size: small;
+    font-size: smaller;
     font-weight: bold;
 }
 
 .small-heading {
-    font-size: small;
+    font-size: smaller;
     font-weight: bold;
     opacity: 0.5;
 }
@@ -244,127 +251,8 @@ iconview *:hover {
     border-bottom: 1px solid @bg_color5;
 }
 
-/* LPE Dialog add */
-#LPESelectorFlowBox GtkFlowBoxChild,
-#LPESelectorFlowBox flowboxchild {
-    border-width: 0px;
-    border-radius: 6px;
-    margin: 10px;
-    padding: 10px;
-    margin-bottom: 0px;
-    padding-bottom: 10px;
-    outline: none;
-}
 
-#LPESelectorFlowBox flowboxchild * {
-    color: @theme_fg_color;
-}
-
-#LPESelectorFlowBox flowboxchild image,
-#LPESelectorFlowBox flowboxchild label {
-    background-color: transparent;
-    background-image: image(transparent);
-}
-
-#LPESelectorFlowBox flowboxchild:selected image,
-#LPESelectorFlowBox flowboxchild:selected label {
-    color: @theme_selected_fg_color;
-}
-
-#LPESelectorFlowBox *:selected #LPESelectorEffectFavTop,
-#LPESelectorFlowBox *:selected:focus #LPESelectorEffectFavTop {
-    opacity: 0;
-}
-
-#LPESelectorFlowBox .lpename {
-    font-size: 16px;
-    margin-bottom: 5px;
-}
-
-#LPESelectorFlowBox .lpeinfo {
-    font-size: 16px;
-    padding: 20px;
-}
-
-#LPESelectorFlowBox .lpedisabled {
-    opacity: 0.3;
-}
-
-#LPESelectorEffectInfoPop {
-    padding: 15px;
-}
-
-#LPESelectorEffectInfoName {
-    font-weight: bold;
-    padding: 15px;
-}
-
-#LPEDialogSelector .lpeinfo {
-    padding: 8px;
-    background-color: @theme_bg_color;
-    color: @theme_selected_fg_color;
-    border-color: @theme_selected_bg_color;
-    border-style: solid;
-    margin: 0px 0px 10px 0px;
-    border-radius: 0px;
-    border-width: 0 0 1px 0;
-    padding:5px;
-}
-
-#LPESelectorFlowBox image{
-    background-color:@theme_bg_color;
-    border-color:transparent;
-}
-
-#LPEExperimental image {
-    color: transparent;
-}
-
-#LPEDialogSelector .searchbar entry image,
-#LPEDialogSelector .searchbar label,
-#LPEDialogSelector .searchbar #LPESelectorEffectFavShowImage {
-    color: @theme_fg_color;
-}
-
-#LPEDialogSelector.LPEPackMore flowboxchild {
-margin:5px 1px 0px;
-padding:3px 3px 10px 3px;
-}
-
-#LPEDialogSelector.LPEPackMore flowboxchild label {
-font-size:14px;
-}
-
-#LPEDialogSelector.LPEPackMore #LPESelectorEffectInfoPop label{
-font-size:13px;
-}
-
-#LPEDialogSelector.LPEList .lpename {
-    margin-bottom: 1px;
-    font-weight:bold;
-}
-
-#LPEDialogSelector.LPEList flowboxchild {
-    padding:3px 1px 3px 10px;
-    margin:1px 0px 1px;
-    border-radius:0;
-    border-style:dotted;
-    border-color:@theme_fg_color;
-    border-width: 0 0 1px 0;
-}
-
-#LPEDialogSelector.LPEList flowboxchild:selected {
-    border-style:none;
-    margin:-3px 0px 0px;
-    padding:4px 1px 4px 10px;
-}
-
-#LPEDialogSelector.LPEList #LPESelectorFlowBox *:selected #LPESelectorEffectFavTop,
-#LPEDialogSelector.LPEList #LPESelectorFlowBox *:selected:focus #LPESelectorEffectFavTop {
-    opacity: 1;
-}
-
-/* Selector and XML dialog */
+/* Selector dialog */
 #SelectorsAndStyleDialog button {
     padding: 4px;
     min-height: 16px;
@@ -372,7 +260,6 @@ font-size:13px;
     padding: 2px;
 }
 
-#XMLAndAttributesDialog .toggle,
 #SelectorsAndStyleDialog .toggle {
     min-width: 18px;
     padding-left: 6px;
@@ -381,14 +268,12 @@ font-size:13px;
     padding-bottom: 0;
 }
 
-#XMLAndAttributesDialog .radio.image-button,
 #SelectorsAndStyleDialog .radio.image-button {
     margin: 0;
     padding: 0px;
     border-radius: 2px 0 0 2px;
 }
 
-#XMLAndAttributesDialog .radio.image-button:last-child,
 #SelectorsAndStyleDialog .radio.image-button:last-child {
     border-radius: 0 2px 2px 0;
     border-left-width: 0;
@@ -428,7 +313,31 @@ font-size:13px;
 #InkRuler {
     /* make size relative */
     font-size: smaller;
-    opacity: 0.6;
+    color: alpha(@theme_fg_color, 0.6);
+    min-height: 2em;
+}
+
+.bright #InkRuler {
+    /* increase contrast between background and page area */
+    background-color: shade(@theme_bg_color, 0.94);
+}
+
+.bright #InkRuler.shadow {
+    border-color: rgba(0,0,0,0.3);
+}
+.dark #InkRuler.shadow {
+    border-color: rgba(0,0,0,0.5);
+}
+
+.dark #InkRuler.page {
+    background-color: #1d1e1e;
+}
+.bright #InkRuler.page {
+    background-color: #fff;
+}
+#InkRuler.selection {
+    border-color: rgba(22, 169, 249, 0.8);
+    background-color: transparent;
 }
 
 /* The actual canvas (Inkscape's drawing area). */
@@ -440,10 +349,17 @@ SPCanvas {
     -GtkComboBox-appears-as-list: true;
 }
 
-#LockGuides,
-#StickyZoom,
-#CMS_Adjust {
+#QuickActions,
+#StickyZoom ,#StickyZoom *,
+#LockGuides, #LockGuides *,
+#PreviewMode,#PreviewMode  *,
+#CMS_Adjust, #CMS_Adjust * {
     padding: 0;
+    min-height:3px;
+    font-size:16px;
+}
+#QuickActions {
+    padding: 2px 0;
 }
 
 /* Keep palette scrollbar from generating warnings. */
@@ -465,9 +381,7 @@ SPCanvas {
 
 /* InkSpinScale */
 #InkSpinScale {
-    background: @theme_bg_color;
     padding: 0px;
-    margin: 2px 4px;
 }
 
 #InkSpinScale trough,
@@ -494,8 +408,11 @@ SPCanvas {
 }
 
 #InkSpinScale trough {
-    min-height: 26px;
-    padding: 2px; /* some themes have humongous scale margins; rein in */
+    min-height: 25px;
+    padding: 0; /* remove padding to make inkspinscale the same height as spinbutton */
+}
+#InkSpinScale trough highlight {
+    margin: 0;
 }
 
 #InkSpinScale box.active {
@@ -511,12 +428,38 @@ SPCanvas {
 }
 
 #InkSpinScale spinbutton entry {
-    min-height: 30px;
+    min-height: 25px;
     outline-style: none;
 }
 
 #UnicodeIconView {
-    font-size: 16px;
+    font-size: 1.2em;
+}
+
+#ObjectsTreeView.view:focus {
+    outline-style: double;
+    outline-width: 5px;
+    outline-color: alpha (@theme_fg_color, 0.1);
+    -gtk-outline-radius: 50%;
+}
+#ObjectsTreeView.view:hover {
+    border-color: alpha (@theme_fg_color, 0.1);
+    border-style: solid;
+    border-width: 1px 0px;
+}
+#ObjectsTreeView {
+    -GtkTreeView-expander-size: 12;
+    -GtkTreeView-horizontal-separator: 2;
+    -GtkTreeView-vertical-separator: 2;
+}
+#Objects .search {
+  padding: 2px 4px;
+  min-height: 16px;
+  font-size: smaller;
+}
+
+#SimpleFilterModifier #InkSpinScale {
+    padding: 2px 4px;
 }
 
 /* GtkTreeView: clarify drop locations (especially important for XML editor) */
@@ -586,6 +529,11 @@ button.link:hover image {
     padding: 5px 3px;
 }
 
+.small-button {
+    /* small button in-line with spinbuttons, made small not to inflate height of spinbutton */
+    padding: 1px 3px;
+}
+
 .link-edit-button {
     padding: 5px 3px;
     min-width: 0.5em;
@@ -645,9 +593,14 @@ stackswitcher button {
     padding: 4px;
 }
 
+/* slider with tighter margins */
+scale.tight-slider {
+    padding: 8px 4px 7px 4px;
+}
+
 /* add .small-marks class to Gtk::Scale to have smaller font used, since markup didn't work there */
 scale.small-marks.marks-after {
-    font-size: small;
+    font-size: smaller;
 }
 
 /* Square toolbar buttons: request square buttons for all toolbars. */
@@ -668,13 +621,30 @@ button.square-button image {
     border-left: 3px solid white;
 }
 
+#DialogNotebook #Swatches {
+    padding-left: 10px;
+    padding-top: 10px;
+}
+
+#DialogNotebook #Swatches box {
+    margin-bottom: 5px
+}
+
+#DialogNotebook #Swatches box label {
+    padding-left: 7px;
+}
+
 #StyleSwatch label {
-    font-size: small;
+    font-size: smaller;
 }
 
 #DocumentProperties #NotebookPage {
     margin-left: 4px;
     margin-right: 4px;
+}
+
+.dialog-heading {
+    font-weight: bold;
 }
 
 /* heading label in dialogs */
@@ -694,7 +664,7 @@ button.square-button image {
 }
 
 .small-font {
-    font-size: small;
+    font-size: smaller;
 }
 
 .toolbar-separator {
@@ -704,6 +674,11 @@ button.square-button image {
 /* for dialogs with "Apply" button (or equivalent) - larger hit target */
 .wide-apply-button {
     min-width: 150px;
+}
+
+button.menu-btn-tight {
+    padding-left: 0;
+    padding-right: 0;
 }
 
 #DockedDialogNotebook {
@@ -734,4 +709,323 @@ button.square-button image {
 }
 #ExportDialog #export_preview_batch {
     border: 1px solid;
+}
+
+.key {
+    border-radius: 3px;
+    background-color: alpha(@theme_fg_color, 0.15);
+    padding: 2px;
+}
+
+combobox.flat-combobox button {
+    border: none;
+    background-color: transparent;
+    background-image: image(transparent);
+}
+
+.filter-effects, .effects-params {
+    min-height: 50px;
+}
+
+.dark .symbolsoverlay iconview:not(:selected) {
+    background-color: #f0f0f0; /* bright background color for typically black symbols */
+    /* background-color: @theme_fg_color; - this doesn't work for some themes (like MonoThemeDark) */
+    color:@theme_bg_color; /* symbol text labels */
+}
+
+.dark .symbolsoverlay {
+    color: @theme_bg_color; /* this is for overlay widget's children */
+}
+
+/* LPE Dialog add */
+#LPEScrolled {
+    border:none;
+}
+
+#LPESelectorFlowBox GtkFlowBoxChild,
+#LPESelectorFlowBox flowboxchild {
+    border-width: 0px;
+    border-radius: 6px;
+    margin: 10px;
+    padding: 10px;
+    margin-bottom: 0px;
+    padding-bottom: 10px;
+    outline: none;
+}
+
+#LPESelectorFlowBox flowboxchild * {
+    color: @theme_fg_color;
+}
+
+#LPESelectorFlowBox flowboxchild image,
+#LPESelectorFlowBox flowboxchild label {
+    background-color: transparent;
+    background-image: image(transparent);
+}
+
+#LPESelectorFlowBox flowboxchild:selected image,
+#LPESelectorFlowBox flowboxchild:selected label {
+    color: @theme_selected_fg_color;
+}
+
+#LPESelectorFlowBox *:selected #LPESelectorEffectFavTop,
+#LPESelectorFlowBox *:selected:focus #LPESelectorEffectFavTop {
+    opacity: 0;
+}
+
+#LPESelectorFlowBox .lpename {
+    margin-bottom: 5px;
+}
+
+#LPESelectorFlowBox .lpeinfo {
+    padding: 20px;
+}
+
+#LPESelectorFlowBox .lpedisabled {
+    opacity: 0.3;
+}
+
+#LPESelectorEffectInfoPop {
+    padding: 15px;
+}
+
+#LPESelectorEffectInfoName {
+    font-weight: bold;
+    padding: 15px;
+}
+
+#LPEDialogSelector .lpeinfo {
+    padding: 8px;
+    background-color: @theme_bg_color;
+    color: @theme_selected_fg_color;
+    border-color: @theme_selected_bg_color;
+    border-style: solid;
+    margin: 0px 0px 10px 0px;
+    border-radius: 0px;
+    border-width: 0 0 1px 0;
+    padding:5px;
+}
+
+#LPESelectorFlowBox image{
+    background-color:@theme_bg_color;
+    border-color:transparent;
+}
+
+#LPEExperimental image {
+    color: transparent;
+}
+
+#LPEDialogSelector .searchbar entry image,
+#LPEDialogSelector .searchbar label,
+#LPEDialogSelector .searchbar #LPESelectorEffectFavShowImage {
+    color: @theme_fg_color;
+}
+
+#LPEDialogSelector.LPEPackMore flowboxchild {
+margin:5px 1px 0px;
+padding:3px 3px 10px 3px;
+}
+
+
+#LPEDialogSelector.LPEList .lpename {
+    margin-bottom: 1px;
+    font-weight:bold;
+}
+
+#LPEDialogSelector.LPEList flowboxchild {
+    padding:3px 1px 3px 10px;
+    margin:1px 0px 1px;
+    border-radius:0;
+    border-style:dotted;
+    border-color:@theme_fg_color;
+    border-width: 0 0 1px 0;
+}
+
+#LPEDialogSelector.LPEList flowboxchild:selected {
+    border-style:none;
+    margin:-3px 0px 0px;
+    padding:4px 1px 4px 10px;
+}
+
+#LPEDialogSelector.LPEList #LPESelectorFlowBox *:selected #LPESelectorEffectFavTop,
+#LPEDialogSelector.LPEList #LPESelectorFlowBox *:selected:focus #LPESelectorEffectFavTop {
+    opacity: 1;
+}
+
+#LivePathEffect {
+    padding-top:5px;
+}
+
+#LivePathEffect expander:focus, #LivePathEffect expander > label:focus{
+    outline-width:0;
+}
+
+#LivePathEffect list{
+    margin:5px 5px 0 5px;
+}
+
+#LivePathEffect list row{
+    margin:0;
+    padding:0;
+    border-width:0;
+    border-style:none;
+    outline-width:0;
+}
+#LivePathEffect list row > box{
+    margin:0;
+    padding:1px;
+    border-width:1px;
+    border-radius:4px;
+    margin-bottom:5px;
+    border-style:solid;
+    border-color:@borders;
+    outline-width:0;
+}
+
+#LivePathEffect list row:last-child  > box{
+    margin-bottom:0px;
+}
+
+#LPEEffectItem{
+    border-radius:3px;
+    padding:2px;
+    outline:0;
+}
+
+#LPEEffectItem .minbutton {
+    padding:0;
+    margin:0;
+    outline:0;
+    border-color:@borders;
+}
+
+#LPEEffectItem expander title label {
+    min-height:26px;
+}
+
+#LPEEffectItem expander, 
+#LPEEffectItem expander *,
+#LPEEffectItem expander:focus, 
+#LPEEffectItem expander *:focus {
+    outline:0;
+}
+
+.LPEDrag,.LPEDrag:active,.LPEDrag:focus,.LPEDrag:hover {
+    margin:0;
+    padding:0;
+    border-style:none;
+    opacity:0.7;
+    background-color:transparent;
+    background-image:none;
+    outline:0;
+}
+
+.LPEDrag:hover {
+    opacity:1;
+    background-color:transparent;
+    background-image:none;
+}
+
+#LivePathEffect list#LPEParentBox row{
+    border-style:none;
+    outline:0;
+}
+
+#LivePathEffect list#LPEParentBox row > button {
+    padding:2px;
+    margin:0;
+}
+
+#LPEContainer:drop(active) {
+    box-shadow:none;
+}
+
+#LPECurrentItem *{
+    color:@theme_fg_color;
+}
+
+#LPEContainer #LPEListBox{
+    border-style: solid none solid none;
+    border-color: @theme_base_color;
+    border-width:0;
+    padding:0;
+}
+#LPEListBox row:drop(active){
+    box-shadow:none;
+}
+#LPEContainer:drop(active).before row:first-child > box,
+#LPEListBox row:drop(active).before > box{
+    border-width:6px 1px 1px 1px;
+    border-color: @theme_selected_bg_color @borders @borders @borders;
+    box-shadow:none;
+    border-radius:6px 6px 0 0;
+}
+
+#LPEContainer:drop(active).after row:last-child > box,
+#LPEListBox row:drop(active).after > box{
+    border-width:1px 1px 6px 1px;
+    border-color: @borders @borders @theme_selected_bg_color @borders;
+    border-radius:0 0 6px 6px;
+    box-shadow:none;
+}
+
+#LPEEffectItem expander title label {
+    min-height:34px;
+}
+
+#LPEMenu menuitem:not(.menu-category):disabled {
+    color:alpha(@theme_text_color,0.4);
+}
+
+#LPEListBox row > *:disabled * {
+    color:@theme_text_color;
+}
+
+
+#LivePathEffect list row,
+#LPEListBox row.activatable:hover {
+    background-color: transparent;
+}
+
+#LivePathEffect list row .drag-icon,
+#LPEListBox row.activatable .drag-icon:hover {
+    background-color: @theme_base_color;
+    border-width:1px;
+    border-radius:0;
+    margin:0;
+    padding:5px;
+    border-style:solid;
+    border-color:@borders;
+    outline-width:0;
+}
+
+#LivePathEffect list row .drag-icon * {
+    outline:0;
+}
+
+#LPEActionButtons #eventbutton:nth-child(1) button{
+    border-radius:3px 0 0 3px;
+    border-width:1px 0 1px 1px;
+}
+
+#LPEActionButtons #eventbutton:nth-child(2) button{
+    border-radius:0;
+    border-width:1px 0 1px 1px;
+}
+#LPECurrentItem * {
+    border-width:0;
+    border-style:none;
+}
+#LPECurrentItem {
+    margin-top:0;
+}
+#LPECurrentItem image{
+    margin-right:6px;
+}
+#LPECurrentItem {
+    margin-top:0;
+}
+#LPEParentBox{
+    margin:10px 4px;
+    padding:0;
 }

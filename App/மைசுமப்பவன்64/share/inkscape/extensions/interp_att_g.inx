@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <inkscape-extension xmlns="http://www.inkscape.org/namespace/inkscape/extension">
-    <name>Interpolate Attribute in a group</name>
+    <name>Interpolate Attribute in a Group</name>
     <id>org.inkscape.filter.interp_att_g</id>
     <param name="tab" type="notebook">
         <page name="Options" gui-text="Options">
@@ -48,7 +48,7 @@
     <effect>
         <object-type>all</object-type>
         <effects-menu>
-            <submenu name="Modify Path"/>
+            <submenu name="Styles"/>
         </effects-menu>
     </effect>
     <script>

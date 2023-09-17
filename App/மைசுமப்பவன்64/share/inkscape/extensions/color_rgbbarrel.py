@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """Rotate the colors in the selected elements"""
 
 import inkex

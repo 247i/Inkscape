@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # coding=utf-8
 #
 # Copyright (C) 2006 Jean-Francois Barraud, barraud@math.univ-lille1.fr

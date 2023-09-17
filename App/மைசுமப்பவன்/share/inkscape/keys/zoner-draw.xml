@@ -1,5 +1,8 @@
 <?xml version="1.0"?>
-<keys name="Zoner Draw">
+<keys name="Zoner Draw" xmlns:xi="http://www.w3.org/2001/XInclude">
+
+<!-- inherit -->
+<xi:include href="inkscape.xml" />
 
 <!--  
 This file contains a profile of keyboard shortcuts for Inkscape 
@@ -103,7 +106,7 @@ win.canvas-zoom-page-width: Zoom to fit page width in window
 -->
 
   <bind gaction="doc.show-all-guides"                   keys="l, L" />
-  <bind gaction="win.canvas-show-grid"                  keys="g, G" />
+  <bind gaction="doc.show-grids"                        keys="g, G" />
   
 <!-- Not implemented in Zoner Draw? !!!!!!!!!!!!
 
@@ -126,8 +129,8 @@ win.canvas-zoom-page-width: Zoom to fit page width in window
 
 <!-- Blend is our Interpolate extension's advanced equivalent, so using it -->
 
-  <bind key="b" modifiers="Ctrl,Shift" action="org.ekips.filter.interp.noprefs" display="true"/>
-  <bind key="B" modifiers="Ctrl,Shift" action="org.ekips.filter.interp.noprefs" />
+  <bind gaction="org.ekips.filter.interp.noprefs" keys="&lt;ctrl&gt;&lt;shift&gt;b"/>
+  <bind gaction="org.ekips.filter.interp.noprefs" keys="&lt;ctrl&gt;&lt;shift&gt;B"/>
 
 <!-- 'Tools -> Rasterize...' is our Create Bitmap's advanced equivalent, so using it --> 
 

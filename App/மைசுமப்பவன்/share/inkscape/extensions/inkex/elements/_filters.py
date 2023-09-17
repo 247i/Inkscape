@@ -27,13 +27,16 @@ from typing import List, Tuple, TYPE_CHECKING, Optional
 
 from lxml import etree
 
-from ..transforms import Transform
 from ..utils import parse_percent
+
+from ..transforms import Transform
 
 from ..styles import Style
 
 from ._utils import addNS
-from ._base import BaseElement
+from ._base import BaseElement, ViewboxMixin
+from ._groups import GroupBase
+from ..units import convert_unit
 
 
 if TYPE_CHECKING:
@@ -145,7 +148,8 @@ class Stop(BaseElement):
     @property
     def offset(self) -> float:
         """The offset of the gradient stop"""
-        return self.get("offset")
+        value = self.get("offset", default="0")
+        return parse_percent(value)
 
     @offset.setter
     def offset(self, number):
@@ -158,11 +162,68 @@ class Stop(BaseElement):
         return StopInterpolator(self, other).interpolate(fraction)
 
 
-class Pattern(BaseElement):
+class Pattern(BaseElement, ViewboxMixin):
     """Pattern element which is used in the def to control repeating fills"""
 
     tag_name = "pattern"
     WRAPPED_ATTRS = BaseElement.WRAPPED_ATTRS + (("patternTransform", Transform),)
+
+    def get_fallback(self, prop, default="0"):
+        val = self.get(prop, None)
+        if val is None:
+            if isinstance(self.href, Pattern):
+                return getattr(self.href, prop)
+            val = default
+        return val
+
+    x = property(lambda self: self.get_fallback("x"))
+    y = property(lambda self: self.get_fallback("y"))
+    width = property(lambda self: self.get_fallback("width"))
+    height = property(lambda self: self.get_fallback("height"))
+    patternUnits = property(
+        lambda self: self.get_fallback("patternUnits", "objectBoundingBox")
+    )
+
+    def get_viewbox(self) -> Optional[List[float]]:
+        """Get the viewbox of the pattern, falling back to the href's viewbox
+
+        .. versionadded:: 1.3"""
+        vbox = self.get("viewBox", None)
+        if vbox is None:
+            if isinstance(self.href, Pattern):
+                return self.href.get_viewbox()
+        return self.parse_viewbox(vbox)
+
+    def get_effective_parent(self, depth=0, maxDepth=10):
+        """If a pattern has no children, but a href, it uses the children from the href.
+        Avoids infinite recursion.
+
+        .. versionadded:: 1.3"""
+        if (
+            len(self) == 0
+            and self.href is not None
+            and isinstance(self.href, Pattern)
+            and depth < maxDepth
+        ):
+            return self.href.get_effective_parent(depth + 1, maxDepth)
+        return self
+
+
+class Mask(GroupBase):
+    """A structural object that serves as opacity mask
+
+    .. versionadded:: 1.3"""
+
+    tag_name = "mask"
+
+    def get_fallback(self, prop, default="0"):
+        return self.to_dimensionless(self.get(prop, default))
+
+    x = property(lambda self: self.get_fallback("x"))
+    y = property(lambda self: self.get_fallback("y"))
+    width = property(lambda self: self.get_fallback("width"))
+    height = property(lambda self: self.get_fallback("height"))
+    maskUnits = property(lambda self: self.get("maskUnits", "objectBoundingBox"))
 
 
 class Gradient(BaseElement):
@@ -187,10 +248,7 @@ class Gradient(BaseElement):
             if isinstance(self.href, (LinearGradient, RadialGradient))
             else self
         )
-        return sorted(
-            [child for child in gradcolor if isinstance(child, Stop)],
-            key=lambda x: parse_percent(x.offset),
-        )
+        return [child for child in gradcolor if isinstance(child, Stop)]
 
     @property
     def stop_offsets(self):
@@ -237,6 +295,43 @@ class Gradient(BaseElement):
         orientation.remove_all(Stop)
         return stops, orientation
 
+    def get_percentage_parsed_unit(self, attribute, value, svg=None):
+        """Parses an attribute of a gradient, respecting percentage values of
+        "userSpaceOnUse" as percentages of document size. See
+        https://www.w3.org/TR/SVG2/pservers.html#LinearGradientAttributes for details
+
+        .. versionadded:: 1.3"""
+        if isinstance(value, (float, int)):
+            return value
+        value = value.strip()
+        if len(value) > 0 and value[-1] == "%":
+            try:
+                value = float(value.strip()[0:-1]) / 100.0
+                gradientunits = self.get("gradientUnits", "objectBoundingBox")
+                if gradientunits == "userSpaceOnUse":
+                    if svg is None:
+                        raise ValueError("Need root SVG to determine percentage value")
+                    bbox = svg.get_page_bbox()
+                    if attribute in ("cx", "fx", "x1", "x2"):
+                        return bbox.width * value
+                    if attribute in ("cy", "fy", "y1", "y2"):
+                        return bbox.height * value
+                    if attribute in ("r"):
+                        return bbox.diagonal_length * value
+                if gradientunits == "objectBoundingBox":
+                    return value
+            except ValueError:
+                value = None
+        return convert_unit(value, "px")
+
+    def _get_or_href(self, attr, default, svg=None):
+        val = self.get(attr)
+        if val is None:
+            if type(self.href) is type(self):
+                return getattr(self.href, attr)()
+            val = default
+        return self.get_percentage_parsed_unit(attr, val, svg)
+
 
 class LinearGradient(Gradient):
     """LinearGradient element"""
@@ -268,6 +363,30 @@ class LinearGradient(Gradient):
             x2=self.to_dimensionless(p2t[0]),
             y2=self.to_dimensionless(p2t[1]),
         )
+
+    def x1(self, svg=None):
+        """Get the x1 attribute
+
+        .. versionadded:: 1.3"""
+        return self._get_or_href("x1", "0%", svg)
+
+    def x2(self, svg=None):
+        """Get the x2 attribute
+
+        .. versionadded:: 1.3"""
+        return self._get_or_href("x2", "100%", svg)
+
+    def y1(self, svg=None):
+        """Get the y1 attribute
+
+        .. versionadded:: 1.3"""
+        return self._get_or_href("y1", "0%", svg)
+
+    def y2(self, svg=None):
+        """Get the y2 attribute
+
+        .. versionadded:: 1.3"""
+        return self._get_or_href("y2", "0%", svg)
 
 
 class RadialGradient(Gradient):
@@ -301,6 +420,36 @@ class RadialGradient(Gradient):
             fx=self.to_dimensionless(p2t[0]),
             fy=self.to_dimensionless(p2t[1]),
         )
+
+    def cx(self, svg=None):
+        """Get the effective cx (horizontal center) attribute in user units
+
+        .. versionadded:: 1.3"""
+        return self._get_or_href("cx", "50%", svg)
+
+    def cy(self, svg=None):
+        """Get the effective cy (vertical center) attribute in user units
+
+        .. versionadded:: 1.3"""
+        return self._get_or_href("cy", "50%", svg)
+
+    def fx(self, svg=None):
+        """Get the effective fx (horizontal focal point) attribute in user units
+
+        .. versionadded:: 1.3"""
+        return self._get_or_href("fx", self.cx(svg), svg)
+
+    def fy(self, svg=None):
+        """Get the effective fx (vertical focal point) attribute in user units
+
+        .. versionadded:: 1.3"""
+        return self._get_or_href("fy", self.cy(svg), svg)
+
+    def r(self, svg=None):
+        """Get the effective r (gradient radius) attribute in user units
+
+        .. versionadded:: 1.3"""
+        return self._get_or_href("r", "50%", svg)
 
 
 class PathEffect(BaseElement):

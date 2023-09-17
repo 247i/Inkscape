@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #
 # Copyright (C) 2007-2011 Rob Antonishen; rob.antonishen@gmail.com
 #

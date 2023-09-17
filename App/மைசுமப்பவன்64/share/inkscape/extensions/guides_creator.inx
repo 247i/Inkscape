@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <inkscape-extension xmlns="http://www.inkscape.org/namespace/inkscape/extension">
-  <name>Guides creator</name>
+  <name>Guides Creator</name>
   <id>org.inkscape.effect.guides_creator</id>
 
   <param name="pages" type="string" gui-text="Apply to pages" gui-description='On which pages the guides are created, e.g. "1, 2, 4-6, 8-". Default: All pages.'>1-</param>
@@ -86,7 +86,7 @@
   <effect>
     <object-type>all</object-type>
     <effects-menu>
-      <submenu name="Render"/>
+      <submenu name="Document"/>
     </effects-menu>
   </effect>
   <script>

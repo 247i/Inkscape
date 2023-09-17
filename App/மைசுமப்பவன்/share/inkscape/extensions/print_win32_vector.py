@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # coding=utf-8
 #
 # Copyright (C) 2012 Alvin Penner, penner@vaxxine.com
@@ -32,98 +32,177 @@ In order to ensure a pure vector output, use a linewidth < 1 printer pixel
 
 import sys
 import ctypes
+import struct
 
 import inkex
-from inkex import PathElement, Rectangle, Group, Use, Transform
+from inkex import (
+    PathElement,
+    ShapeElement,
+    Rectangle,
+    Group,
+    Use,
+    Transform,
+    Line,
+    Circle,
+    Ellipse,
+)
 from inkex.paths import Path
 
 if sys.platform.startswith("win"):
+    # The wintypes module raises a ValueError when imported on non-Windows systems
+    # for certain Python versions.
+    from ctypes import wintypes
+
     myspool = ctypes.WinDLL("winspool.drv")
     mygdi = ctypes.WinDLL("gdi32.dll")
-else:
-    myspool = None
-    mygdi = None
 
-LOGBRUSH = ctypes.c_long * 3
-DM_IN_PROMPT = 4  # call printer property sheet
-DM_OUT_BUFFER = 2  # write to DEVMODE structure
+    class LOGBRUSH(ctypes.Structure):
+        _fields_ = [
+            ("lbStyle", wintypes.UINT),
+            ("lbColor", wintypes.COLORREF),
+            ("lbHatch", wintypes.PULONG),
+        ]
+
+    DM_IN_PROMPT = 4  # call printer property sheet
+    DM_OUT_BUFFER = 2  # write to DEVMODE structure
+
+    LOGPIXELSX = 88
+    LOGPIXELSY = 90
+
+    class DOCINFO(ctypes.Structure):
+        _fields_ = [
+            ("cbSize", ctypes.c_int),
+            ("lpszDocName", wintypes.LPCSTR),
+            ("lpszOutput", wintypes.LPCSTR),
+            ("lpszDatatype", wintypes.LPCSTR),
+            ("fwType", wintypes.DWORD),
+        ]
+
+    StartDocA = mygdi.StartDocA
+    StartDocA.argtypes = [wintypes.HDC, ctypes.POINTER(DOCINFO)]
+    StartDocA.restype = ctypes.c_int
+
+    EndDoc = mygdi.EndDoc
+    EndDoc.argtypes = [wintypes.HDC]
+    EndDoc.restype = ctypes.c_int
+
+    CreateDCA = mygdi.CreateDCA
+    CreateDCA.argtypes = [
+        wintypes.LPCSTR,
+        wintypes.LPCSTR,
+        wintypes.LPCSTR,
+        wintypes.LPCVOID,
+    ]
+    CreateDCA.restype = wintypes.HDC
+
+    GetDefaultPrinterA = myspool.GetDefaultPrinterA
+    GetDefaultPrinterA.argtypes = [wintypes.LPSTR, wintypes.LPDWORD]
+    GetDefaultPrinterA.restype = wintypes.BOOL
+
+    OpenPrinterA = myspool.OpenPrinterA
+    OpenPrinterA.argtypes = [wintypes.LPSTR, wintypes.LPHANDLE, wintypes.LPCVOID]
+    OpenPrinterA.restype = wintypes.BOOL
+
+    ClosePrinter = myspool.ClosePrinter
+    ClosePrinter.argtypes = [wintypes.HANDLE]
+    ClosePrinter.restype = wintypes.BOOL
+
+    DocumentPropertiesA = myspool.DocumentPropertiesA
+    DocumentPropertiesA.argtypes = [
+        wintypes.HWND,
+        wintypes.HANDLE,
+        wintypes.LPSTR,
+        wintypes.LPVOID,
+        wintypes.LPVOID,
+        wintypes.DWORD,
+    ]
+    DocumentPropertiesA.restype = wintypes.LONG
+
+    SelectObject = mygdi.SelectObject
+    SelectObject.argtypes = [wintypes.HDC, wintypes.HGDIOBJ]
+    SelectObject.restype = wintypes.HGDIOBJ
+
+    MoveToEx = mygdi.MoveToEx
+    MoveToEx.argtypes = [wintypes.HDC, ctypes.c_int, ctypes.c_int, wintypes.LPCVOID]
+    MoveToEx.restype = wintypes.BOOL
+
+    CreateBrushIndirect = mygdi.CreateBrushIndirect
+    CreateBrushIndirect.argtypes = [ctypes.POINTER(LOGBRUSH)]
+    CreateBrushIndirect.restype = wintypes.HBRUSH
+
+    CreatePen = mygdi.CreatePen
+    CreatePen.argtypes = [ctypes.c_int, ctypes.c_int, wintypes.COLORREF]
+    CreatePen.restype = wintypes.HPEN
+
+    BeginPath = mygdi.BeginPath
+    BeginPath.argtypes = [wintypes.HDC]
+    BeginPath.restype = wintypes.BOOL
+
+    EndPath = mygdi.EndPath
+    EndPath.argtypes = [wintypes.HDC]
+    EndPath.restype = wintypes.BOOL
+
+    FillPath = mygdi.FillPath
+    FillPath.argtypes = [wintypes.HDC]
+    FillPath.restype = wintypes.BOOL
+
+    PolyBezierTo = mygdi.PolyBezierTo
+    PolyBezierTo.argtypes = [wintypes.HDC, wintypes.LPCVOID, wintypes.DWORD]
+
+    GetDeviceCaps = mygdi.GetDeviceCaps
+    GetDeviceCaps.argtypes = [wintypes.HDC, ctypes.c_int]
+    GetDeviceCaps.restype = ctypes.c_int
 
 
 class PrintWin32Vector(inkex.EffectExtension):
     def __init__(self):
         super(PrintWin32Vector, self).__init__()
-        self.visibleLayers = True  # print only visible layers
 
     def process_shape(self, node, mat):
         """Process shape"""
-        rgb = (0, 0, 0)  # stroke color
-        fillcolor = None  # fill color
-        stroke = 1  # pen width in printer pixels
+        pen_color = 0  # Stroke color
+        fill_color = None  # Fill color
+        pen_width = 1  # Pen width in printer pixels
+
+        # Win32 API expect colors in 0x00bbggrr format.
+        def to_bgr(color):
+            color = color.to_rgb()
+            return (color[2] << 16) + (color[1] << 8) + color[0]
+
+        if not isinstance(node, (PathElement, Rectangle, Line, Circle, Ellipse)):
+            return
+
         # Very NB : If the pen width is greater than 1 then the output will Not be a vector output !
         style = node.style
         if style:
-            if "stroke" in style:
-                if (
-                    style["stroke"]
-                    and style["stroke"] != "none"
-                    and style["stroke"][0:3] != "url"
-                ):
-                    rgb = inkex.Color(style["stroke"]).to_rgb()
+            attr = style("stroke")
+            if attr is not None and isinstance(attr, inkex.Color):
+                pen_color = to_bgr(attr)
+            attr = style("fill")
+            if attr is not None and isinstance(attr, inkex.Color):
+                fill_color = to_bgr(attr)
             if "stroke-width" in style:
-                stroke = self.svg.unittouu(style["stroke-width"]) / self.svg.unittouu(
-                    "1px"
-                )
-                stroke = int(stroke * self.scale)
-            if "fill" in style:
-                if (
-                    style["fill"]
-                    and style["fill"] != "none"
-                    and style["fill"][0:3] != "url"
-                ):
-                    fill = inkex.Color(style["fill"]).to_rgb()
-                    fillcolor = fill[0] + 256 * fill[1] + 256 * 256 * fill[2]
-        color = rgb[0] + 256 * rgb[1] + 256 * 256 * rgb[2]
-        if isinstance(node, PathElement):
-            p = node.path.to_superpath()
-            if not p:
-                return
-        elif isinstance(node, Rectangle):
-            x = float(node.get("x"))
-            y = float(node.get("y"))
-            width = float(node.get("width"))
-            height = float(node.get("height"))
-            p = [[[x, y], [x, y], [x, y]]]
-            p.append([[x + width, y], [x + width, y], [x + width, y]])
-            p.append(
-                [
-                    [x + width, y + height],
-                    [x + width, y + height],
-                    [x + width, y + height],
-                ]
-            )
-            p.append([[x, y + height], [x, y + height], [x, y + height]])
-            p.append([[x, y], [x, y], [x, y]])
-            p = [p]
-        else:
-            return
-        mat += node.transform
-        p = Path(p).transform(Transform(mat)).to_arrays()
-        hPen = mygdi.CreatePen(0, stroke, color)
-        mygdi.SelectObject(self.hDC, hPen)
-        self.emit_path(p)
-        if fillcolor is not None:
-            brush = LOGBRUSH(0, fillcolor, 0)
-            hBrush = mygdi.CreateBrushIndirect(ctypes.addressof(brush))
-            mygdi.SelectObject(self.hDC, hBrush)
-            mygdi.BeginPath(self.hDC)
-            self.emit_path(p)
-            mygdi.EndPath(self.hDC)
-            mygdi.FillPath(self.hDC)
+                pen_width = self.svg.to_dimensionless(style("stroke-width").strip())
+                pen_width = int(pen_width * self.scale_xy)
+
+        path = node.path.to_superpath().transform(mat @ node.transform)
+
+        hPen = CreatePen(0, pen_width, pen_color)
+        SelectObject(self.hDC, hPen)
+        self.emit_path(path)
+        if fill_color is not None:
+            brush = LOGBRUSH(0, fill_color, None)
+            hBrush = CreateBrushIndirect(ctypes.byref(brush))
+            SelectObject(self.hDC, hBrush)
+            BeginPath(self.hDC)
+            self.emit_path(path)
+            EndPath(self.hDC)
+            FillPath(self.hDC)
         return
 
     def emit_path(self, p):
         for sub in p:
-            mygdi.MoveToEx(self.hDC, int(sub[0][1][0]), int(sub[0][1][1]), None)
+            MoveToEx(self.hDC, int(sub[0][1][0]), int(sub[0][1][1]), None)
             POINTS = ctypes.c_long * (6 * (len(sub) - 1))
             points = POINTS()
             for i in range(len(sub) - 1):
@@ -133,8 +212,7 @@ class PrintWin32Vector(inkex.EffectExtension):
                 points[6 * i + 3] = int(sub[i + 1][0][1])
                 points[6 * i + 4] = int(sub[i + 1][1][0])
                 points[6 * i + 5] = int(sub[i + 1][1][1])
-            mygdi.PolyBezierTo(self.hDC, ctypes.addressof(points), 3 * (len(sub) - 1))
-        return
+            PolyBezierTo(self.hDC, ctypes.addressof(points), 3 * (len(sub) - 1))
 
     def process_clone(self, node):
         trans = node.get("transform")
@@ -142,14 +220,14 @@ class PrintWin32Vector(inkex.EffectExtension):
         y = node.get("y")
         mat = Transform([[1.0, 0.0, 0.0], [0.0, 1.0, 0.0]])
         if trans:
-            mat *= Transform(trans)
+            mat @= Transform(trans)
         if x:
-            mat *= Transform([[1.0, 0.0, float(x)], [0.0, 1.0, 0.0]])
+            mat @= Transform([[1.0, 0.0, float(x)], [0.0, 1.0, 0.0]])
         if y:
-            mat *= Transform([[1.0, 0.0, 0.0], [0.0, 1.0, float(y)]])
+            mat @= Transform([[1.0, 0.0, 0.0], [0.0, 1.0, float(y)]])
         # push transform
         if trans or x or y:
-            self.groupmat.append(Transform(self.groupmat[-1]) * mat)
+            self.groupmat.append(Transform(self.groupmat[-1]) @ mat)
         # get referenced node
         refnode = node.href
         if refnode is not None:
@@ -164,15 +242,12 @@ class PrintWin32Vector(inkex.EffectExtension):
             self.groupmat.pop()
 
     def process_group(self, group):
-        if isinstance(group, inkex.Layer):
-            style = group.style
-            if "display" in style:
-                if style["display"] == "none" and self.visibleLayers:
-                    return
         trans = group.get("transform")
         if trans:
-            self.groupmat.append(Transform(self.groupmat[-1]) * Transform(trans))
+            self.groupmat.append(self.groupmat[-1] @ Transform(trans))
         for node in group:
+            if not isinstance(node, ShapeElement) or not node.is_visible():
+                continue
             if isinstance(node, Group):
                 self.process_group(node)
             elif isinstance(node, Use):
@@ -191,23 +266,20 @@ class PrintWin32Vector(inkex.EffectExtension):
         )
 
     def effect(self):
-        pcchBuffer = ctypes.c_long()
-        myspool.GetDefaultPrinterA(
-            None, ctypes.byref(pcchBuffer)
-        )  # get length of printer name
+        pcchBuffer = wintypes.DWORD()
+        GetDefaultPrinterA(None, ctypes.byref(pcchBuffer))  # get length of printer name
         pname = ctypes.create_string_buffer(pcchBuffer.value)
-        myspool.GetDefaultPrinterA(pname, ctypes.byref(pcchBuffer))  # get printer name
-        hPrinter = ctypes.c_long()
-        if myspool.OpenPrinterA(pname.value, ctypes.byref(hPrinter), None) == 0:
+        GetDefaultPrinterA(pname, ctypes.byref(pcchBuffer))  # get printer name
+        hPrinter = wintypes.HANDLE()
+        if OpenPrinterA(pname.value, ctypes.byref(hPrinter), None) == 0:
             return inkex.errormsg(_("Failed to open default printer"))
 
         # get printer properties dialog
-
-        pcchBuffer = myspool.DocumentPropertiesA(0, hPrinter, pname, None, None, 0)
+        pcchBuffer = DocumentPropertiesA(0, hPrinter, pname, None, None, 0)
         pDevMode = ctypes.create_string_buffer(
             pcchBuffer + 100
         )  # allocate extra just in case
-        pcchBuffer = myspool.DocumentPropertiesA(
+        pcchBuffer = DocumentPropertiesA(
             0,
             hPrinter,
             pname,
@@ -215,35 +287,47 @@ class PrintWin32Vector(inkex.EffectExtension):
             None,
             DM_IN_PROMPT + DM_OUT_BUFFER,
         )
-        myspool.ClosePrinter(hPrinter)
+        ClosePrinter(hPrinter)
         if pcchBuffer != 1:  # user clicked Cancel
             exit()
 
-        # initiallize print document
-
+        # initialize print document
         lpszDocName = self.doc_name()
-        DOCINFO = ctypes.c_long * 5
-        docInfo = DOCINFO(20, ctypes.addressof(lpszDocName), 0, 0, 0)
-        self.hDC = mygdi.CreateDCA(None, pname, None, ctypes.byref(pDevMode))
-        if mygdi.StartDocA(self.hDC, ctypes.byref(docInfo)) < 0:
+        docInfo = DOCINFO(
+            ctypes.sizeof(DOCINFO), ctypes.addressof(lpszDocName), 0, 0, 0
+        )
+        self.hDC = CreateDCA(None, pname, None, ctypes.byref(pDevMode))
+        if StartDocA(self.hDC, ctypes.byref(docInfo)) < 0:
             exit()  # user clicked Cancel
 
-        self.scale = (
-            ord(pDevMode[58]) + 256.0 * ord(pDevMode[59])
-        ) / 96  # use PrintQuality from DEVMODE
-        self.scale /= self.svg.unittouu("1px")
-        h = self.svg.unittouu(self.svg.xpath("@height")[0])
+        # Take the DPI value from the DC instead of extracting it from pDevMode, this
+        # method works when print drivers return device-independent quality values (e.g.
+        # DMRES_MEDIUM).
+        dpi_x = GetDeviceCaps(self.hDC, LOGPIXELSX)
+        dpi_y = GetDeviceCaps(self.hDC, LOGPIXELSY)
+        # Convert from dots-per-inch (DPI) to user units.
+        self.scale_x = dpi_x / self.svg.viewport_to_unit("1in")
+        self.scale_y = dpi_y / self.svg.viewport_to_unit("1in")
+
         doc = self.document.getroot()
-        # process viewBox height attribute to correct page scaling
-        viewBox = doc.get("viewBox")
-        if viewBox:
-            viewBox2 = viewBox.split(",")
-            if len(viewBox2) < 4:
-                viewBox2 = viewBox.split(" ")
-            self.scale *= h / self.svg.unittouu(self.addDocumentUnit(viewBox2[3]))
-        self.groupmat = [[[self.scale, 0.0, 0.0], [0.0, self.scale, 0.0]]]
+        # Process viewBox height attribute to correct page scaling.
+        viewBox = self.svg.get_viewbox()
+        if viewBox and viewBox[2] and viewBox[3]:
+            doc_width = self.svg.viewbox_width
+            doc_height = self.svg.viewbox_height
+            self.scale_x *= doc_width / self.svg.viewport_to_unit(
+                self.svg.add_unit(viewBox[2])
+            )
+            self.scale_y *= doc_height / self.svg.viewport_to_unit(
+                self.svg.add_unit(viewBox[3])
+            )
+
+        self.scale_xy = (self.scale_x + self.scale_y) / 2
+        self.groupmat = [
+            Transform([[self.scale_x, 0.0, 0.0], [0.0, self.scale_y, 0.0]])
+        ]
         self.process_group(doc)
-        mygdi.EndDoc(self.hDC)
+        EndDoc(self.hDC)
 
 
 if __name__ == "__main__":

@@ -3,7 +3,7 @@
   <name>Collection of SVG files One per root layer</name>
   <id>org.inkscape.output.tar_layers</id>
   <dependency type="extension">org.inkscape.output.svg.inkscape</dependency>
-  <output>
+  <output priority='7'>
     <extension>.tar</extension>
     <mimetype>application/tar</mimetype>
     <filetypename>Layers as Separate SVG (*.tar)</filetypename>

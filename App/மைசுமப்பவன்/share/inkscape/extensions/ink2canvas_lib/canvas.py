@@ -43,7 +43,6 @@ class Canvas:
         self.code.append("\t" + text.replace("ctx", self.obj) + "\n")
 
     def output(self):
-
         html = """
         <!DOCTYPE html>
         <html>

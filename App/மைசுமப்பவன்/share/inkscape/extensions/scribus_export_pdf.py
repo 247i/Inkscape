@@ -1,4 +1,4 @@
-#!/bin/env python3
+#!/usr/bin/env python3
 # coding=utf-8
 #
 # Copyright (C) 2019 Marc Jeanmougin, Cédric Gémy, a-l-e
@@ -39,7 +39,7 @@ VERSION_REGEX = re.compile(r"(\d+)\.(\d+)\.(\d+)")
 #   and even include a possibility to add margins
 #   BUT currently fails to place the SVG document
 #   (object placed top-left instead of SVG placed top-left)
-class Scribus(TempDirMixin, inkex.OutputExtension):
+class Scribus(inkex.OutputExtension):
     def add_arguments(self, arg_parser):
         arg_parser.add_argument(
             "--pdf-version",

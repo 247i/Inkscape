@@ -30,6 +30,7 @@ from __future__ import annotations
 from copy import deepcopy
 from typing import Any, Tuple, Optional, overload, TypeVar, List
 from lxml import etree
+import re
 
 from ..interfaces.IElement import IBaseElement, ISVGDocumentElement
 
@@ -40,7 +41,7 @@ from ..transforms import Transform, BoundingBox
 from ..utils import FragmentError
 from ..units import convert_unit, render_unit, parse_unit
 from ._utils import ChildToProperty, NSS, addNS, removeNS, splitNS
-from ..properties import BaseStyleValue, all_properties
+from ..properties import BaseStyleValue, ShorthandValue, all_properties
 from ._selected import ElementList
 from ._parser import NodeBasedLookup, SVG_PARSER
 
@@ -127,6 +128,7 @@ class BaseElement(IBaseElement):
         """Get the attribute, but load it if it is not available yet"""
         if name in self.wrapped_props:
             (attr, cls) = self.wrapped_props[name]
+
             # The reason we do this here and not in _init is because lxml
             # is inconsistant about when elements are initialised.
             # So we make this a lazy property.
@@ -498,7 +500,7 @@ class BaseElement(IBaseElement):
 
         .. versionchanged:: 1.1
             A setter for href was added."""
-        ref = self.get("xlink:href")
+        ref = self.get("href") or self.get("xlink:href")
         if not ref:
             return None
         return self.root.getElementById(ref.strip("#"))
@@ -508,7 +510,10 @@ class BaseElement(IBaseElement):
         """Set the href object"""
         if isinstance(elem, BaseElement):
             elem = elem.get_id()
-        self.set("xlink:href", "#" + elem)
+        if self.get("href"):
+            self.set("href", "#" + elem)
+        else:
+            self.set("xlink:href", "#" + elem)
 
     @property
     def label(self):
@@ -631,10 +636,17 @@ class BaseElement(IBaseElement):
         .. versionadded:: 1.2"""
         style = Style()
         for key in self.keys():
-            if key in all_properties and all_properties[key][2]:
-                style[key] = BaseStyleValue.factory(
-                    declaration=key + ": " + self.attrib[key]
+            if (
+                key in all_properties
+                and all_properties[key][2]
+                and not issubclass(all_properties[key][0], ShorthandValue)
+            ):
+                # Shorthands cannot be set by presentation attributes
+                result = BaseStyleValue.factory_errorhandled(
+                    key=key, value=self.attrib[key]
                 )
+                if result is not None:  # parsing error
+                    style[key] = result[1]
         return style
 
     def composed_transform(self, other=None):
@@ -642,8 +654,8 @@ class BaseElement(IBaseElement):
         if none specified the transform is to the root document element
         """
         parent = self.getparent()
-        if parent is not None and isinstance(parent, BaseElement):
-            return parent.composed_transform() @ self.transform
+        if parent is not other and isinstance(parent, BaseElement):
+            return parent.composed_transform(other) @ self.transform
         return self.transform
 
 
@@ -664,12 +676,12 @@ class ShapeElement(BaseElement):
 
     @property
     def clip(self):
-        """Gets the clip path element (if any)
+        """Gets the clip path element (if any). May be set through CSS.
 
         .. versionadded:: 1.1"""
         ref = self.get("clip-path")
         if not ref:
-            return None
+            return self.specified_style()("clip-path")
         return self.root.getElementById(ref)
 
     @clip.setter
@@ -731,13 +743,38 @@ class ShapeElement(BaseElement):
         return path.bounding_box()
 
     def is_visible(self):
-        """Returns false if the css says this object is invisible
+        """Returns false if this object is invisible
+
+        .. versionchanged:: 1.3
+            rely on cascaded_style() to include CSS and presentation attributes
+            include `visibility` attribute with check for inherit
+            include ancestors
 
         .. versionadded:: 1.1"""
-        if self.style.get("display", "") == "none":
-            return False
-        if not float(self.style.get("opacity", 1.0)):
-            return False
+        return self._is_visible()
+
+    def _is_visible(self, inherit_visibility=True):
+        # iterate over self and ancestors
+        for element in [self] + list(self.ancestors()):
+            get_style = element.cascaded_style().get
+            # case display:none
+            if get_style("display", "inline") == "none":
+                return False
+            # case opacity:0
+            if not float(get_style("opacity", 1.0)):
+                return False
+            # only check if childs visibility is inherited
+            if inherit_visibility:
+                # case visibility:hidden
+                if get_style("visibility", "inherit") in (
+                    "hidden",
+                    "collapse",
+                ):
+                    return False
+                # case visibility: not inherit
+                elif get_style("visibility", "inherit") != "inherit":
+                    inherit_visibility = False
+
         return True
 
     def get_line_height_uu(self):
@@ -753,3 +790,22 @@ class ShapeElement(BaseElement):
         if parsed[1] == "%":
             return font_size * parsed[0] * 0.01
         return self.to_dimensionless(line_height)
+
+
+class ViewboxMixin:
+    """Mixin for elements with viewboxes, such as <svg>, <marker>"""
+
+    def parse_viewbox(self, vbox: Optional[str]) -> Optional[List[float]]:
+        """Parses a viewbox. If an error occurs during parsing,
+        (0, 0, 0, 0) is returned. If the viewbox is None, None is returned.
+
+        .. versionadded:: 1.3"""
+        if vbox is not None and isinstance(vbox, str):
+            try:
+                result = [float(unit) for unit in re.split(r",\s*|\s+", vbox)]
+            except ValueError:
+                result = []
+            if len(result) != 4:
+                result = [0, 0, 0, 0]
+            return result
+        return None

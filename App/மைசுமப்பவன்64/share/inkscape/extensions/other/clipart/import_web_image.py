@@ -21,13 +21,14 @@
 Import images from the internet, inkscape extension (GUI)
 """
 
-__version__ = '1.0'
-__pkgname__ = 'inkscape-import-web-image'
+__version__ = "1.0"
+__pkgname__ = "inkscape-import-web-image"
 
 import os
 import sys
 import logging
 import warnings
+
 warnings.filterwarnings("ignore")
 
 from collections import defaultdict
@@ -39,28 +40,35 @@ from inkex import Style
 from inkex.gui import GtkApp, Window, IconView, asyncme
 from inkex.gui.pixmap import PixmapManager, SizeFilter, PadFilter, OverlayFilter
 from inkex.elements import (
-    load_svg, Image, Defs, NamedView, Metadata,
-    SvgDocumentElement, StyleElement
+    load_svg,
+    Image,
+    Defs,
+    NamedView,
+    Metadata,
+    SvgDocumentElement,
+    StyleElement,
 )
 from gi.repository import Gtk
 
 from import_sources import RemoteSource, RemoteFile, RemotePage
 
-SOURCES = os.path.join(os.path.dirname(__file__), 'sources')
-LICENSES = os.path.join(os.path.dirname(__file__), 'licenses')
-CACHE_DIR = user_cache_dir('inkscape-import-web-image', 'Inkscape')
+SOURCES = os.path.join(os.path.dirname(__file__), "sources")
+LICENSES = os.path.join(os.path.dirname(__file__), "licenses")
+CACHE_DIR = user_cache_dir("inkscape-import-web-image", "Inkscape")
+
 
 class LicenseOverlay(OverlayFilter):
     pixmaps = PixmapManager(LICENSES)
 
     def get_overlay(self, item=None, manager=None):
-        if item is None: # Default image
+        if item is None:  # Default image
             return None
         return self.pixmaps.get(item.get_overlay())
 
 
 class ResultsIconView(IconView):
     """The search results shown as icons"""
+
     def get_markup(self, item):
         return item.string
 
@@ -71,27 +79,28 @@ class ResultsIconView(IconView):
         self._list.set_markup_column(1)
         self._list.set_pixbuf_column(2)
         crt, crp = self._list.get_cells()
-        self.crt_notify = crt.connect('notify', self.keep_size)
+        self.crt_notify = crt.connect("notify", self.keep_size)
         super().setup()
 
     def keep_size(self, crt, *args):
         """Hack Gtk to keep cells smaller"""
         crt.handler_block(self.crt_notify)
-        crt.set_property('width', 150)
+        crt.set_property("width", 150)
         crt.handler_unblock(self.crt_notify)
 
 
 class ImporterWindow(Window):
     """The window that is in the glade file"""
-    name = 'import_web_image'
+
+    name = "import_web_image"
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.widget('dl-searching').hide()
+        self.widget("dl-searching").hide()
 
         # Add each of the source services from their plug-in modules
-        self.source = self.widget('service_list')
+        self.source = self.widget("service_list")
         self.source_model = self.source.get_model()
         self.source_model.clear()
 
@@ -105,14 +114,17 @@ class ImporterWindow(Window):
             if source.is_default:
                 self.source.set_active(x)
 
-        pixmaps = PixmapManager(CACHE_DIR, filters=[
-            SizeFilter(size=150),
-            PadFilter(size=(0, 150)),
-            LicenseOverlay(position=(0.5, 1))
-        ])
-        self.select_func = self.gapp.kwargs['select']
-        self.results = ResultsIconView(self.widget('results'), pixmaps)
-        self.pool = ResultsIconView(self.widget('pool'), pixmaps)
+        pixmaps = PixmapManager(
+            CACHE_DIR,
+            filters=[
+                SizeFilter(size=150),
+                PadFilter(size=(0, 150)),
+                LicenseOverlay(position=(0.5, 1)),
+            ],
+        )
+        self.select_func = self.gapp.kwargs["select"]
+        self.results = ResultsIconView(self.widget("results"), pixmaps)
+        self.pool = ResultsIconView(self.widget("pool"), pixmaps)
         self.multiple = False
 
         self.widget("perm-nocopyright").set_message_type(Gtk.MessageType.WARNING)
@@ -129,7 +141,7 @@ class ImporterWindow(Window):
         """Display the current item's license information"""
         self.widget("perms").foreach(lambda w: w.hide())
         info = item.license_info
-        for mod in info['modules']:
+        for mod in info["modules"]:
             self.widget("perm-" + mod).show()
 
     def get_selected_source(self):
@@ -141,18 +153,18 @@ class ImporterWindow(Window):
     def img_multiple(self, widget):
         """Enable multi-selection"""
         widget.hide()
-        self.widget('btn-single').show()
-        self.widget('multiple-box').show()
-        self.widget('multiple-buttons').show()
+        self.widget("btn-single").show()
+        self.widget("multiple-box").show()
+        self.widget("multiple-buttons").show()
         self.multiple = True
         self.update_btn_import()
 
     def img_single(self, widget):
         """Enable single-selection"""
         widget.hide()
-        self.widget('btn-multiple').show()
-        self.widget('multiple-box').hide()
-        self.widget('multiple-buttons').hide()
+        self.widget("btn-multiple").show()
+        self.widget("multiple-box").hide()
+        self.widget("multiple-buttons").hide()
         is_selected = bool(list(self.results.get_selected_items()))
         self.pool.clear()
         self.multiple = False
@@ -176,7 +188,7 @@ class ImporterWindow(Window):
             enabled = bool(list(self.pool))
         else:
             enabled = bool(list(self.results.get_selected_items()))
-        self.widget('btn-import').set_sensitive(enabled)
+        self.widget("btn-import").set_sensitive(enabled)
 
     def result_activate(self, widget=None):
         """Search results double click"""
@@ -191,13 +203,13 @@ class ImporterWindow(Window):
         if not self.multiple:
             items.extend(self.results.get_selected_items())
         else:
-            items.extend([item for item,*_ in self.pool])
+            items.extend([item for item, *_ in self.pool])
 
         to_exit = True
         for item in items:
             self.select_func(item.get_file())
             # XXX This pagination control is not good. Replace it with normal controls.
-            #elif isinstance(item, RemotePage):
+            # elif isinstance(item, RemotePage):
         if to_exit:
             self.exit()
 
@@ -229,24 +241,24 @@ class ImporterWindow(Window):
         self.results.clear()
         self.update_btn_import()
         self.next_page_item = None
-        self.widget('btn-next-page').hide()
+        self.widget("btn-next-page").hide()
 
     def search_started(self):
         """Set widgets to stun"""
-        self.widget('dl-search').set_sensitive(False)
-        self.widget('dl-searching').start()
-        self.widget('dl-searching').show()
+        self.widget("dl-search").set_sensitive(False)
+        self.widget("dl-searching").start()
+        self.widget("dl-searching").show()
 
     @asyncme.mainloop_only
     def search_finished(self):
         """After everything, finish the search"""
-        self.widget('dl-search').set_sensitive(True)
-        self.widget('dl-searching').hide()
-        self.widget('dl-searching').stop()
+        self.widget("dl-search").set_sensitive(True)
+        self.widget("dl-searching").hide()
+        self.widget("dl-searching").stop()
 
     def set_next_page(self, item):
         self.next_page_item = item
-        self.widget('btn-next-page').show()
+        self.widget("btn-next-page").show()
 
     def show_next_page(self, widget=None):
         item = self.next_page_item
@@ -264,12 +276,15 @@ class ImporterWindow(Window):
 
 class App(GtkApp):
     """Load the inkscape extensions glade file and attach to window"""
+
     glade_dir = os.path.join(os.path.dirname(__file__))
-    app_name = 'inkscape-import-web-image'
+    app_name = "inkscape-import-web-image"
     windows = [ImporterWindow]
+
 
 class ImportWebImage(inkex.EffectExtension):
     """Import an svg from the internet"""
+
     selected_filename = None
 
     def merge_defs(self, defs):
@@ -277,7 +292,7 @@ class ImportWebImage(inkex.EffectExtension):
         target = self.svg.defs
         for child in defs:
             if isinstance(child, StyleElement):
-                continue # Already appled in merge_stylesheets()
+                continue  # Already appled in merge_stylesheets()
             target.append(child)
 
     def merge_stylesheets(self, svg):
@@ -290,10 +305,10 @@ class ImportWebImage(inkex.EffectExtension):
                 for elem in svg.xpath(xpath):
                     elems[elem].append(style)
                     # 1b. Clear possibly conflicting attributes
-                    if '@id' in xpath:
+                    if "@id" in xpath:
                         elem.set_random_id()
-                    if '@class' in xpath:
-                        elem.set('class', None)
+                    if "@class" in xpath:
+                        elem.set("class", None)
         # 2. Apply each style cascade sequentially
         for elem, styles in elems.items():
             output = Style()
@@ -308,7 +323,7 @@ class ImportWebImage(inkex.EffectExtension):
             if isinstance(child, SvgDocumentElement):
                 yield from self.import_svg(child)
             elif isinstance(child, StyleElement):
-                continue # Already applied in merge_stylesheets()
+                continue  # Already applied in merge_stylesheets()
             elif isinstance(child, Defs):
                 self.merge_defs(child)
             elif isinstance(child, (NamedView, Metadata)):
@@ -319,9 +334,9 @@ class ImportWebImage(inkex.EffectExtension):
     def import_from_file(self, filename):
         if not filename or not os.path.isfile(filename):
             return
-        with open(filename, 'rb') as fhl:
+        with open(filename, "rb") as fhl:
             head = fhl.read(100)
-            if b'<?xml' in head or b'<svg' in head:
+            if b"<?xml" in head or b"<svg" in head:
                 new_svg = load_svg(head + fhl.read())
                 # Add each object to the container
                 objs = list(self.import_svg(new_svg))
@@ -338,9 +353,9 @@ class ImportWebImage(inkex.EffectExtension):
                 # Retain the original filename as a group label
                 container.label = os.path.basename(filename)
                 # Apply unit transformation to keep things the same sizes.
-                container.transform.add_scale(self.svg.unittouu(1.0) \
-                    / new_svg.getroot().unittouu(1.0))
-
+                container.transform.add_scale(
+                    self.svg.unittouu(1.0) / new_svg.getroot().unittouu(1.0)
+                )
 
             else:
                 container = self.import_raster(filename, fhl)
@@ -369,8 +384,12 @@ class ImportWebImage(inkex.EffectExtension):
             # Future: Change encodestring to encodebytes when python3 only
             node = Image()
             node.label = os.path.basename(filename)
-            node.set('xlink:href', 'data:{};base64,{}'.format(
-                file_type, encodebytes(handle.read()).decode('ascii')))
+            node.set(
+                "xlink:href",
+                "data:{};base64,{}".format(
+                    file_type, encodebytes(handle.read()).decode("ascii")
+                ),
+            )
             return node
 
     @staticmethod
@@ -378,18 +397,18 @@ class ImportWebImage(inkex.EffectExtension):
         """Basic magic header checker, returns mime type"""
         # Taken from embedimage.py
         for head, mime in (
-                (b'\x89PNG', 'image/png'),
-                (b'\xff\xd8', 'image/jpeg'),
-                (b'BM', 'image/bmp'),
-                (b'GIF87a', 'image/gif'),
-                (b'GIF89a', 'image/gif'),
-                (b'MM\x00\x2a', 'image/tiff'),
-                (b'II\x2a\x00', 'image/tiff'),
-            ):
+            (b"\x89PNG", "image/png"),
+            (b"\xff\xd8", "image/jpeg"),
+            (b"BM", "image/bmp"),
+            (b"GIF87a", "image/gif"),
+            (b"GIF89a", "image/gif"),
+            (b"MM\x00\x2a", "image/tiff"),
+            (b"II\x2a\x00", "image/tiff"),
+        ):
             if header.startswith(head):
                 return mime
         return None
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     ImportWebImage().run()

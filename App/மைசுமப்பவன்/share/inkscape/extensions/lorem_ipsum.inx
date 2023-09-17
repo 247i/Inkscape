@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <inkscape-extension xmlns="http://www.inkscape.org/namespace/inkscape/extension">
-    <name>Lorem ipsum</name>
+    <name>Lorem Ipsum</name>
     <id>com.kaioa.lorem_ipsum</id>
     <param name="tab" type="notebook">
         <page name="Options" gui-text="Options">

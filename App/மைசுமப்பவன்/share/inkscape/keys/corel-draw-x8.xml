@@ -1,5 +1,9 @@
 <?xml version="1.0"?>
-<keys name="Corel DRAW X8">
+<keys name="Corel DRAW X8" xmlns:xi="http://www.w3.org/2001/XInclude">
+
+<!-- inherit -->
+<xi:include href="inkscape.xml" />
+
 <!--  
 This file contains a profile of keyboard shortcuts for Inkscape 
 in the style of Corel DRAW X8. See default.xml for more information.  
@@ -64,8 +68,7 @@ in the style of Corel DRAW X8. See default.xml for more information.
 
 <!-- View -->
 
-<bind key="F9" action="FullScreenFocus" display="true" />
-
+<bind gaction="win.view-full-screen-focus"              keys="F9"/>
 <bind gaction="win.canvas-display-mode-cycle"           keys="&lt;shift&gt;F9"/>
 <bind gaction="win.canvas-zoom-drawing"                 keys="F4"/>
 <bind gaction="win.canvas-zoom-in"                      keys="F2" />
@@ -78,13 +81,11 @@ in the style of Corel DRAW X8. See default.xml for more information.
 <bind gaction="win.dialog-open('DocumentProperties')"   keys="&lt;alt&gt;Return" />
 <bind gaction="win.dialog-open('Export')"               keys="&lt;ctrl&gt;e, &lt;ctrl&gt;E" />
 <bind gaction="win.dialog-open('FillStroke')"           keys="F11" />
-<bind gaction="win.dialog-ope('Find')"                  keys="&lt;ctrl&gt;f, &lt;ctrl&gt;F" />
+<bind gaction="win.dialog-open('Find')"                 keys="&lt;ctrl&gt;f, &lt;ctrl&gt;F" />
 <bind gaction="app.preferences"                         keys="&lt;ctrl&gt;j, &lt;ctrl&gt;J" />
 <bind gaction="win.dialog-open('Text')"                 keys="&lt;ctrl&gt;&lt;shift&gt;t, &lt;ctrl&gt;&lt;shift&gt;T" />
 <bind gaction="win.dialog-open('Transform')"            keys="&lt;alt&gt;F8" />
 
-<!-- Extensions -->
-
-<bind gaction="org.inkscape.help.manual"                keys="F1"/>
+<bind gaction="win.help-url-manual"                     keys="F1"/>
 
 </keys>

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # coding=utf-8
 #
 # Copyright (C) 2012 Jabiertxo Arraiza, jabier.arraiza@marker.es
@@ -278,14 +278,12 @@ class DPISwitcher(inkex.EffectExtension):
             self.scale_grid()
 
         for element in svg:  # iterate all top-level elements of SVGRoot
-
             # init variables
             tag = element.TAG
             width_scale = self.factor_a
             height_scale = self.factor_a
 
             if tag in GRAPHICS_ELEMENTS or tag in CONTAINER_ELEMENTS:
-
                 # test for specific elements to skip from scaling
                 if is_3dbox(element):
                     if check_3dbox(svg, element, width_scale, height_scale):

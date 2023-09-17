@@ -79,7 +79,8 @@ Tests can be run with these options that are provided as environment variables:
 
     FAIL_ON_DEPRECATION=1 - Will instantly fail any use of deprecated APIs
     EXPORT_COMPARE=1 - Generate output files from comparisons. This is useful for manually checking the output as well as updating the comparison data.
-    NO_MOCK_COMMANDS=1 - Instead of using the mock data, actually call commands. This will also generate the msg files similar to export compare.
+    NO_MOCK_COMMANDS=1 - If mock files are missing, regenerate them and print the generated filename to stderr (so you know which file was generated). Typically, the test then fails due to "Extra print statements detected".
+    NO_MOCK_COMMANDS=2 - Instead of using the mock data, actually call commands. This will also generate the msg files similar to export compare.
     INKSCAPE_COMMAND=/other/inkscape - Use a different Inkscape (for example development version) while running commands. Works outside of tests too.
     XML_DIFF=1 - Attempt to output an XML diff file, this can be useful for debugging to see differences in context.
     DEBUG_KEY=1 - Export mock file keys for debugging. This is a highly specialised option for debugging key generation.

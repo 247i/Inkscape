@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #
 # Copyright (C) 2007 Aaron Spike  (aaron @ ekips.org)
 # Copyright (C) 2007 Tavmjong Bah (tavmjong @ free.fr)
@@ -123,7 +123,6 @@ class Gears(inkex.GenerateExtension):
         points = []
 
         for c in centers:
-
             # Angles
             pitch1 = c - half_thick_angle
             base1 = pitch1 - pitch_to_base_angle

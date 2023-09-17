@@ -116,7 +116,7 @@
         </page>
     </param>
 
-    <output>
+    <output priority="5">
         <extension>.svg</extension>
         <mimetype>image/svg+xml</mimetype>
         <filetypename>Optimized SVG (*.svg)</filetypename>

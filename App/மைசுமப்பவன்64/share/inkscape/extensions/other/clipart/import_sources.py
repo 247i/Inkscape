@@ -33,7 +33,7 @@ from cachecontrol.heuristics import ExpiresAfter
 from inkex.command import CommandNotFound, ProgramRunError, call
 from collections import defaultdict
 
-LICENSE_ICONS = os.path.join(os.path.dirname(__file__), 'licenses')
+LICENSE_ICONS = os.path.join(os.path.dirname(__file__), "licenses")
 
 LICENSES = {
     "cc-0": {
@@ -170,12 +170,15 @@ class RemoteFile:
 
     @property
     def license_info(self):
-        return LICENSES.get(self.license, {
-           "name": "Unknown",
-           "url": self.info.get("descriptionurl", ""),
-           "modules": [],
-           "overlay": "unknown.svg",
-        })
+        return LICENSES.get(
+            self.license,
+            {
+                "name": "Unknown",
+                "url": self.info.get("descriptionurl", ""),
+                "modules": [],
+                "overlay": "unknown.svg",
+            },
+        )
 
     @property
     def author(self):
@@ -228,13 +231,17 @@ class RemoteSource:
     def __init__(self, cache_dir):
         self.session = requests.session()
         self.cache_dir = cache_dir
-        self.session.mount(
-            "https://",
-            CacheControlAdapter(
-                cache=FileCache(cache_dir),
-                heuristic=ExpiresAfter(days=5),
-            ),
-        )
+        try:
+            self.session.mount(
+                "https://",
+                CacheControlAdapter(
+                    cache=FileCache(cache_dir),
+                    heuristic=ExpiresAfter(days=5),
+                ),
+            )
+        except ImportError:
+            # This happens when python-lockfile is missing, disable cachecontrol
+            pass
 
     def __del__(self):
         self.session.close()

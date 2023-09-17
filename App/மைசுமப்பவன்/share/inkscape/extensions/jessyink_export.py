@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # coding=utf-8
 #
 # Copyright 2008, 2009 Hannes Hochreiner
@@ -29,7 +29,7 @@ from inkex.command import take_snapshot
 from jessyink_install import JessyInkMixin
 
 
-class Export(JessyInkMixin, TempDirMixin, inkex.OutputExtension):
+class Export(JessyInkMixin, inkex.OutputExtension):
     """
     JessyInkExport Output Extension saves to a zipfile each of the layers.
     """
@@ -45,7 +45,6 @@ class Export(JessyInkMixin, TempDirMixin, inkex.OutputExtension):
         self.is_installed()
 
         with zipfile.ZipFile(stream, "w", compression=zipfile.ZIP_STORED) as output:
-
             # Find layers.
             layers = self.svg.xpath("//svg:g[@inkscape:groupmode='layer']")
 

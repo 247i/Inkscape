@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <inkscape-extension xmlns="http://www.inkscape.org/namespace/inkscape/extension">
-    <name>Export layout pieces and HTML+CSS code</name>
+    <name>Export Layout Pieces and HTML+CSS code</name>
     <id>org.inkscape.web.slicer.export</id>
     <dependency type="file" location="inx">webslicer_effect.py</dependency>
     <param name="tab" type="notebook">

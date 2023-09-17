@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <inkscape-extension xmlns="http://www.inkscape.org/namespace/inkscape/extension">
-    <name>Convert to Dashes</name>
+    <name>Convert Dashes to Path</name>
     <id>org.inkscape.filter.dashit</id>
     <effect>
         <object-type>path</object-type>

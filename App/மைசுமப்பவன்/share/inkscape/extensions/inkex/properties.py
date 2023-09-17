@@ -444,9 +444,22 @@ class FontValue(ShorthandValue):
             for key in keys
             if isinstance(all_properties[key][4], list)
         }
+        # Font stretch can be specified in percent, but for the
+        # shorthand, only a keyword value is allowed
+        options["font-stretch"] = (
+            "normal",
+            "ultra-condensed",
+            "extra-condensed",
+            "condensed",
+            "semi-condensed",
+            "semi-expanded",
+            "expanded",
+            "extra-expanded",
+            "ultra-expanded",
+        )
         result = {key: all_properties[key][1] for key in keys}
 
-        tokens = [i for i in self.value.split(" ") if i != ""]
+        tokens = [i for i in self.value.split() if i != ""]
 
         if len(tokens) == 0:
             return {}  # shorthand not set, nothing to do
@@ -469,6 +482,45 @@ class FontValue(ShorthandValue):
                 result["font-family"] = " ".join(tokens[1:])
                 break
             tokens = tokens[1:]  # remove first element
+        return result
+
+
+class TextDecorationValue(ShorthandValue):
+    """Logic for the shorthand font property
+
+    .. versionadded:: 1.3"""
+
+    def get_shorthand_changes(self):
+        options = {
+            "text-decoration-" + key: all_properties["text-decoration-" + key][4]
+            for key in ("line", "style", "color")
+            if isinstance(all_properties["text-decoration-" + key][4], list)
+        }
+        result = {
+            "text-decoration-style": all_properties["text-decoration-style"][1],
+            "text-decoration-color": "currentcolor",
+            "text-decoration-line": [],
+        }
+
+        tokens = [i for i in self.value.split() if i != ""]
+
+        if len(tokens) == 0:
+            return {}  # shorthand not set, nothing to do
+
+        for cur in tokens:
+            if cur in ["underline", "overline", "line-through", "blink"]:
+                result["text-decoration-line"] += [cur]
+            elif cur in options["text-decoration-style"]:
+                result["text-decoration-style"] = cur
+            else:
+                result["text-decoration-color"] = cur
+
+        if len(result["text-decoration-line"]) == 0:
+            result["text-decoration-line"] = all_properties["text-decoration-line"][4]
+        else:
+            # Text-decoration-line can have multiple values.
+            result["text-decoration-line"] = " ".join(result["text-decoration-line"])
+
         return result
 
 
@@ -496,7 +548,7 @@ class FontSizeValue(BaseStyleValue):
         try:
             return element.to_dimensionless(value)
         except ValueError:  # unable to parse font size, e.g. font-size:normal
-            return element.to_dimensionless("12pt")
+            return element.to_dimensionless("12")
 
 
 class StrokeDasharrayValue(BaseStyleValue):
@@ -633,30 +685,14 @@ all_properties: Dict[
     ),  # the normal fill, not the <animation> one
     "fill-opacity": (AlphaValue, "1", True, True, None),
     "fill-rule": (EnumValue, "nonzero", True, True, ["nonzero", "evenodd"]),
-    "filter": (BaseStyleValue, "none", True, False, None),
+    "filter": (URLNoneValue, "none", True, False, None),
     "flood-color": (PaintValue, "black", True, False, None),
     "flood-opacity": (AlphaValue, "1", True, False, None),
     "font": (FontValue, "", True, False, None),
     "font-family": (BaseStyleValue, "sans-serif", True, True, None),
     "font-size": (FontSizeValue, "medium", True, True, None),
     "font-size-adjust": (BaseStyleValue, "none", True, True, None),
-    "font-stretch": (
-        EnumValue,
-        "normal",
-        True,
-        True,
-        [
-            "normal",
-            "ultra-condensed",
-            "extra-condensed",
-            "condensed",
-            "semi-condensed",
-            "semi-expanded",
-            "expanded",
-            "extra-expanded",
-            "ultra-expanded",
-        ],
-    ),
+    "font-stretch": (BaseStyleValue, "normal", True, True, None),
     "font-style": (EnumValue, "normal", True, True, ["normal", "italic", "oblique"]),
     # a lot more values and subproperties in SVG2 / CSS-Fonts3
     "font-variant": (EnumValue, "normal", True, True, ["normal", "small-caps"]),
@@ -669,6 +705,7 @@ all_properties: Dict[
     ),
     "glyph-orientation-horizontal": (BaseStyleValue, "0deg", True, True, None),
     "glyph-orientation-vertical": (BaseStyleValue, "auto", True, True, None),
+    "inline-size": (BaseStyleValue, "0", False, False, None),
     "image-rendering": (
         EnumValue,
         "auto",
@@ -712,6 +749,7 @@ all_properties: Dict[
             "none",
         ],
     ),
+    "shape-inside": (URLNoneValue, "none", False, False, None),
     "shape-rendering": (
         EnumValue,
         "visiblePainted",
@@ -744,7 +782,19 @@ all_properties: Dict[
     ),  # only HTML property, but used by some unit tests
     "text-anchor": (EnumValue, "start", True, True, ["start", "middle", "end"]),
     # shorthand for text-decoration-line, *-style, *-color
-    "text-decoration": (BaseStyleValue, "none", True, True, None),
+    "text-decoration": (TextDecorationValue, "", True, True, None),
+    # multiple enum values are allowed
+    "text-decoration-line": (BaseStyleValue, "none", False, False, None),
+    "text-decoration-style": (
+        EnumValue,
+        "solid",
+        False,
+        False,
+        ["solid", "double", "dotted", "dashed", "wavy"],
+    ),
+    # This currently cannot be a ColorValue because currentcolor and other special
+    # colors are not supported by the Color class
+    "text-decoration-color": (BaseStyleValue, "currentcolor", False, False, None),
     "text-overflow": (EnumValue, "clip", True, False, ["clip", "ellipsis"]),
     "text-rendering": (
         EnumValue,

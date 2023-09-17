@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <inkscape-extension xmlns="http://www.inkscape.org/namespace/inkscape/extension">
-    <name>Jitter nodes</name>
+    <name>Jitter Nodes</name>
     <id>org.inkscape.filter.jitter_nodes</id>
     <param name="tab" type="notebook">
         <page name="Options" gui-text="Options">

@@ -29,12 +29,6 @@
 "gif" ""
 "GIF8" "" 100
 
-"lib\\gdk-pixbuf-2.0\\2.10.0\\loaders\\libpixbufloader-heif.dll"
-"heif/avif" 4 "pixbufloader-heif" "HEIF/AVIF Image" "LGPL3"
-"image/heif" "image/heic" "image/avif" ""
-"heif" "heic" "avif" ""
-"    ftyp" "xxxx    " 100
-
 "lib\\gdk-pixbuf-2.0\\2.10.0\\loaders\\libpixbufloader-icns.dll"
 "icns" 4 "gdk-pixbuf" "MacOS X icon" "GPL"
 "image/x-icns" ""
@@ -123,5 +117,4 @@
 "image/x-xpixmap" ""
 "xpm" ""
 "/* XPM */" "" 100
-
 

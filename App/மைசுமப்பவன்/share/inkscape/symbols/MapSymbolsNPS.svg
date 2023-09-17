@@ -376,7 +376,7 @@
     </symbol>
 
     <symbol id="IceSkating">
-      <title>Ice Skating</title>
+      <title>Ice skating</title>
       <g style="stroke:none">
 	<path d="m 41,61.5 13,0 c 0.625,0 1,-0.25 1,-1 l 0,-1 2,0 c 0,3 -1,4 -2.25,4 l -13.75,0 z"/>
 	<path d="m 8.75,51.75 9.25,9.25 c 0.375,0.375 0.75,0.5 1.25,0 l 0.75,-0.75 1.375,1.375 c -2,2 -3.5,2 -4.25,1.25 l -9.75,-9.75 z"/>
@@ -387,7 +387,7 @@
     </symbol>
 
     <symbol id="IceSkating_Inv">
-      <title>Ice Skating</title>
+      <title>Ice skating</title>
       <rect x="0.5" y="0.5" width="71" height="71" ry="6" style="stroke:white"/>
       <g style="fill:white;stroke:none">
 	<path d="m 41,61.5 13,0 c 0.625,0 1,-0.25 1,-1 l 0,-1 2,0 c 0,3 -1,4 -2.25,4 l -13.75,0 z"/>

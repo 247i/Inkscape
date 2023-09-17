@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """Extension for removing the colour red from selected objects"""
 
 import inkex

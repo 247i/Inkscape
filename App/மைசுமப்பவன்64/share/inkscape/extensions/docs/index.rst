@@ -9,11 +9,13 @@ Welcome to inkex's documentation!
    authors/index
    Inkex Development <dev/index>
    API Reference <source/index> 
+   User documentation <extensions/index>
 
 **Useful links**:
 `Source Repository <https://gitlab.com/inkscape/extensions>`_ |
 `Issue Tracker <https://gitlab.com/inkscape/extensions/issues>`_ |
 `Chat <https://chat.inkscape.org/channel/inkscape_extensions>`_
+`Dependencies <../python-dependencies.txt>`_ | look at the header of the page
 
 Inkex is:
 

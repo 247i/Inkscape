@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """
 Convert PNG to Jpeg using Raster Output extension.
 """

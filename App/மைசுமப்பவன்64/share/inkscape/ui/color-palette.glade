@@ -71,6 +71,29 @@
     <property name="visible">True</property>
     <property name="can-focus">False</property>
     <child>
+      <object class="GtkFlowBox" id="pinned">
+        <property name="visible">True</property>
+        <property name="can-focus">False</property>
+        <property name="halign">start</property>
+        <property name="valign">end</property>
+        <property name="margin-top">1</property>
+        <property name="margin-bottom">1</property>
+        <property name="homogeneous">True</property>
+        <property name="column-spacing">1</property>
+        <property name="row-spacing">1</property>
+        <property name="min-children-per-line">1</property>
+        <property name="selection-mode">none</property>
+        <style>
+          <class name="color-palette"/>
+        </style>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">0</property>
+      </packing>
+    </child>
+    <child>
       <object class="GtkScrolledWindow" id="scroll-wnd">
         <property name="visible">True</property>
         <property name="can-focus">True</property>
@@ -112,7 +135,7 @@
       <packing>
         <property name="expand">True</property>
         <property name="fill">True</property>
-        <property name="position">0</property>
+        <property name="position">1</property>
       </packing>
     </child>
     <child>
@@ -133,7 +156,7 @@
       <packing>
         <property name="expand">False</property>
         <property name="fill">True</property>
-        <property name="position">1</property>
+        <property name="position">2</property>
       </packing>
     </child>
     <child>
@@ -154,7 +177,7 @@
       <packing>
         <property name="expand">False</property>
         <property name="fill">True</property>
-        <property name="position">2</property>
+        <property name="position">3</property>
       </packing>
     </child>
     <child>
@@ -216,7 +239,7 @@
       <packing>
         <property name="expand">False</property>
         <property name="fill">False</property>
-        <property name="position">3</property>
+        <property name="position">4</property>
       </packing>
     </child>
     <child>
@@ -242,7 +265,7 @@
       <packing>
         <property name="expand">False</property>
         <property name="fill">False</property>
-        <property name="position">4</property>
+        <property name="position">5</property>
       </packing>
     </child>
     <style>
@@ -252,9 +275,9 @@
   <object class="GtkPopover" id="config-popup">
     <property name="can-focus">False</property>
     <property name="relative-to">btn-menu</property>
-    <property name="position">left</property>
+    <property name="position">top</property>
     <child>
-      <!-- n-columns=2 n-rows=6 -->
+      <!-- n-columns=2 n-rows=8 -->
       <object class="GtkGrid" id="main-grid">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
@@ -402,6 +425,41 @@
             <property name="left-attach">1</property>
             <property name="top-attach">2</property>
           </packing>
+        </child>
+        <child>
+          <object class="GtkCheckButton" id="enlarge">
+            <property name="label" translatable="yes">Enlarge pinned colors</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="receives-default">False</property>
+            <property name="halign">start</property>
+            <property name="draw-indicator">True</property>
+          </object>
+          <packing>
+            <property name="left-attach">1</property>
+            <property name="top-attach">6</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkCheckButton" id="show-labels">
+            <property name="label" translatable="yes">Show color labels</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="receives-default">False</property>
+            <property name="halign">start</property>
+            <property name="active">True</property>
+            <property name="draw-indicator">True</property>
+          </object>
+          <packing>
+            <property name="left-attach">1</property>
+            <property name="top-attach">7</property>
+          </packing>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
         </child>
         <child>
           <placeholder/>

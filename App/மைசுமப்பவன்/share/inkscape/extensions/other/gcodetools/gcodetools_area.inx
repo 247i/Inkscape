@@ -21,7 +21,6 @@ Only one offset will be created if the "Area width" is equal to "1/2 D".
         <page name='area_fill' gui-text='Fill area'>
             <param name="area-fill-angle" type="float" min="-360" max="360" gui-text="Area fill angle">0</param>
             <param name="area-fill-shift" type="float" min="-1" max="1" gui-text="Area fill shift">0</param>
-            <param name="area-fill-method" type="float" min="-1" max="1" gui-text="Area fill shift">0</param>
             <param name="area-fill-method" gui-text="Filling method" type="optiongroup" appearance="radio">
                 <option value="zig-zag">Zig zag</option>
                 <option value="spiral">Spiral</option>

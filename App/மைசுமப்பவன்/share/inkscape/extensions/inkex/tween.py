@@ -219,7 +219,7 @@ class StyleInterpolator(AttributeInterpolator):
         estyle = AttributeInterpolator.best_style(enode)
 
         styles = [[snode, sstyle], [enode, estyle]]
-        for (cur, curstyle) in styles:
+        for cur, curstyle in styles:
             if curstyle(attribute) is None:
                 cur.style[attribute + "-opacity"] = 0.0
                 if attribute == "stroke":
@@ -597,7 +597,7 @@ class GradientInterpolator(AttributeInterpolator):
         element.root.defs.add(orientation)
         if len(stops) > 0:
             element.root.defs.add(stops, orientation)
-            orientation.set("xlink:href", f"#{stops.get_id()}")
+            orientation.href = stops.get_id()
         return orientation
 
     def interpolate(self, time=0):

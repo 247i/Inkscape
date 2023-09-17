@@ -19,7 +19,7 @@ import datetime
 
 # -- Project information -----------------------------------------------------
 
-project = "inkex documentation"
+project = "inkex"
 copyright = f"{datetime.datetime.now().year} The Inkscape Project"
 author = "The Inkscape Project"
 

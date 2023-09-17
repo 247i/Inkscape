@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # coding=utf-8
 #
 # Copyright (c) 2009 - Jos Hirth, kaioa.com
@@ -54,15 +54,18 @@ class ExportGimpPalette(inkex.OutputExtension):
         style = elem.specified_style()
         for col in inkex.Style.color_props:
             try:
-                col = inkex.Color(style.get(col))
-                if elem.getparent().get("inkscape:swatch") == "solid":
-                    self.names[col] = elem.getparent().get_id()
-                yield col
-            except ColorIdError:
-                gradient = self.svg.getElementById(style.get(col))
-                for stop in gradient.stops:
-                    for item in self.process_element(stop):
-                        yield item
+                color = style(col)
+                if isinstance(color, inkex.Color):
+                    if (
+                        elem.getparent().get("inkscape:swatch") == "solid"
+                        and col == "stop-color"
+                    ):
+                        self.names[color] = elem.getparent().get_id()
+                    yield color
+                elif isinstance(color, inkex.Gradient):
+                    for stop in color.stops:
+                        for item in self.process_element(stop):
+                            yield item
             except ColorError:
                 pass  # Bad color
 

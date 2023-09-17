@@ -18,7 +18,7 @@ an empty file inside called ``__init__.py`` to turn it into a module folder.
 For each of your extensions, you should create a file called
 ``test_{extension_name}.py`` where the name reflects the name of your extension.
 
-There are two types of tests:
+There are three types of tests:
 
 1. Full-process Comparison tests - These are tests which invoke your
     extension with various arguments and attempt to compare the
@@ -29,7 +29,14 @@ There are two types of tests:
     Inkscape core repository, each test which inherits from
     the ComparisonMixin class is running comparison tests.
 
-2. Unit tests - These are individual test functions which call out to
+2. Full-process tests that compare only some data in the output - These also invoke
+    your extension, but you manually need to write comparisons for the output.
+    
+    This is useful if the output file contains a lot of data (that could potentially 
+    change) and you only want to check correctness of a very specific datum with a 
+    particular test.
+
+3. Unit tests - These are individual test functions which call out to
     specific functions within your extension. These are typical
     python unit tests and many good python documents exist
     to describe how to write them well. For examples here you
@@ -64,4 +71,27 @@ OVERWRITE comparisons mode::
 
 This is like mode 2, but will over-write any existing files too. This allows
 you to update the test compare files.
+
+.. versionadded:: 1.2
+    ``NO_MOCK_COMMANDS`` environment variable
+
+If external programs are called, the tester tries to find the call data in the mock
+files, located in tests/data/cmd/executable_name. As long as the parameters and input 
+files to such a call doesn't change, the mock call filename is stable across operating 
+systems. If mock files are missing, they can be generated with the NO_MOCK_COMMANDS 
+variable.
+
+    NO_MOCK_COMMANDS=1 pytest tests/test_my_specific_test.py
+
+If mock files are requested but not found, regenerate them and print the generated 
+filename to stderr (so you know which file was generated). Typically, the test then 
+fails due to "Extra print statements detected". Rename the file and re-run the test.
+This is mode you should be using to generate mock files.
+
+    NO_MOCK_COMMANDS=2 pytest tests/test_my_specific_test.py
+
+Ignore existing mock data and actually call commands, and save all resulting mock files
+as``*.msg.output`` files. The comparison mechanism governed 
+by EXPORT_COMPARE stays in place. This is useful to check e.g. if a different 
+version of the executable changes the correctness of the extension output.
 

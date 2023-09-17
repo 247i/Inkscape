@@ -1,13 +1,13 @@
-prefix=C:/msys64/home/Me/b64/idir
+prefix=C:/msys64/home/me/b64/idir
 exec_prefix=${prefix}
 libdir=${exec_prefix}/lib
 includedir=${prefix}/include
 
 Name: 2geom
 Description: A 2D geometry framework
-Version: 1.2.2
+Version: 1.3.0
 
 Requires:
 Libs: -L${libdir} -l2geom
-Cflags: -I${includedir}/2geom-1.2.2
+Cflags: -I${includedir}/2geom-1.3.0
 

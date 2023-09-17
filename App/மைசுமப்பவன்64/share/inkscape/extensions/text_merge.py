@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # coding=utf-8
 #
 # Copyright (C) 2013 Nicolas Dufour (jazzynico)
@@ -106,7 +106,6 @@ class Merge(inkex.EffectExtension):
     def recurse(self, text_span, node, span):
         """Recursively go through each node self calling on child nodes"""
         if not isinstance(node, FlowRegion):
-
             newspan = span.add(text_span())
             newspan.set("xml:space", "preserve")
 

@@ -59,7 +59,6 @@ class ElementList(OrderedDict):
         return super().__contains__(self._to_key(key))
 
     def __setitem__(self, orig_key, elem):
-
         if orig_key != elem and orig_key != elem.get("id"):
             raise ValueError(f"Refusing to set bad key in ElementList {orig_key}")
         if isinstance(elem, str):

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # coding=utf-8
 #
 # Copyright (C) 2013 <Public Domain>
@@ -26,7 +26,7 @@ from inkex.localization import inkex_gettext as _
 import hpgl_encoder
 
 
-class Plot(inkex.EffectExtension):
+class Plot(inkex.OutputExtension):
     """Generate a plot in HPGL output"""
 
     def add_arguments(self, pars):
@@ -90,6 +90,8 @@ class Plot(inkex.EffectExtension):
 
     def effect(self):
         # get hpgl data
+        if self.svg.xpath("//use|//flowRoot|//text") is not None:
+            self.preprocess(["flowRoot", "text"])
         encoder = hpgl_encoder.hpglEncoder(self)
         try:
             self.options.to_port(self.options.to_language(encoder.getHpgl()))
@@ -156,6 +158,9 @@ class Plot(inkex.EffectExtension):
             parity=self.options.serialParity,
         ) as comx:
             comx.write(hpgl.encode("utf8"))
+
+    def save(self, stream):
+        pass
 
 
 if __name__ == "__main__":

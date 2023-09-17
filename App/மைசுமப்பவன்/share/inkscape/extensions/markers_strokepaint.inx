@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <inkscape-extension xmlns="http://www.inkscape.org/namespace/inkscape/extension">
   <name>Color Markers</name>
-  <id>org.inkscape.filter.markers_stroke_paint</id>
+  <id>effect.color_markers</id>
   
   <param name='tab' type="notebook">
     <page name='object' gui-text="From object">
@@ -30,7 +30,7 @@
   <effect>
   <object-type>all</object-type>
   <effects-menu>
-    <submenu name="Modify Path"/>
+    <submenu name="Styles"/>
   </effects-menu>
   </effect>
   <script>

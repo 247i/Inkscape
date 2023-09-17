@@ -1,7 +1,7 @@
 GIMP Palette
 Name: Gold
 #
-  0   0   0
+  0   0   0 Black
 128 128 128
 255 255 255
 252 252 128
@@ -102,4 +102,4 @@ Name: Gold
  12   0   0
   8   0   0
   4   0   0
-  0   0   0
+  0   0   0 Gold Black

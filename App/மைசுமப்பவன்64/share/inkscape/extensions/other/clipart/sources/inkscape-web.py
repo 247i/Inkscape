@@ -65,7 +65,9 @@ class InkscapeWebsite(RemoteSource):
                 "id": item["id"],
                 "name": item["name"],
                 "author": item["author"],
-                "license": license_mapping.get(item["license"], item["license"].lower()),
+                "license": license_mapping.get(
+                    item["license"], item["license"].lower()
+                ),
                 "summary": item["summary"],
                 "thumbnail": item["icon"] or item["links"]["file"],
                 "created": item["dates"]["created"],

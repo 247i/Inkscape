@@ -1,5 +1,8 @@
 <?xml version="1.0"?>
-<keys name="Xara">
+<keys name="Xara" xmlns:xi="http://www.w3.org/2001/XInclude">
+
+<!-- inherit -->
+<xi:include href="inkscape.xml" />
 
 <!-- 
 This is the alternative Inkscape keymap designed to match as close as possible the
@@ -93,7 +96,7 @@ Hom/end keys-select minimum or maximum feather values
   <bind gaction="win.tool-switch('Spiral')"         keys="F9, i, I" />
   <bind gaction="win.tool-switch('Pencil')"         keys="F3, p, P" />
   <bind gaction="win.tool-switch('Pen')"            keys="&lt;shift&gt;F5, b, B" />
-  <bind gaction="win.tool-switch('Caligraphic')"    keys="&lt;ctrl&gt;F6, c, C" />
+  <bind gaction="win.tool-switch('Calligraphic')"   keys="&lt;ctrl&gt;F6, c, C" />
   <bind gaction="win.tool-switch('Text')"           keys="F8, t, T" />
   <!--In Xara, F5 is Fill tool, F6 is Transparency tool; our Gradient tool is an incomplete analog of both-->
   <bind gaction="win.tool-switch('Gradient')"       keys="F5, F6, g, G" />
@@ -120,7 +123,7 @@ Hom/end keys-select minimum or maximum feather values
   <bind gaction="win.window-previous"               keys="&lt;ctrl&gt;&lt;shift&gt;Tab, &lt;ctrl&gt;ISO_Left_Tab" />
   <bind gaction="win.canvas-rulers"                 keys="&lt;ctrl&gt;L, &lt;ctrl&gt;l" />
   <bind gaction="doc.show-all-guides"               keys="&lt;shift&gt;bar, bar, KP_1" /><!-- | -->
-  <bind gaction="win.canvas-show-grid"              keys="&lt;shift&gt;numbersign, numbersign" /> <!-- # -->
+  <bind gaction="doc.show-grids"                    keys="&lt;shift&gt;numbersign, numbersign" /> <!-- # -->
   <bind gaction="win.canvas-scroll-bars" />
   <bind gaction="win.window-new"/>
   <bind gaction="win.dialog-open('IconPreview')"/>
@@ -166,8 +169,6 @@ Hom/end keys-select minimum or maximum feather values
   <bind gaction="win.dialog-open('Trace')"          keys="&lt;alt&gt;&lt;shift&gt;b, &lt;alt&gt;&lt;shift&gt;B" />
   <bind gaction="app.object-to-pattern"             keys="&lt;alt&gt;i, &lt;alt&gt;I" />
   <bind gaction="app.pattern-to-object"             keys="&lt;alt&gt;&lt;shift&gt;i, &lt;alt&gt;&lt;shift&gt;I" />
-  <bind gaction="app.object-set-clip-mask" />
-  <bind gaction="app.object-release-clip-mask" />
   <bind gaction="app.object-set-clip" />
   <bind gaction="app.object-release-clip" />
   <bind gaction="app.object-rotate-90-cw"           keys="&lt;primary&gt;bracketright" />
@@ -184,7 +185,7 @@ Hom/end keys-select minimum or maximum feather values
   <bind gaction="app.path-exclusion"         keys="&lt;ctrl&gt;asciicircum, &lt;ctrl&gt;&lt;shift&gt;asciicircum" /> <!-- ^ -->
   <bind gaction="app.path-cut"               keys="&lt;ctrl&gt;&lt;alt&gt;slash, &lt;ctrl&gt;&lt;alt&gt;&lt;shift&gt;slash" />
   <bind gaction="app.path-division"          keys="&lt;ctrl&gt;4, &lt;ctrl&gt;slash, &lt;ctrl&gt;&lt;shift&gt;slash" />
-  <bind gaction="win.path-outset"            keys="&lt;ctrl&gt;parenright, &lt;ctrl&gt;&lt;shift&gt;parenright, &lt;ctrl&gt;&lt;shift&gt;0" />
+  <bind gaction="win.path-offset"            keys="&lt;ctrl&gt;parenright, &lt;ctrl&gt;&lt;shift&gt;parenright, &lt;ctrl&gt;&lt;shift&gt;0" />
   <bind gaction="win.path-inset"             keys="&lt;ctrl&gt;parenleft, &lt;ctrl&gt;&lt;shift&gt;parenleft, &lt;ctrl&gt;&lt;shift&gt;9" />
   <bind gaction="win.path-offset-dynamic"    keys="&lt;ctrl&gt;j, &lt;ctrl&gt;J" />
   <bind gaction="win.path-offset-linked"     keys="&lt;ctrl&gt;&lt;alt&gt;j, &lt;ctrl&gt;&lt;alt&gt;J" />
@@ -209,7 +210,7 @@ Hom/end keys-select minimum or maximum feather values
   <bind gaction="win.layer-bottom"                      keys="&lt;ctrl&gt;&lt;shift&gt;End, &lt;ctrl&gt;&lt;shift&gt;KP_End" />
   <bind gaction="win.selection-move-to-layer-above"     keys="&lt;ctrl&gt;&lt;shift&gt;U, &lt;ctrl&gt;&lt;shift&gt;u, &lt;shift&gt;Page_Up, &lt;shift&gt;KP_Page_Up" />
   <bind gaction="win.selection-move-to-layer-below"     keys="&lt;ctrl&gt;&lt;shift&gt;D, &lt;ctrl&gt;&lt;shift&gt;d, &lt;shift&gt;Page_Down, &lt;shift&gt;KP_Page_Down" />
-  <bind gaction="win.dialog-open('Layers')"             keys="F10" />
+  <bind gaction="win.dialog-open('Objects')"            keys="F10" />
   <bind gaction="win.layer-new" />
   <bind gaction="win.layer-rename" />
   <bind gaction="win.layer-previous" />
@@ -218,7 +219,7 @@ Hom/end keys-select minimum or maximum feather values
 
 <!-- Dialogs -->
 
-  <bind gaction="win.dialog-ope('XMLEditor')"           keys="&lt;ctrl&gt;&lt;shift&gt;x, &lt;ctrl&gt;&lt;shift&gt;X" />
+  <bind gaction="win.dialog-open('XMLEditor')"           keys="&lt;ctrl&gt;&lt;shift&gt;x, &lt;ctrl&gt;&lt;shift&gt;X" />
   <bind gaction="app.preferences"                       keys="&lt;ctrl&gt;&lt;shift&gt;q, &lt;ctrl&gt;&lt;shift&gt;Q" />
   <bind gaction="win.dialog-open('AlignDistribute')"    keys="&lt;ctrl&gt;&lt;shift&gt;L, &lt;ctrl&gt;&lt;shift&gt;l" />
   <bind gaction="win.dialog-open('Text')"               keys="&lt;shift&gt;F9, &lt;ctrl&gt;&lt;shift&gt;t, &lt;ctrl&gt;&lt;shift&gt;T" />
@@ -228,10 +229,9 @@ Hom/end keys-select minimum or maximum feather values
   <bind gaction="win.dialog-open('Swatches')"           keys="F9, &lt;ctrl&gt;&lt;shift&gt;w, &lt;ctrl&gt;&lt;shift&gt;W" />
   <bind gaction="win.dialog-toggle"                     keys="F12" />
   <bind gaction="win.dialog-open('DocumentProperties')" />
-  <bind gaction="win.dialog-ope('Find')" />
+  <bind gaction="win.dialog-open('Find')" />
   <bind gaction="win.dialog-open('ObjectProperties')" />
   <bind gaction="win.dialog-open('Clonetiler')" />
-  <bind gaction="win.dialog-open('Arrange')" />
   <bind gaction="win.dialog-open('Messages')" />
   <bind gaction="win.dialog-open('Input')" />
 

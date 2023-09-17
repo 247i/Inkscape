@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #
 # Copyright 2008, 2009 Hannes Hochreiner
 #                 2020 Martin Owens

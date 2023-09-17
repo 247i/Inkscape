@@ -47,7 +47,7 @@ See default.xml for more information.
   <bind gaction="win.tool-switch('Arc')"          keys="l" />
 
   <!-- Paintbrush tool -->
-  <bind gaction="win.tool-switch('Caligraphic')"  keys="b" />
+  <bind gaction="win.tool-switch('Calligraphic')" keys="b" />
 
   <!-- Pencil tool -->
   <bind gaction="win.tool-switch('Pencil')"       keys="n" />
@@ -75,7 +75,7 @@ See default.xml for more information.
 <!-- View -->
 
   <!--Show Grid Ctrl+" -->
-  <bind gaction="win.canvas-show-grid"    keys="&lt;primary&gt;quotedbl" />
+  <bind gaction="doc.show-grids"       keys="&lt;primary&gt;quotedbl" />
   
   <!-- Toggle Guides -->
   <bind gaction="doc.show-all-guides"     keys="&lt;primary&gt;semicolon" />
@@ -117,7 +117,7 @@ See default.xml for more information.
   
   <!-- Panel Shortcuts -->
   <bind gaction="win.dialog-open('Swatches')"         keys="F6" />
-  <bind gaction="win.dialog-open('Layers')"           keys="F7" />
+  <bind gaction="win.dialog-open('Objects')"          keys="F7" />
   <bind gaction="win.dialog-open('AlignDistribute')"  keys="&lt;shift&gt;F7" />
   <bind gaction="win.dialog-open('Transform')"        keys="&lt;shift&gt;F8" />
   <bind gaction="win.dialog-open('FillStroke')"       keys="&lt;primary&gt;F9" />

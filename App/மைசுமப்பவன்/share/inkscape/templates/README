@@ -1,5 +1,7 @@
 This folder contains the templates for new documents created in
-Inkscape. They're listed in the "File > New From Template..." submenu.
+Inkscape. They're listed in the Welcome screen and
+"File > New From Template..." submenu.
+
 A template may store any document-specific settings (such as initial
 zoom and view, paper size, background and borders, metadata, window
 geometry, grid and guide settings, export hints) as well as any
@@ -9,8 +11,8 @@ Alternatively you can manually save or copy it into this folder or
 profile directory.
 
 Procedural templates are located in the adjacent 'extensions'
-directory. By convention, they begin with 'empty_'.
-
+directory. Each one can have multiple presets which can be shown
+in the user interface as icons.
 
 ## Default template ##
 

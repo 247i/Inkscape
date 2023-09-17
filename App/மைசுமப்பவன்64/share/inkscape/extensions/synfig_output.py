@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # coding=utf-8
 #
 # Copyright (C) 2011 Nikita Kitaev
@@ -39,10 +39,11 @@ from inkex import (
     SvgDocumentElement,
     Path,
     Transform,
+    OutputExtension,
 )
 
 import synfig_fileformat as sif
-from synfig_prepare import MalformedSVGError, SynfigPrep, get_dimension
+from synfig_prepare import *
 
 
 # ##### Utility Classes ####################################
@@ -1095,7 +1096,7 @@ def extract_color(style, color_attrib, *opacity_attribs):
     if color_attrib in style.keys():
         if style[color_attrib] == "none":
             return [1, 1, 1, 0]
-        c = inkex.Color(style[color_attrib]).to_rgb()
+        c = style(color_attrib).to_rgb()
     else:
         c = (0, 0, 0)
 
@@ -1134,13 +1135,27 @@ def extract_width(style, width_attrib, mtx):
 
 
 # ##### Main Class #########################################
-class SynfigExport(SynfigPrep):
-    def __init__(self):
-        SynfigPrep.__init__(self)
+class SynfigExport(OutputExtension):
+    def preprocess(self):
+        """Transform document in preparation for exporting it into the Synfig format"""
+
+        # Convert objects to path
+        super().preprocess()
+
+        # Remove inheritance of attributes
+        propagate_attribs(self.document.getroot())
+
+        # Fuse multiple subpaths in fills
+        for node in self.document.getroot().xpath("//svg:path"):
+            if node.get("d", "").lower().count("m") > 1:
+                # There are multiple subpaths
+                fill = split_fill_and_stroke(node)[0]
+                if fill is not None:
+                    fill.path = fuse_subpaths(fill.path)
 
     def effect(self):
         # Prepare the document for exporting
-        SynfigPrep.effect(self)
+        self.preprocess()
         svg = self.document.getroot()
         width = get_dimension(svg.get("width", 1024))
         height = get_dimension(svg.get("height", 768))

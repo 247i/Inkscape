@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """Flip upper to lower and lower to upper cases"""
 
 import inkex

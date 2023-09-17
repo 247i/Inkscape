@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <inkscape-extension xmlns="http://www.inkscape.org/namespace/inkscape/extension">
-    <name>Replace font</name>
+    <name>Replace Font</name>
     <id>org.inkscape.replace_font</id>
 
     <dependency type="extension">org.inkscape.output.svg.inkscape</dependency>

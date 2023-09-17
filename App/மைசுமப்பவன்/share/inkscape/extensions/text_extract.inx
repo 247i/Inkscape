@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <inkscape-extension xmlns="http://www.inkscape.org/namespace/inkscape/extension">
-    <name>Extract</name>
+    <name>Extract from Selection</name>
     <id>org.inkscape.text.extract</id>
     <param name="direction" type="optiongroup" appearance="combo" gui-text="Text direction:">
         <option value="lr">Left to right</option>

@@ -22,7 +22,7 @@
     <object-type>all</object-type>
     <effects-menu>
      <submenu name="Render">
-        <submenu name="Barcode" />
+        <submenu name="Barcode / QR Code" />
       </submenu>
     </effects-menu>
   </effect>

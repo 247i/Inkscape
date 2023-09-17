@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # coding=utf-8
 #
 # Copyright (C) 2009 Karlisson Bezerra, contato@nerdson.com
@@ -217,7 +217,8 @@ class TextSplit(inkex.EffectExtension):
 
         text: either a Tspan that should be moved to a new text element - in this case, text is
             a direct child of element; or a string
-        prototype: if text is a string, style and transform will be taken from prototype"""
+        prototype: if text is a string, style and transform will be taken from prototype
+        """
 
         if isinstance(text, Tspan) and text.getparent() == self.current_root:
             # we just move the tspan to a new text element.

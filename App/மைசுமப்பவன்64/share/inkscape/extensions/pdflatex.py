@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # coding=utf-8
 #
 # Copyright (C) 2019 Marc Jeanmougin
@@ -73,13 +73,17 @@ class PdfLatex(TempDirMixin, inkex.GenerateExtension):
             )
         except ProgramRunError as err:
             inkex.errormsg(_("An exception occurred during LaTeX compilation: ") + "\n")
-            inkex.errormsg(err.stdout.decode("utf8").replace("\r\n", "\n"))
+            inkex.errormsg(
+                err.stdout.decode("utf8")
+                .replace("\r\n", "\n")
+                .split("Transcript written on")[0]
+            )
             raise inkex.AbortExtension()
 
         inkscape(
             pdf_file,
             export_filename=svg_file,
-            pdf_page=1,
+            pages=1,
             pdf_poppler=True,
             export_type="svg",
             actions=(
@@ -119,7 +123,7 @@ class PdfLatex(TempDirMixin, inkex.GenerateExtension):
         if self.options.standalone:
             docclass = (
                 f"\\documentclass[fontsize={self.options.font_size}pt, "
-                + "class=scrreprt, preview]{standalone}"
+                + "class=scrreprt, preview, border=2pt]{standalone}"
             )
         else:
             docclass = r"\documentclass{minimal}"

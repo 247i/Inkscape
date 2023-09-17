@@ -1,5 +1,8 @@
 <?xml version="1.0"?>
-<keys name="Right Handed Illustration">
+<keys name="Right Handed Illustration" xmlns:xi="http://www.w3.org/2001/XInclude">
+
+<!-- inherit -->
+<xi:include href="inkscape.xml" />
 
 <!--  
 
@@ -79,8 +82,8 @@ Future improvements:
   <bind gaction="win.tool-switch('PaintBucket')"            keys="K, k" />
   <bind gaction="win.tool-switch('Pencil')"                 keys="F6, &lt;ctrl&gt;2" />
   <bind gaction="win.tool-switch('Pen')"                    keys="&lt;shift&gt;F6, b, B, 2" />
-  <bind gaction="win.tool-switch('Caligraphic')"            keys="&lt;ctrl&gt;F6" />
-  <bind gaction="win.tool-switch('Caligraphic')"            keys="&lt;shift&gt;at, at" />
+  <bind gaction="win.tool-switch('Calligraphic')"           keys="&lt;ctrl&gt;F6" />
+  <bind gaction="win.tool-switch('Calligraphic')"           keys="&lt;shift&gt;at, at" />
   <bind gaction="win.tool-switch('Text')"                   keys="F8, t, T" />
   <bind gaction="win.tool-switch('Gradient')"               keys="&lt;ctrl&gt;F1" />
   <bind gaction="win.tool-switch('Connector')"              keys="&lt;ctrl&gt;F2, o, O" />
@@ -107,7 +110,7 @@ Future improvements:
   <bind gaction="win.canvas-rulers"                         keys="&lt;ctrl&gt;r, &lt;ctrl&gt;R" />
   <bind gaction="win.canvas-scroll-bars"                    keys="&lt;ctrl&gt;b, &lt;ctrl&gt;B" />
   <bind gaction="doc.show-all-guides"                       keys="&lt;shift&gt;bar, bar" /> <!-- | -->
-  <bind gaction="win.canvas-show-grid"                      keys="&lt;shift&gt;numbersign, numbersign" /> <!-- # -->
+  <bind gaction="doc.show-grids"                            keys="&lt;shift&gt;numbersign, numbersign" /> <!-- # -->
   <bind gaction="win.canvas-display-mode-cycle"             keys="&lt;primary&gt;KP_5, &lt;primary&gt;KP_Begin"/>
   <bind gaction="win.window-new"/>
   <bind gaction="win.dialog-open('IconPreview')"/>
@@ -117,8 +120,8 @@ Future improvements:
 
   <bind gaction="doc.undo"                                  keys="&lt;ctrl&gt;z, &lt;ctrl&gt;Z, &lt;ctrl&gt;&lt;shift&gt;y, &lt;ctrl&gt;&lt;shift&gt;Y" />
   <bind gaction="doc.undo"                                  keys="d, D" />
-  <bind gaction="win.redo"                                  keys="&lt;ctrl&gt;&lt;shift&gt;z, &lt;ctrl&gt;&lt;shift&gt;Z, &lt;ctrl&gt;y, &lt;ctrl&gt;Y" />
-  <bind gaction="win.redo"                                  keys="f, F" />
+  <bind gaction="doc.redo"                                  keys="&lt;ctrl&gt;&lt;shift&gt;z, &lt;ctrl&gt;&lt;shift&gt;Z, &lt;ctrl&gt;y, &lt;ctrl&gt;Y" />
+  <bind gaction="doc.redo"                                  keys="f, F" />
   <bind gaction="app.cut"                                   keys="&lt;ctrl&gt;x, &lt;ctrl&gt;X" />
   <bind gaction="app.copy"                                  keys="&lt;ctrl&gt;c, &lt;ctrl&gt;C" />
   <bind gaction="win.paste"                                 keys="&lt;ctrl&gt;v, &lt;ctrl&gt;V" />
@@ -160,8 +163,6 @@ Future improvements:
   <bind gaction="app.object-to-pattern"                     keys="&lt;alt&gt;i, &lt;alt&gt;I" />
   <bind gaction="app.pattern-to-object"                     keys="&lt;alt&gt;&lt;shift&gt;i, &lt;alt&gt;&lt;shift&gt;I" />
   <bind gaction="app.object-set-clip"                            keys="&lt;ctrl&gt;&lt;alt&gt;&lt;shift&gt;Q, &lt;ctrl&gt;&lt;alt&gt;&lt;shift&gt;q" />
-  <bind gaction="app.object-set-clip-mask" />
-  <bind gaction="app.object-release-clip-mask" />
   <bind gaction="app.object-release-clip" />
   <!-- FIXME: currently these bypass the verbs, so the verbs are not bound to ctrl+[] as they should be -->
   <bind gaction="app.object-rotate-90-cw" />
@@ -182,7 +183,7 @@ Future improvements:
   <bind gaction="app.path-exclusion"                 keys="&lt;ctrl&gt;asciicircum, &lt;ctrl&gt;&lt;shift&gt;asciicircum" /> <!-- ^ -->
   <bind gaction="app.path-cut"                       keys="&lt;ctrl&gt;&lt;alt&gt;slash, &lt;ctrl&gt;&lt;alt&gt;&lt;shift&gt;slash" />
   <bind gaction="app.path-division"                  keys="&lt;ctrl&gt;slash, &lt;ctrl&gt;&lt;shift&gt;slash" />
-  <bind gaction="win.path-outset"                    keys="&lt;ctrl&gt;parenright, &lt;ctrl&gt;&lt;shift&gt;parenright, &lt;ctrl&gt;&lt;shift&gt;0" />
+  <bind gaction="win.path-offset"                    keys="&lt;ctrl&gt;parenright, &lt;ctrl&gt;&lt;shift&gt;parenright, &lt;ctrl&gt;&lt;shift&gt;0" />
   <bind gaction="win.path-inset"                     keys="&lt;ctrl&gt;parenleft, &lt;ctrl&gt;&lt;shift&gt;parenleft, &lt;ctrl&gt;&lt;shift&gt;9" />
   <bind gaction="win.path-offset-dynamic"            keys="&lt;ctrl&gt;j, &lt;ctrl&gt;J" />
   <bind gaction="win.path-offset-linked"             keys="&lt;ctrl&gt;&lt;alt&gt;j, &lt;ctrl&gt;&lt;alt&gt;J" />
@@ -206,7 +207,7 @@ Future improvements:
   <bind gaction="win.layer-bottom"                          keys="&lt;ctrl&gt;&lt;shift&gt;End, &lt;ctrl&gt;&lt;shift&gt;KP_End" />
   <bind gaction="win.selection-move-to-layer-above"         keys="&lt;shift&gt;Page_Up, &lt;shift&gt;KP_Page_Up" />
   <bind gaction="win.selection-move-to-layer-below"         keys="&lt;shift&gt;Page_Down, &lt;shift&gt;KP_Page_Down" />
-  <bind gaction="win.dialog-open('Layers')"                 keys="&lt;ctrl&gt;&lt;shift&gt;L" />
+  <bind gaction="win.dialog-open('Objects')"                keys="&lt;ctrl&gt;&lt;shift&gt;L" />
   <bind gaction="win.layer-new" />
   <bind gaction="win.layer-rename" />
   <bind gaction="win.layer-previous" />
@@ -233,7 +234,7 @@ Future improvements:
   <bind gaction="win.dialog-open('DocumentProperties')"      keys="&lt;primary&gt;&lt;shift&gt;d" />
   <bind gaction="win.dialog-open('Swatches')"                keys="&lt;primary&gt;&lt;shift&gt;w" />
   <bind gaction="win.dialog-open('Messages')" />
-  <bind gaction="win.dialog-open('Layers')"                  keys="&lt;primary&gt;&lt;shift&gt;l" />
+  <bind gaction="win.dialog-open('Objects')"                 keys="&lt;primary&gt;&lt;shift&gt;l" />
   <bind gaction="win.dialog-open('Text')"                    keys="&lt;primary&gt;&lt;shift&gt;t"/>
   <bind gaction="win.dialog-open('Spellcheck')"              keys="&lt;primary&gt;&lt;alt&gt;k"/>
   <bind gaction="win.dialog-open('Memory')" />
@@ -242,7 +243,6 @@ Future improvements:
 
 <!-- Help -->
 
-  <bind gaction="win.dialog-open('Memory')" />
   <bind gaction="app.about" />
   <!-- There are also verbs for tutorials, if you really need them -->
 

@@ -39,7 +39,7 @@
     <effect>
         <object-type>all</object-type>
         <effects-menu>
-           <submenu name="Render"/>
+           <submenu name="Generate from Path"/>
         </effects-menu>
     </effect>
     <script>

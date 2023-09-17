@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "inkex"
-version = "1.2.0"
+version = "1.3.0"
 description = "Python extensions for Inkscape core, separated out from main repository."
 authors = ["Inkscape Authors <inkscape-devel@lists.inkscape.org>"]
 maintainers = [
@@ -8,7 +8,7 @@ maintainers = [
     "Jonathan Neuhauser <jonathan.neuhauser@outlook.com>",
 ]
 license = "GPL-2.0-or-later"
-readme = "README.md"
+readme = "package-readme.md"
 repository = "https://gitlab.com/inkscape/extensions"
 keywords = ["extensions", "graphics", "inkscape", "svg", "vector"]
 classifiers=[
@@ -17,22 +17,25 @@ classifiers=[
     "Topic :: Software Development :: Libraries :: Python Modules",
     "Topic :: Multimedia :: Graphics :: Editors :: Vector-Based",
 ]
+packages = [
+  { include = "inkex"}
+]
 
 [tool.poetry.dependencies]
-python = "^3.6"
+python = "^3.7"
 PyGObject = {version = ">=3.36", markers = "platform_system!='Windows'"}
 pySerial = "^3.4"
 lxml = "^4.5.0"
 cssselect = "^1.1.0"
 numpy = [
     #numpy incorrectly specifies its required Python version until 1.21.2
-    {version = "^1.17.0", python = "^3.6, <3.10"},
+    {version = "^1.17.0", python = "^3.7, <3.10"},
     {version = "^1.21.2", python = "^3.10"},
 ]
 Pillow = ">=7.0.0" # Used by RasterOutputExtension
 scour = "^0.37" # Used by Optimized SVG Extension
 packaging = ">=20.3" # Used by Optimized SVG Extension to compare scour versions
-
+pyparsing = ">=3.0.9"
 [tool.poetry.dev-dependencies]
 pytest = "^7.0.1"
 pytest-cov = "^3.0.0"

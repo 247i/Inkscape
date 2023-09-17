@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <inkscape-extension xmlns="http://www.inkscape.org/namespace/inkscape/extension">
-  <name>Mesh-Gradient to Path</name>
+  <name>Mesh Gradient to Path</name>
   <id>org.inkscape.meshes.mesh_to_path</id>
 
   <param name="tab" type="notebook">
@@ -24,8 +24,8 @@
   <effect>
     <object-type>all</object-type>
     <effects-menu>
-      <submenu name="Modify Path">
-        <submenu name="Mesh">
+      <submenu name="Styles">
+        <submenu name="Mesh Gradient">
         </submenu>
       </submenu>
     </effects-menu>

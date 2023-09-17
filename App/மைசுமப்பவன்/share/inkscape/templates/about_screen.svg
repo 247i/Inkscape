@@ -6,7 +6,7 @@
    version="1.1"
    sodipodi:docname="about_screen.svg"
    id="svg685"
-   inkscape:version="1.2-dev (37aac6d2d2, 2022-01-27, custom)"
+   inkscape:version="1.3-dev (7393e8a172, 2022-04-28, custom)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -96,4 +96,11 @@
      id="layer1"
      inkscape:groupmode="layer"
      inkscape:label="Layer 1" />
+  <inkscape:templateinfo>
+    <inkscape:name>About Screen</inkscape:name>
+    <inkscape:author>Martin Owens</inkscape:author>
+    <inkscape:shortdesc>A set of pages for the about screen contest entry</inkscape:shortdesc>
+    <inkscape:date>2021-12-30</inkscape:date>
+    <inkscape:icon>about</inkscape:icon>
+  </inkscape:templateinfo>
 </svg>

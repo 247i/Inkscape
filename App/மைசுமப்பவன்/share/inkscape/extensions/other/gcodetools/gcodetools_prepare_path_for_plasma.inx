@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <inkscape-extension xmlns="http://www.inkscape.org/namespace/inkscape/extension">
-    <name>Prepare path for plasma</name>
+    <name>Prepare Path for Plasma</name>
     <id>ru.cnc-club.filter.gcodetools_plasma-prepare-path_no_options_no_preferences</id>
     <param name='active-tab' type="notebook">
 

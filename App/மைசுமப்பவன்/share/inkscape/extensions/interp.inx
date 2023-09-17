@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <inkscape-extension xmlns="http://www.inkscape.org/namespace/inkscape/extension">
-    <name>Interpolate</name>
-    <id>org.ekips.filter.interp</id>
+    <name>Interpolate Between Paths</name>
+    <id>effect.interpolate</id>
     <param name="exponent" type="float" min="0" max="100" gui-text="Exponent:">1.00</param>
     <param name="steps" type="int" min="1" max="1000" gui-text="Interpolation steps:">5</param>
     <param name="method" gui-text="Interpolation method:" type="optiongroup" appearance="radio" gui-description="The first option rediscretizes both paths before the interpolation with the other path's node positions. The second option removes extra nodes of the longer path.">

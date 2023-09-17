@@ -86,11 +86,12 @@ override) the bindings in the main default.xml.
   <!-- Tools -->
   <bind gaction="win.tool-switch('Select')"              keys="s,   F1"/>
   <bind gaction="win.tool-switch('Node')"                keys="n,   F2"/>
+  <bind gaction="win.tool-switch('Booleans')"            keys="x"/>
 
   <bind gaction="win.tool-switch('Rect')"                keys="r,   F4"/>
   <bind gaction="win.tool-switch('Arc')"                 keys="e,   F5"/>
   <bind gaction="win.tool-switch('Star')"                keys="asterisk, &lt;shift&gt;F9, KP_Multiply"/>
-  <bind gaction="win.tool-switch('3DBox')"               keys="x,   &lt;shift&gt;F4"/>
+  <bind gaction="win.tool-switch('3DBox')"               keys="&lt;shift&gt;F4"/>
   <bind gaction="win.tool-switch('Spiral')"              keys="i,   F9"/>
 
   <bind gaction="win.tool-switch('Pencil')"              keys="p,   F6"/>
@@ -147,6 +148,7 @@ override) the bindings in the main default.xml.
   <bind gaction="app.paste-width-separately" />
   <bind gaction="app.paste-height-separately" />
   <bind gaction="app.duplicate"                          keys="&lt;primary&gt;d"/>
+  <bind gaction="app.duplicate-transform"                keys="&lt;primary&gt;&lt;alt&gt;d" />
   <bind gaction="app.clone"                              keys="&lt;alt&gt;d" />
   <bind gaction="app.clone-unlink"                       keys="&lt;alt&gt;&lt;shift&gt;d" />
   <bind gaction="app.clone-unlink-recursively" />
@@ -164,7 +166,8 @@ override) the bindings in the main default.xml.
   <bind gaction="win.select-same-fill" />
   <bind gaction="win.select-same-stroke-style" />
   <bind gaction="win.select-same-object-type"            keys="&lt;shift&gt;&lt;alt&gt;a" />
-  <bind gaction="win.select-invert"                      keys="exclam ,&lt;shift&gt;exclam"/>
+  <bind gaction="win.select-invert"                      keys="exclam, &lt;shift&gt;exclam"/>
+  <bind gaction="win.select-invert-all"                  keys="&lt;alt&gt;exclam, &lt;shift&gt;&lt;alt&gt;exclam"/>
   <bind gaction="win.select-none"                        keys="Escape"/>
 
   <!-- View -->
@@ -204,7 +207,7 @@ override) the bindings in the main default.xml.
   <bind gaction="win.canvas-color-manage" />
 
   <!-- View - Other -->
-  <bind gaction="win.canvas-show-grid"                   keys="&lt;shift&gt;numbersign, numbersign" /> <!-- # -->
+  <bind gaction="doc.show-grids"                         keys="&lt;shift&gt;numbersign, numbersign" /> <!-- # -->
   <bind gaction="doc.show-all-guides"                    keys="&lt;shift&gt;bar,        bar" />        <!-- | -->
   <bind gaction="win.canvas-commands-bar" />
   <bind gaction="win.canvas-snap-controls-bar" />
@@ -275,16 +278,17 @@ override) the bindings in the main default.xml.
   <bind gaction="app.object-flip-horizontal"             keys="h" />
   <bind gaction="app.object-flip-vertical"               keys="v" />
 
-  <bind gaction="app.object-align('hcenter pref')"         keys="&lt;primary&gt;&lt;alt&gt;h" />
-  <bind gaction="app.object-align('vcenter pref')"         keys="&lt;primary&gt;&lt;alt&gt;t" />
+  <bind gaction="app.object-align('vcenter pref')"         keys="&lt;primary&gt;&lt;alt&gt;KP_1" />
   <bind gaction="app.object-align('bottom pref')"          keys="&lt;primary&gt;&lt;alt&gt;KP_2" />
   <bind gaction="app.object-align('left pref')"            keys="&lt;primary&gt;&lt;alt&gt;KP_4" />
   <bind gaction="app.object-align('hcenter vcenter pref')" keys="&lt;primary&gt;&lt;alt&gt;KP_5" />
   <bind gaction="app.object-align('right pref')"           keys="&lt;primary&gt;&lt;alt&gt;KP_6" />
+  <bind gaction="app.object-align('hcenter pref')"         keys="&lt;primary&gt;&lt;alt&gt;KP_7" />
   <bind gaction="app.object-align('top pref')"             keys="&lt;primary&gt;&lt;alt&gt;KP_8" />
 
   <!-- Object Transform -->
   <bind gaction="app.transform-remove"                   keys="&lt;shift&gt;&lt;alt&gt;t" />
+  <bind gaction="app.transform-reapply"                  keys="&lt;primary&gt;&lt;alt&gt;t" />
   <bind gaction="app.transform-scale(2.0)"               keys="&lt;primary&gt;period, &lt;primary&gt;greater" />
   <bind gaction="app.transform-grow-step(1.0)"           keys="               period,                greater" /> <!-- uses preference step value -->
   <bind gaction="app.transform-grow-screen(2.0)"         keys="    &lt;alt&gt;period,     &lt;alt&gt;greater" />
@@ -318,6 +322,9 @@ override) the bindings in the main default.xml.
                                                                &lt;primary&gt;&lt;alt&gt;&lt;shift&gt;slash" />
   <bind gaction="app.path-combine"                       keys="&lt;primary&gt;k" />
   <bind gaction="app.path-break-apart"                   keys="&lt;primary&gt;&lt;shift&gt;k" />
+  <bind gaction="app.path-split"                         keys="&lt;primary&gt;&lt;shift&gt;&lt;alt&gt;k" />
+  <bind gaction="app.path-fracture"                      keys="&lt;shift&gt;&lt;alt&gt;f" />
+  <bind gaction="app.path-flatten"                       keys="&lt;shift&gt;f" />
 
   <bind gaction="win.path-inset"                         keys="&lt;primary&gt;parenleft,
                                                                &lt;primary&gt;&lt;shift&gt;parenleft,
@@ -348,11 +355,22 @@ override) the bindings in the main default.xml.
   <bind gaction="app.text-convert-to-regular" />
   <bind gaction="app.text-unkern" />
 
+  <!-- Extensions: Mostly these are unbound references to extensions used in other keys -->
+  <bind gaction="org.inkscape.text.uppercase" />
+  <bind gaction="org.inkscape.text.lowercase" />
+  <bind gaction="org.inkscape.text.title_case" />
+  <bind gaction="org.ekips.filter.interp.ekips" />
+  <bind gaction="org.ekips.filter.interp.noprefs" />
+  <bind gaction="org.ekips.filter.perspective.ekips" />
+  <bind gaction="org.ekips.filter.motion.ekips" />
+
   <!-- Effects -->
   <bind gaction="app.last-effect"                        keys="&lt;alt&gt;q" />
   <bind gaction="app.last-effect-pref"                   keys="&lt;shift&gt;&lt;alt&gt;q" />
 
   <!-- Help -->
   <bind gaction="app.about" />
+  <bind gaction="win.help-url-manual" />
+  <bind gaction="win.help-url-keys" />
 
 </keys>

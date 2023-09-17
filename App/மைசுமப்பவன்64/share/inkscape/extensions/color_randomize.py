@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """Randomise the selected item's colours using hsl colorspace"""
 
 from random import randrange, uniform, seed

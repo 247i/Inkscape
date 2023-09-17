@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # coding=utf-8
 #
 # Copyright (C) 2005,2007,2008 Aaron Spike, aaron@ekips.org
@@ -90,6 +90,7 @@ class DxfOutlines(inkex.OutputExtension):
         pars.add_argument("--tab")
         pars.add_argument("-R", "--ROBO", type=inkex.Boolean, default=False)
         pars.add_argument("-P", "--POLY", type=inkex.Boolean, default=False)
+        pars.add_argument("-F", "--FLATTENBEZ", type=inkex.Boolean, default=False)
         pars.add_argument(
             "--unit_from_document", type=inkex.Boolean, default=True
         )  # px
@@ -106,9 +107,6 @@ class DxfOutlines(inkex.OutputExtension):
         self.csp_old = [[0.0, 0.0]] * 4  # previous spline
         self.d = [0.0]  # knot vector
         self.poly = [[0.0, 0.0]]  # LWPOLYLINE data
-
-    def save(self, stream):
-        stream.write(b"".join(self.dxf))
 
     def dxf_add(self, str):
         self.dxf.append(str.encode(self.options.char_encode))
@@ -279,11 +277,20 @@ class DxfOutlines(inkex.OutputExtension):
 
         # Transforming /after/ superpath is more reliable than before
         # because of some issues with arcs in transformations
-        for sub in node.path.to_superpath().transform(Transform(mat) @ node.transform):
+        path = node.path.to_superpath().transform(Transform(mat) @ node.transform)
+
+        # If Flatten Beziers is enabled, subdivide our beziers and
+        # we'll later just ignore the curve and output flat lines
+        if self.options.FLATTENBEZ:
+            bezier.cspsubdiv(path, 0.1)  # default to most detailed (0.1)
+
+        # Now output the path.
+        for sub in path:
             for i in range(len(sub) - 1):
                 s = sub[i]
                 e = sub[i + 1]
-                if s[1] == s[2] and e[0] == e[1]:
+                # If flattening beziers, ignore curves and output flat lines
+                if (s[1] == s[2] and e[0] == e[1]) or self.options.FLATTENBEZ:
                     if self.options.POLY:
                         self.LWPOLY_line([s[1], e[1]])
                     else:
@@ -360,7 +367,7 @@ class DxfOutlines(inkex.OutputExtension):
         if trans:
             self.groupmat.pop()
 
-    def effect(self):
+    def save(self, stream):
         # Warn user if name match field is empty
         if (
             self.options.layer_option
@@ -373,6 +380,9 @@ class DxfOutlines(inkex.OutputExtension):
                     "'By name match' option"
                 )
             )
+
+        if len(self.svg.xpath("//svg:use|//svg:flowRoot|//svg:text")) > 0:
+            self.preprocess(["flowRoot", "text"])
 
         # Split user layer data into a list: "layerA,layerb,LAYERC" becomes ["layera", "layerb", "layerc"]
         if self.options.layer_name:
@@ -389,7 +399,7 @@ class DxfOutlines(inkex.OutputExtension):
         with open(self.get_resource("dxf14_header.txt"), "r") as fhl:
             header = fhl.read()
             unit_map = {"px": 0, "in": 1, "ft": 2, "mm": 4, "cm": 5, "m": 6}
-            header = header.replace("<unit specifier>", str(unit_map[unit]))
+            header = header.replace("<unit specifier>", str(unit_map.get(unit, 0)))
             self.dxf_add(header)
         for node in self.svg.xpath("//svg:g"):
             if isinstance(node, Layer):
@@ -437,6 +447,8 @@ class DxfOutlines(inkex.OutputExtension):
             for layer in self.options.layer_name:
                 if layer not in self.layernames:
                     inkex.errormsg(_("Warning: Layer '{}' not found!").format(layer))
+
+        stream.write(b"".join(self.dxf))
 
 
 if __name__ == "__main__":

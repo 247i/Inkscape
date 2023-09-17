@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # coding=utf-8
 #
 # Copyright (C) 2011 Nikita Kitaev
@@ -21,16 +21,11 @@
 Simplifies SVG files in preparation for sif export.
 """
 
-import os
-import tempfile
-from subprocess import PIPE, Popen
-from inkex.command import inkscape, write_svg, ProgramRunError
 from inkex.localization import inkex_gettext as _
 from inkex.base import TempDirMixin
 
 import inkex
 from inkex import (
-    load_svg,
     Group,
     PathElement,
     ShapeElement,
@@ -265,59 +260,3 @@ def propagate_attribs(
 def get_dimension(s="1024"):
     """Convert an SVG length string from arbitrary units to pixels"""
     return inkex.units.convert_unit(s, "px")
-
-
-###### Main Class #########################################
-class SynfigPrep(TempDirMixin, inkex.EffectExtension):
-    def effect(self):
-        """Transform document in preparation for exporting it into the Synfig format"""
-
-        self.preprocess()
-
-        # Remove inheritance of attributes
-        propagate_attribs(self.document.getroot())
-
-        # Fuse multiple subpaths in fills
-        for node in self.document.getroot().xpath("//svg:path"):
-            if node.get("d", "").lower().count("m") > 1:
-                # There are multiple subpaths
-                fill = split_fill_and_stroke(node)[0]
-                if fill is not None:
-                    fill.path = fuse_subpaths(fill.path)
-
-    def preprocess(self):
-
-        actions = [
-            "unlock-all",
-            # Flow roots contain rectangles inside them, so they need to be
-            # converted to paths separately from other shapes
-            "select-by-element:flowRoot",
-            "object-to-path",
-            "select-clear",
-        ]
-
-        # Now convert all non-paths to paths
-        elements = ["rect", "circle", "ellipse", "line", "polyline", "polygon", "text"]
-        actions += ["select-by-element:" + i for i in elements]
-        actions += ["object-to-path", "select-clear"]
-        # unlink clones
-        actions += ["select-by-element:use", "object-unlink-clones"]
-        # save and overwrite
-        actions += ["export-overwrite", "export-do"]
-
-        infile = os.path.join(self.tempdir, "input.svg")
-        write_svg(self.document, infile)
-        try:
-            inkscape(infile, actions=";".join(actions))
-        except ProgramRunError as err:
-            inkex.errormsg(_("An error occurred during document preparation"))
-            inkex.errormsg(err.stderr.decode("utf-8"))
-
-        with open(infile, "r") as stream:
-            self.document = load_svg(stream)
-
-        return self.document
-
-
-if __name__ == "__main__":
-    SynfigPrep().run()

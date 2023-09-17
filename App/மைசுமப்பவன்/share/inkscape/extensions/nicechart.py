@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # coding=utf-8
 #  nicechart.py
 #
@@ -576,7 +576,6 @@ class NiceChart(inkex.GenerateExtension):
 
         # Draw Single bars
         for cnt, value in enumerate(values):
-
             # Calculate the individual heights normalized on 100units
             normedvalue = (self.options.bar_height / valuesum) * float(value)
 

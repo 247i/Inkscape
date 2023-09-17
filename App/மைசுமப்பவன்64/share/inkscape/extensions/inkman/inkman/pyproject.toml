@@ -12,6 +12,7 @@ license = "GPL-3.0-or-later"
 python = ">=3.7"
 appdirs = "1.4.4"
 requests = "*"
+filelock = "*"
 CacheControl = {extras = ["filecache"], version = "*"}
 
 [build-system]

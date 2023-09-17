@@ -14,7 +14,7 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>
 #
-"""Convienience library for concurrency
+"""Convenience library for concurrency
 
 GUI apps frequently need concurrency, for example to avoid blocking UI while
 doing some long running computation. This module provides helpers for doing
@@ -61,7 +61,7 @@ class Future:
         >>> print(ret.wait())
         5
 
-    :func:`run` will also propogate exceptions; see it's docstring for details.
+    :func:`run` will also propagate exceptions; see its docstring for details.
     """
 
     def __init__(self):
@@ -163,7 +163,6 @@ class DebouncedSyncVar:
         """
         while True:
             with self._cv:
-
                 # If there's no value, either wait for one or return
                 # failure.
                 while not self._have_value:
@@ -193,7 +192,7 @@ class DebouncedSyncVar:
     def replace(self, value):
         """Replace the current value of the dsv (if any) with ``value``.
 
-        replace never blocks (except briefly to aquire the lock). It does not
+        replace never blocks (except briefly to acquire the lock). It does not
         wait for any unit of time to pass (though it does reset the timer on
         completion), nor does it wait for the dsv's value to appear or
         disappear.

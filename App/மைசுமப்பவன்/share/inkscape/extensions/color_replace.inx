@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <inkscape-extension xmlns="http://www.inkscape.org/namespace/inkscape/extension">
-    <name>Replace color</name>
+    <name>Replace Color</name>
     <id>org.inkscape.color.replace_color</id>
     <param name="tab" type="notebook">
       <page name="from" gui-text="Color to replace">

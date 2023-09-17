@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # coding=utf-8
 #
 # Copyright (C) 2006 Aaron Spike, aaron@ekips.org
@@ -32,7 +32,7 @@ from inkex.command import take_snapshot, call
 from inkex.localization import inkex_gettext as _
 
 
-class GimpXcf(TempDirMixin, inkex.OutputExtension):
+class GimpXcf(inkex.OutputExtension):
     """
     Provide a quick and dirty way of using gimp to output an xcf from Inkscape.
 
@@ -61,16 +61,18 @@ class GimpXcf(TempDirMixin, inkex.OutputExtension):
         horz_guides = []
         vert_guides = []
         # Grab all guide tags in the namedview tag
+        # TODO: compute intersection of guide with page instead of discarding those
+        # whose control points are outside of the page
         for guide in self.svg.namedview.get_guides():
             if guide.is_horizontal:
                 # GIMP doesn't like guides that are outside of the image
-                if 0 < guide.point.y < self.svg.viewbox_height:
-                    # The origin is at the top in GIMP land
-                    horz_guides.append(str(guide.point.y))
+                if 0 < guide.raw_position.y < self.svg.viewbox_height:
+                    # The origin is at the top in GIMP land # TODO check this (maybe use position instead of raw_position?)
+                    horz_guides.append(str(guide.raw_position.y))
             elif guide.is_vertical:
                 # GIMP doesn't like guides that are outside of the image
-                if 0 < guide.point.x < self.svg.viewbox_width:
-                    vert_guides.append(str(guide.point.x))
+                if 0 < guide.raw_position.x < self.svg.viewbox_width:
+                    vert_guides.append(str(guide.raw_position.x))
 
         return ("h", " ".join(horz_guides)), ("v", " ".join(vert_guides))
 
@@ -99,7 +101,6 @@ class GimpXcf(TempDirMixin, inkex.OutputExtension):
         return self.svg.get("sodipodi:docname") or "document"
 
     def save(self, stream):
-
         pngs = OrderedDict()
         valid = False
 

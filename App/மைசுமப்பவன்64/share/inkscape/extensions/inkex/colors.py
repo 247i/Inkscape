@@ -470,7 +470,7 @@ class Color(list):
             try:
                 Color(x)
                 return True
-            except (ColorError):
+            except ColorError:
                 pass
         if isinstance(x, Color):
             return True

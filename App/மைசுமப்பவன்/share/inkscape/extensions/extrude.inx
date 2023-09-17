@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <inkscape-extension xmlns="http://www.inkscape.org/namespace/inkscape/extension">
-    <name>Extrude</name>
-    <id>org.greygreen.inkscape.effects.extrude</id>
+    <name>Extrude Between Two Paths</name>
+    <id>effect.extrude</id>
     <param name="tab" type="notebook">
         <page name="Options" gui-text="Options">
             <param name="mode" type="optiongroup" appearance="combo" gui-text="Mode:">
@@ -29,7 +29,7 @@ There are 3 main options:
   corresponding pairs of nodes of each path. The polygons are
   grouped together.
 - follow curves: the same as polygons, but the 'segments' of the
-  path that lie on top of the original paths will follow The
+  path that lie on top of the original paths will follow the
   same curves as on the original path.
 
 The lines will be inserted above the bottom of the two elements.

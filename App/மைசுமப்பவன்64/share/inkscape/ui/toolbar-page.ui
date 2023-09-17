@@ -1,17 +1,77 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.22.2 -->
+<!-- Generated with glade 3.38.2 -->
 <interface>
   <requires lib="gtk+" version="3.22"/>
+  <object class="GtkAdjustment" id="adjust_margin_bottom">
+    <property name="upper">1000</property>
+    <property name="step-increment">1</property>
+    <property name="page-increment">10</property>
+  </object>
+  <object class="GtkAdjustment" id="adjust_margin_left">
+    <property name="upper">1000</property>
+    <property name="step-increment">1</property>
+    <property name="page-increment">10</property>
+  </object>
+  <object class="GtkAdjustment" id="adjust_margin_right">
+    <property name="upper">1000</property>
+    <property name="step-increment">1</property>
+    <property name="page-increment">10</property>
+  </object>
+  <object class="GtkAdjustment" id="adjust_margin_top">
+    <property name="upper">1000</property>
+    <property name="step-increment">1</property>
+    <property name="page-increment">10</property>
+  </object>
+  <object class="GtkListStore" id="page_sizes_list">
+    <columns>
+      <!-- column-name name -->
+      <column type="gchararray"/>
+      <!-- column-name label -->
+      <column type="gchararray"/>
+      <!-- column-name preset_key -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
+  <object class="GtkListStore" id="page_sizes_search">
+    <columns>
+      <!-- column-name name -->
+      <column type="gchararray"/>
+      <!-- column-name label -->
+      <column type="gchararray"/>
+      <!-- column-name preset_key -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
+  <object class="GtkEntryCompletion" id="sizes_searcher">
+    <property name="model">page_sizes_search</property>
+    <property name="text-column">0</property>
+    <child>
+      <object class="GtkCellRendererText"/>
+      <attributes>
+        <attribute name="text">0</attribute>
+      </attributes>
+    </child>
+    <child>
+      <object class="GtkCellRendererText">
+        <property name="xalign">1</property>
+        <property name="alignment">right</property>
+        <property name="scale">0.90</property>
+      </object>
+      <attributes>
+        <attribute name="text">1</attribute>
+      </attributes>
+    </child>
+  </object>
   <object class="GtkToolbar" id="page-toolbar">
     <property name="visible">True</property>
-    <property name="can_focus">False</property>
+    <property name="can-focus">False</property>
     <child>
       <object class="GtkToolButton" id="page_new">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="action_name">doc.page-new</property>
+        <property name="can-focus">False</property>
+        <property name="action-name">win.page-new</property>
         <property name="label" translatable="yes">New Page</property>
-        <property name="icon_name">pages-add</property>
+        <property name="icon-name">pages-add</property>
       </object>
       <packing>
         <property name="expand">False</property>
@@ -21,20 +81,32 @@
     <child>
       <object class="GtkToolItem" id="page_sizes_container">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <child>
           <object class="GtkComboBoxText" id="page_sizes">
+            <property name="model">page_sizes_list</property>
+            <property name="width-request">250</property>
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
+            <property name="can-focus">True</property>
             <property name="active">0</property>
-            <property name="has_entry">True</property>
-            <property name="active_id">-1</property>
+            <property name="has-entry">True</property>
+            <property name="active-id">-1</property>
             <items>
-              <item id="-1" translatable="yes">Custom</item>
+              <item id="" translatable="yes">Custom</item>
             </items>
+            <child>
+              <object class="GtkCellRendererText">
+                <property name="xalign">1</property>
+                <property name="alignment">right</property>
+              </object>
+              <attributes>
+                <attribute name="markup">1</attribute>
+              </attributes>
+            </child>
             <child internal-child="entry">
               <object class="GtkEntry">
-                <property name="can_focus">True</property>
+                <property name="can-focus">True</property>
+                <property name="completion">sizes_searcher</property>
               </object>
             </child>
           </object>
@@ -46,12 +118,18 @@
       </packing>
     </child>
     <child>
-      <object class="GtkToolButton" id="page_fit">
+      <object class="GtkToolItem" id="page_margin_container">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="action_name">app.page-fit-to-selection</property>
-        <property name="label" translatable="yes">Fit Page to Selection</property>
-        <property name="icon_name">pages-resize</property>
+        <property name="can-focus">False</property>
+        <child>
+          <object class="GtkEntry" id="page_margins">
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="tooltip-text" translatable="yes">Page Margins</property>
+            <property name="primary-icon-name">view-restore</property>
+            <property name="placeholder-text" translatable="yes">Margins</property>
+          </object>
+        </child>
       </object>
       <packing>
         <property name="expand">False</property>
@@ -61,7 +139,7 @@
     <child>
       <object class="GtkSeparatorToolItem">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
       </object>
       <packing>
         <property name="expand">False</property>
@@ -71,10 +149,10 @@
     <child>
       <object class="GtkToolButton" id="page_backward">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="action_name">doc.page-move-backward</property>
+        <property name="can-focus">False</property>
+        <property name="action-name">doc.page-move-backward</property>
         <property name="label" translatable="yes">Move Before Previous</property>
-        <property name="icon_name">pages-order-backwards</property>
+        <property name="icon-name">pages-order-backwards</property>
       </object>
       <packing>
         <property name="expand">False</property>
@@ -84,12 +162,13 @@
     <child>
       <object class="GtkToolItem" id="page_pos_container">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <child>
           <object class="GtkLabel" id="page_pos">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <!--TRANSLATORS: This is a fixed value meaning a single page document-->
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes">1/-</property>
           </object>
         </child>
@@ -102,10 +181,10 @@
     <child>
       <object class="GtkToolButton" id="page_foreward">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="action_name">doc.page-move-forward</property>
+        <property name="can-focus">False</property>
+        <property name="action-name">doc.page-move-forward</property>
         <property name="label" translatable="yes">Move After Next</property>
-        <property name="icon_name">pages-order-forwards</property>
+        <property name="icon-name">pages-order-forwards</property>
       </object>
       <packing>
         <property name="expand">False</property>
@@ -115,12 +194,12 @@
     <child>
       <object class="GtkToolItem" id="page_label_container">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <child>
           <object class="GtkEntry" id="page_label">
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="placeholder_text" translatable="yes">Page Label</property>
+            <property name="can-focus">True</property>
+            <property name="placeholder-text" translatable="yes">Page Label</property>
           </object>
         </child>
       </object>
@@ -132,10 +211,10 @@
     <child>
       <object class="GtkToolButton" id="page_delete">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="action_name">doc.page-delete</property>
+        <property name="can-focus">False</property>
+        <property name="action-name">win.page-delete</property>
         <property name="label" translatable="yes">New Page</property>
-        <property name="icon_name">pages-remove</property>
+        <property name="icon-name">pages-remove</property>
       </object>
       <packing>
         <property name="expand">False</property>
@@ -145,7 +224,7 @@
     <child>
       <object class="GtkSeparatorToolItem" id="sep1">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
       </object>
       <packing>
         <property name="expand">False</property>
@@ -155,16 +234,152 @@
     <child>
       <object class="GtkToggleToolButton" id="page_move_objects">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="action_name">doc.page-move-objects</property>
+        <property name="can-focus">False</property>
+        <property name="action-name">doc.page-move-objects</property>
         <property name="label" translatable="yes">Move Objects</property>
-        <property name="use_underline">True</property>
-        <property name="icon_name">pages-move-toggle</property>
+        <property name="use-underline">True</property>
+        <property name="icon-name">pages-move-toggle</property>
       </object>
       <packing>
         <property name="expand">False</property>
         <property name="homogeneous">True</property>
       </packing>
+    </child>
+  </object>
+  <object class="GtkPopover" id="margin_popover">
+    <property name="can-focus">False</property>
+    <property name="relative-to">page_margins</property>
+    <property name="position">bottom</property>
+    <child>
+      <!-- n-columns=3 n-rows=4 -->
+      <object class="GtkGrid">
+        <property name="visible">True</property>
+        <property name="can-focus">False</property>
+        <property name="margin-start">5</property>
+        <property name="margin-end">5</property>
+        <property name="margin-top">5</property>
+        <property name="margin-bottom">5</property>
+        <property name="row-spacing">3</property>
+        <property name="column-spacing">3</property>
+        <child>
+          <object class="GtkLabel">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="margin-start">10</property>
+            <property name="margin-end">10</property>
+            <property name="margin-top">10</property>
+            <property name="margin-bottom">10</property>
+            <property name="label" translatable="yes">Margins</property>
+          </object>
+          <packing>
+            <property name="left-attach">1</property>
+            <property name="top-attach">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkSpinButton" id="margin_right">
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="valign">center</property>
+            <property name="margin-start">5</property>
+            <property name="margin-end">5</property>
+            <property name="margin-top">5</property>
+            <property name="margin-bottom">5</property>
+            <property name="overwrite-mode">True</property>
+            <property name="placeholder-text" translatable="no">0px</property>
+            <property name="adjustment">adjust_margin_right</property>
+            <property name="numeric">True</property>
+          </object>
+          <packing>
+            <property name="left-attach">2</property>
+            <property name="top-attach">0</property>
+            <property name="height">3</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkSpinButton" id="margin_top">
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="valign">center</property>
+            <property name="placeholder-text" translatable="no">0px</property>
+            <property name="adjustment">adjust_margin_top</property>
+            <property name="numeric">True</property>
+          </object>
+          <packing>
+            <property name="left-attach">1</property>
+            <property name="top-attach">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkSpinButton" id="margin_left">
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="valign">center</property>
+            <property name="margin-start">5</property>
+            <property name="margin-end">5</property>
+            <property name="margin-top">5</property>
+            <property name="margin-bottom">5</property>
+            <property name="adjustment">adjust_margin_left</property>
+            <property name="numeric">True</property>
+          </object>
+          <packing>
+            <property name="left-attach">0</property>
+            <property name="top-attach">0</property>
+            <property name="height">3</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkSpinButton" id="margin_bottom">
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="valign">center</property>
+            <property name="margin-start">5</property>
+            <property name="margin-end">5</property>
+            <property name="margin-top">5</property>
+            <property name="margin-bottom">5</property>
+            <property name="placeholder-text" translatable="no">0px</property>
+            <property name="adjustment">adjust_margin_bottom</property>
+            <property name="numeric">True</property>
+          </object>
+          <packing>
+            <property name="left-attach">1</property>
+            <property name="top-attach">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkExpander">
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="margin-start">5</property>
+            <property name="margin-end">5</property>
+            <property name="margin-top">5</property>
+            <property name="margin-bottom">5</property>
+            <child>
+              <object class="GtkEntry" id="page_bleeds">
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="margin-start">5</property>
+                <property name="margin-end">5</property>
+                <property name="margin-top">5</property>
+                <property name="margin-bottom">5</property>
+                <property name="placeholder-text" translatable="yes">e.g. 1.2mm 2mm</property>
+              </object>
+            </child>
+            <child type="label">
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">Page Bleed</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="left-attach">0</property>
+            <property name="top-attach">3</property>
+            <property name="width">3</property>
+          </packing>
+        </child>
+      </object>
     </child>
   </object>
 </interface>

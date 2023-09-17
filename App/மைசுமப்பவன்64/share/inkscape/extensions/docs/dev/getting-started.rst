@@ -146,3 +146,12 @@ Both the ``pyproject.toml`` and ``poetry.lock`` are to be committed to the repos
 
     Dependencies should be updated according to the `policy <https://wiki.inkscape.org/wiki/Tracking_Dependencies#Distros>`_ defined in Inkscape wiki .
 
+Creating a tag / publishing a version
+-------------------------------------
+
+1. Update the ``pyproject.toml`` file to the correct version number and push it to the target branch.
+2. Create the tag (either on GitLab or offline + pushing)
+3. Run ``poetry build``. This will create the wheel and the archive in the ``dist/`` folder.
+4. Setup the ``~/.pypirc`` file according to `the instructions <https://packaging.python.org/en/latest/specifications/pypirc/>`_
+5. Upload it: ``twine upload -r pypi dist/*``
+6. Delete the contents of the dist folder: ``rm -r dist``

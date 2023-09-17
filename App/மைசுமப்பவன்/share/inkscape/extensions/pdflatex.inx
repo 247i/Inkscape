@@ -24,7 +24,7 @@ However, the required packages might not be available on all systems.">true</par
     <effect needs-live-preview="false">
     <object-type>all</object-type>
       <effects-menu>
-       <submenu name="Render"/>
+       <submenu name="Text"/>
       </effects-menu>
     </effect>
     <script>

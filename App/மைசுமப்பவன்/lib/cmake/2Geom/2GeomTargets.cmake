@@ -7,7 +7,7 @@ if(CMAKE_VERSION VERSION_LESS "2.8.3")
    message(FATAL_ERROR "CMake >= 2.8.3 required")
 endif()
 cmake_policy(PUSH)
-cmake_policy(VERSION 2.8.3...3.23)
+cmake_policy(VERSION 2.8.3...3.24)
 #----------------------------------------------------------------
 # Generated CMake target import file.
 #----------------------------------------------------------------
@@ -59,7 +59,7 @@ endif()
 add_library(2Geom::2geom SHARED IMPORTED)
 
 set_target_properties(2Geom::2geom PROPERTIES
-  INTERFACE_INCLUDE_DIRECTORIES "C:/msys64/mingw32/include/glib-2.0;C:/msys64/mingw32/lib/glib-2.0/include;/mingw32/include;C:/msys64/mingw32/include/cairo;C:/msys64/mingw32/include/lzo;C:/msys64/mingw32/include/libpng16;C:/msys64/mingw32/include/freetype2;C:/msys64/mingw32/include/harfbuzz;C:/msys64/mingw32/include/glib-2.0;C:/msys64/mingw32/lib/glib-2.0/include;C:/msys64/mingw32/include/pixman-1;C:/msys64/mingw32/include;${_IMPORT_PREFIX}/include/2geom-1.2.2"
+  INTERFACE_INCLUDE_DIRECTORIES "C:/msys64/mingw32/include/glib-2.0;C:/msys64/mingw32/lib/glib-2.0/include;/mingw32/include;C:/msys64/mingw32/include/cairo;C:/msys64/mingw32/include/libpng16;C:/msys64/mingw32/include/freetype2;C:/msys64/mingw32/include/harfbuzz;C:/msys64/mingw32/include/glib-2.0;C:/msys64/mingw32/lib/glib-2.0/include;C:/msys64/mingw32/include/pixman-1;C:/msys64/mingw32/include;${_IMPORT_PREFIX}/include/2geom-1.3.0"
   INTERFACE_LINK_LIBRARIES "glib-2.0;intl;gsl;gslcblas;m;cairo;C:/msys64/mingw32/lib/libdouble-conversion.dll.a"
 )
 

@@ -7,6 +7,11 @@
     <property name="can-focus">False</property>
     <property name="icon-name">color-fill</property>
   </object>
+  <object class="GtkImage" id="icon-booleans">
+    <property name="visible">True</property>
+    <property name="can-focus">False</property>
+    <property name="icon-name">draw-booleans</property>
+  </object>
   <object class="GtkImage" id="icon-calligraphic">
     <property name="visible">True</property>
     <property name="can-focus">False</property>
@@ -186,6 +191,28 @@
                 <property name="action-name">win.tool-switch</property>
                 <property name="action-target">'Node'</property>
                 <property name="image">icon-node</property>
+                <property name="relief">none</property>
+                <style>
+                  <class name="square-button"/>
+                </style>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkFlowBoxChild">
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <child>
+              <object class="GtkToggleButton">
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">False</property>
+                <property name="halign">center</property>
+                <property name="valign">center</property>
+                <property name="action-name">win.tool-switch</property>
+                <property name="action-target">'Booleans'</property>
+                <property name="image">icon-booleans</property>
                 <property name="relief">none</property>
                 <style>
                   <class name="square-button"/>

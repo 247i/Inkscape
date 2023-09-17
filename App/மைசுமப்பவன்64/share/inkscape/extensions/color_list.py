@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """List all colors used in an svg document"""
 
 from collections import defaultdict

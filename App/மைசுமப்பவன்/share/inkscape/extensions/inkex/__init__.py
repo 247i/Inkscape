@@ -25,8 +25,8 @@ from .deprecated import debug
 from .deprecated import are_near_relative
 from .deprecated import unittouu
 
-MIN_VERSION = (3, 6)
+MIN_VERSION = (3, 7)
 if sys.version_info < MIN_VERSION:
-    sys.exit("Inkscape extensions require Python 3.6 or greater.")
+    sys.exit("Inkscape extensions require Python 3.7 or greater.")
 
-__version__ = "1.2.0"  # Version number for inkex; may differ from Inkscape version.
+__version__ = "1.3.0"  # Version number for inkex; may differ from Inkscape version.

@@ -8,9 +8,10 @@ import json
 
 from import_sources import RemoteSource
 
+
 def run():
-    RemoteSource.load('sources')
-    source = RemoteSource.sources[sys.argv[1]]('/tmp')
+    RemoteSource.load("sources")
+    source = RemoteSource.sources[sys.argv[1]]("/tmp")
 
     for item in source.search(sys.argv[2]):
         if callable(item):
@@ -18,5 +19,6 @@ def run():
         else:
             print(json.dumps(item, indent=2))
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     run()

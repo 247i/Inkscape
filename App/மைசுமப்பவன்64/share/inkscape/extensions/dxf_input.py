@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # coding=utf-8
 #
 # Copyright (C) 2008-2009 Alvin Penner, penner@vaxxine.com
@@ -616,6 +616,8 @@ def mtext_separate(node, tspan, text):
 
 
 def mtext_ctrl(tspan, phrase):
+    if len(phrase) == 0:
+        return
     if phrase[0] != "\\":
         tspan.text = phrase
         return
@@ -840,7 +842,7 @@ def export_ellipse(vals):
         # vals are through adjust_coords : recover proper value
         # (x,y)=(scale*x-xmin, height-scale*y-ymin)
         x2 = vals.x2 + xmin
-        y2 = vals.y2 + ymin - height
+        y2 = -vals.y2 + ymin + height
         generate_ellipse(
             vals.x1, vals.y1, x2, y2, vals.width_ratio, vals.ellipse_a1, vals.ellipse_a2
         )
@@ -1006,7 +1008,6 @@ def export_dimension(vals):
     # mandatory group codes : (10, 11, 13, 14, 20, 21, 23, 24) (x1..4, y1..4)
     # block_name: dimension definition for 10mm
     if vals.has_x1 and vals.has_x2 and vals.has_y1 and vals.has_y2:
-
         if vals.has_block_name:
             attribs = {
                 inkex.addNS("href", "xlink"): "#%s" % (vals.block_name)
@@ -1126,7 +1127,7 @@ def export_attdef(vals):
 
 def generate_ellipse(xc, yc, xm, ym, w, a1, a2):
     rm = math.sqrt(xm * xm + ym * ym)
-    a = -math.atan2(ym, xm)  # x-axis-rotation
+    a = math.atan2(ym, xm)  # x-axis-rotation
     diff = (a2 - a1 + 2 * math.pi) % (2 * math.pi)
     if abs(diff) > 0.0000001 and abs(diff - 2 * math.pi) > 0.0000001:  # open arc
         large = 0  # large-arc-flag

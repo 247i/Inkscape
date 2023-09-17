@@ -397,19 +397,21 @@ class RectangleBase(ShapeElement):
 
     def get_path(self):
         """Calculate the path as the box around the rect"""
-        if self.rx:
-            rx, ry = self.rx, self.ry  # pylint: disable=invalid-name
+        if self.rx or self.ry:
+            # pylint: disable=invalid-name
+            rx = min(self.rx if self.rx > 0 else self.ry, self.width / 2)
+            ry = min(self.ry if self.ry > 0 else self.rx, self.height / 2)
             cpts = [self.left + rx, self.right - rx, self.top + ry, self.bottom - ry]
             return (
                 f"M {cpts[0]},{self.top}"
                 f"L {cpts[1]},{self.top}    "
-                f"A {self.rx},{self.ry} 0 0 1 {self.right},{cpts[2]}"
+                f"A {rx},{ry} 0 0 1 {self.right},{cpts[2]}"
                 f"L {self.right},{cpts[3]}  "
-                f"A {self.rx},{self.ry} 0 0 1 {cpts[1]},{self.bottom}"
+                f"A {rx},{ry} 0 0 1 {cpts[1]},{self.bottom}"
                 f"L {cpts[0]},{self.bottom} "
-                f"A {self.rx},{self.ry} 0 0 1 {self.left},{cpts[3]}"
+                f"A {rx},{ry} 0 0 1 {self.left},{cpts[3]}"
                 f"L {self.left},{cpts[2]}   "
-                f"A {self.rx},{self.ry} 0 0 1 {cpts[0]},{self.top} z"
+                f"A {rx},{ry} 0 0 1 {cpts[0]},{self.top} z"
             )
 
         return f"M {self.left},{self.top} h{self.width}v{self.height}h{-self.width} z"
@@ -430,7 +432,7 @@ class EllipseBase(ShapeElement):
 
     def get_path(self):
         """Calculate the arc path of this circle"""
-        rx, ry = self._rxry()
+        rx, ry = self.rxry()
         cx, y = self.center.x, self.center.y - ry
         return (
             "M {cx},{y} "
@@ -452,7 +454,7 @@ class EllipseBase(ShapeElement):
         self.set("cx", value.x)
         self.set("cy", value.y)
 
-    def _rxry(self):
+    def rxry(self):
         # type: () -> Vector2d
         """Helper function"""
         raise NotImplementedError()
@@ -479,7 +481,7 @@ class Circle(EllipseBase):
     def radius(self, value):
         self.set("r", self.to_dimensionless(value))
 
-    def _rxry(self):
+    def rxry(self):
         r = self.radius
         return Vector2d(r, r)
 
@@ -503,5 +505,5 @@ class Ellipse(EllipseBase):
         self.set("rx", str(value.x))
         self.set("ry", str(value.y))
 
-    def _rxry(self):
+    def rxry(self):
         return self.radius

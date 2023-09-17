@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # coding=utf-8
 #
 # Copyright (C) 2011 Felipe Correa da Silva Sanches
@@ -46,8 +46,8 @@ class SetupTypographyCanvas(inkex.EffectExtension):
         Returns:
             inkex.BaseElement: the created guideline
         """
-        return self.svg.namedview.add(
-            inkex.Guide().move_to(0, position, (0, 1)).update(inkscape__label=name)
+        return self.svg.namedview.add_guide(
+            self.svg.viewbox_height - position, True, name
         )
 
     def effect(self):

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # coding=utf-8
 #
 # Copyright (C) 2011 Felipe Correa da Silva Sanches <juca@members.fsf.org>
@@ -51,6 +51,8 @@ class SvgFontToLayers(inkex.EffectExtension):
         if baseline is None:
             baseline = 0
 
+        guidebase = self.svg.viewbox_height - baseline
+
         fontface = font.findone("svg:font-face")
 
         # TODO: where should we save the font family name?
@@ -64,11 +66,11 @@ class SvgFontToLayers(inkex.EffectExtension):
         descender = int(fontface.get("descent", 0))
 
         self.svg.set("width", emsize)
-        self.svg.namedview.new_guide(baseline, True, "baseline")
-        self.svg.namedview.new_guide(baseline + ascender, True, "ascender")
-        self.svg.namedview.new_guide(baseline + caps, True, "caps")
-        self.svg.namedview.new_guide(baseline + xheight, True, "xheight")
-        self.svg.namedview.new_guide(baseline - descender, True, "decender")
+        self.svg.namedview.add_guide(guidebase, True, "baseline")
+        self.svg.namedview.add_guide(guidebase - ascender, True, "ascender")
+        self.svg.namedview.add_guide(guidebase - caps, True, "caps")
+        self.svg.namedview.add_guide(guidebase - xheight, True, "xheight")
+        self.svg.namedview.add_guide(guidebase + descender, True, "decender")
 
         # TODO: missing-glyph
         count = 0

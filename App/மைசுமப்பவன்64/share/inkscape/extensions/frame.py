@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # coding=utf-8
 #
 # Copyright (C) 2016 Richard White, rwhite8282@gmail.com
@@ -172,7 +172,6 @@ class Frame(inkex.EffectExtension):
         style.set_color(self.options.stroke_color, "stroke")
 
         if not self.options.asgroup:
-
             for node in self.svg.selection:
                 self.process_elements([node])
         else:

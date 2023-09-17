@@ -677,7 +677,6 @@ class Curve(AbsolutePathCommand):
         self.y4 = y4
 
     def update_bounding_box(self, first, last_two_points, bbox):
-
         x1, x2, x3, x4 = last_two_points[-1].x, self.x2, self.x3, self.x4
         y1, y2, y3, y4 = last_two_points[-1].y, self.y2, self.y3, self.y4
 
@@ -779,7 +778,6 @@ class Smooth(AbsolutePathCommand):
         return self.x3, self.y3, self.x4, self.y4
 
     def __init__(self, x3, y3, x4, y4):
-
         self.x3 = x3
         self.y3 = y3
 
@@ -875,7 +873,6 @@ class Quadratic(AbsolutePathCommand):
         return self.x2, self.y2, self.x3, self.y3
 
     def __init__(self, x2, y2, x3, y3):
-
         self.x2 = x2
         self.y2 = y2
 
@@ -883,7 +880,6 @@ class Quadratic(AbsolutePathCommand):
         self.y3 = y3
 
     def update_bounding_box(self, first, last_two_points, bbox):
-
         x1, x2, x3 = last_two_points[-1].x, self.x2, self.x3
         y1, y2, y3 = last_two_points[-1].y, self.y2, self.y3
 
@@ -1528,6 +1524,27 @@ class Path(list):
                 result.append(prcom.reverse())
 
         return result
+
+    def break_apart(self) -> List[Path]:
+        """Breaks apart a path into its subpaths
+
+        .. versionadded:: 1.3"""
+        result = [Path()]
+        current = result[0]
+
+        for cmnd in self.proxy_iterator():
+            if cmnd.letter.lower() == "m":
+                current = Path()
+                result.append(current)
+                current.append(Move(*cmnd.end_point))
+            else:
+                current.append(cmnd.command)
+        # Remove all subpaths that are empty or only contain move commands
+        return [
+            i
+            for i in result
+            if len(i) != 0 and not all(j.letter.lower() == "m" for j in i)
+        ]
 
     def close(self):
         """Attempt to close the last path segment"""

@@ -23,6 +23,7 @@ Functions for handling styles and embedded css
 """
 
 import re
+import sys
 from collections import OrderedDict
 from typing import MutableMapping, Union, Iterable, TYPE_CHECKING
 
@@ -31,6 +32,8 @@ from .interfaces.IElement import IBaseElement
 from .colors import Color
 from .properties import BaseStyleValue, all_properties, ShorthandValue
 from .css import ConditionalRule
+
+from .utils import FragmentError
 
 if TYPE_CHECKING:
     from .elements._svg import SvgDocumentElement
@@ -250,6 +253,15 @@ class Style(OrderedDict, MutableMapping[str, Union[str, BaseStyleValue]]):
         if self.callback is not None:
             self.callback(self)
 
+    def pop(self, key, default=None):
+        super().pop(key, default)
+        # On Python < 3.11, pop internally calls __delitem__.
+        # This does not happen in 3.11. To avoid
+        # calling the callback twice, we need to check the Python version.
+        if sys.version_info >= (3, 11):
+            if self.callback is not None:
+                self.callback(self)
+
     def __setitem__(self, key, value):
         """Sets a style value.
 
@@ -311,9 +323,9 @@ class Style(OrderedDict, MutableMapping[str, Union[str, BaseStyleValue]]):
         """
         return super().__getitem__(key)
 
-    def __call__(self, key, element=None):
+    def __call__(self, key, element=None, default=None):
         """Return the parsed value of a style. Optionally, an element can be passed
-        that will be used to find gradient definitions ect.
+        that will be used to find gradient definitions etc.
 
         .. versionadded:: 1.2"""
         # check if there are shorthand properties defined. If so, apply them to a copy
@@ -325,9 +337,9 @@ class Style(OrderedDict, MutableMapping[str, Union[str, BaseStyleValue]]):
         if key in copy:
             return copy.get_store(key).parse_value(element or self.element)
         # style is not set, return the default value
-        if key in all_properties:
+        if key in all_properties or default is not None:
             defvalue = BaseStyleValue.factory(
-                attr_name=key, value=all_properties[key][1]
+                attr_name=key, value=default or all_properties[key][1]
             )
             return (
                 defvalue.parse_value()
@@ -387,7 +399,7 @@ class Style(OrderedDict, MutableMapping[str, Union[str, BaseStyleValue]]):
 
     def update_urls(self, old_id, new_id):
         """Find urls in this style and replace them with the new id"""
-        for (name, value) in self.items():
+        for name, value in self.items():
             if value == f"url(#{old_id})":
                 self[name] = f"url(#{new_id})"
 
@@ -422,7 +434,10 @@ class Style(OrderedDict, MutableMapping[str, Union[str, BaseStyleValue]]):
         Returns:
             Style: the cascaded style
         """
-        styles = list(element.root.stylesheets.lookup_specificity(element.get_id()))
+        try:
+            styles = list(element.root.stylesheets.lookup_specificity(element.get_id()))
+        except FragmentError:
+            styles = []
 
         # presentation attributes have specificity 0,
         # see https://www.w3.org/TR/SVG/styling.html#PresentationAttributes
@@ -513,7 +528,7 @@ class StyleSheet(list):
     a css file used with a css. Will yield multiple Style() classes.
     """
 
-    comment_strip = re.compile(r"(\/\/.*?\n)|(\/\*.*?\*\/)|@.*;")
+    comment_strip = re.compile(r"(\/\/.*?\n)|(\/\*.*?\*\/|@import .*;)")
 
     def __init__(self, content=None, callback=None):
         super().__init__()

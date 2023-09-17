@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # coding=utf-8
 #
 # Copyright (c) 2009 Bryan Hoyt (MIT License)
@@ -246,7 +246,6 @@ class PixelSnap(inkex.EffectExtension):
             return [x, y]
 
     def snap_path_scale(self, elem, parent_transform=None):
-
         path = elem.original_path.to_arrays()
         transform = elem.transform @ Transform(parent_transform)
         bbox = elem.bounding_box()

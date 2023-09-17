@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 # coding=utf-8
 #
 # Copyright (C) 2007 Joel Holdsworth joel@airwebreathe.org.uk
@@ -88,7 +88,6 @@ class Spirograph(inkex.EffectExtension):
         maxPointCount = 1000
 
         for i in range(maxPointCount):
-
             theta = i * scale
 
             view_center = self.svg.namedview.center

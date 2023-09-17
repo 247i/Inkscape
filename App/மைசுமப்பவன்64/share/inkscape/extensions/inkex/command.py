@@ -32,6 +32,7 @@ it yourself, to take advantage of the security settings and testing functions.
 """
 
 import os
+import re
 import sys
 from shutil import which as warlock
 
@@ -170,7 +171,7 @@ def to_args(prog, *positionals, **arguments):
 
     :Arguments:
         * (``str``) -- String added as given
-        * (``tuple``) -- Ordered version of Kwyward Arguments, see below
+        * (``tuple``) -- Ordered version of Keyword Arguments, see below
 
     :Keyword Arguments:
         * *name* (``str``) --
@@ -266,22 +267,59 @@ def call(program, *args, **kwargs):
 
 def inkscape(svg_file, *args, **kwargs):
     """
-    Call Inkscape with the given svg_file and the given arguments, see call()
+    Call Inkscape with the given svg_file and the given arguments, see call().
+
+    Returns the stdout of the call.
+
+    .. versionchanged:: 1.3
+        If the "actions" kwargs parameter is passed, it is checked whether the length of
+        the action string might lead to issues with the Windows CLI call character
+        limit. In this case, Inkscape is called in `--shell`
+        mode and the actions are fed in via stdin. This avoids violating the character
+        limit for command line arguments on Windows, which results in errors like this:
+        `[WinError 206] The filename or extension is too long`.
+        This workaround is also possible when calling Inkscape with long arguments
+        to `--export-id` and `--query-id`, by converting the call to the appropriate
+        action sequence. The stdout is cleaned to resemble non-interactive mode.
     """
-    return call(INKSCAPE_EXECUTABLE_NAME, svg_file, *args, **kwargs)
+    os.environ["SELF_CALL"] = "true"
+    actions = kwargs.get("actions", None)
+    strip_stdout = False
+    # Keep some safe margin to the 8191 character limit.
+    if actions is not None and len(actions) > 7000:
+        args = args + ("--shell",)
+        kwargs["stdin"] = actions
+        kwargs.pop("actions")
+        strip_stdout = True
+    stdout = call(INKSCAPE_EXECUTABLE_NAME, svg_file, *args, **kwargs)
+    if strip_stdout:
+        split = re.split(r"\n> ", stdout)
+        if len(split) > 1:
+            if "\n" in split[1]:
+                stdout = "\n".join(split[1].split("\n")[1:])
+            else:
+                stdout = ""
+    return stdout
 
 
-def inkscape_command(svg, select=None, verbs=()):
+def inkscape_command(svg, select=None, actions=None, *args, **kwargs):
     """
-    Executes a list of commands, a mixture of verbs, selects etc.
+    Executes Inkscape batch actions with the given <svg> input and returns a new <svg>.
 
-    inkscape_command('<svg...>', ('verb', 'VerbName'), ...)
+    inkscape_command('<svg...>', [select=...], [actions=...], [...])
     """
     with TemporaryDirectory(prefix="inkscape-command") as tmpdir:
         svg_file = write_svg(svg, tmpdir, "input.svg")
         select = ("select", select) if select else None
-        verbs += ("FileSave", "FileQuit")
-        inkscape(svg_file, select, batch_process=True, verb=";".join(verbs))
+        inkscape(
+            svg_file,
+            select,
+            batch_process=True,
+            export_overwrite=True,
+            actions=actions,
+            *args,
+            **kwargs,
+        )
         with open(svg_file, "rb") as fhl:
             return fhl.read()
 

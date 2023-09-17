@@ -1,5 +1,8 @@
 <?xml version="1.0"?>
-<keys name="Macromedia Freehand">
+<keys name="Macromedia Freehand" xmlns:xi="http://www.w3.org/2001/XInclude">
+
+<!-- inherit -->
+<xi:include href="inkscape.xml" />
 
 <!--  
 This is an alternative set of keyboard shortcuts for Inkscape, 
@@ -128,7 +131,7 @@ File, Edit, View, Modify, Text, Xtras, Window, Help.
   <!-- <bind gaction="doc.show-all-guides" keys="&lt;ctrl&gt;;" /> -->
 
   <!-- View, Grid, Show  Ctrl+Alt+G.  -->
-  <bind gaction="win.canvas-show-grid"  keys="&lt;ctrl&gt;&lt;alt&gt;g, &lt;ctrl&gt;&lt;alt&gt;G" />
+  <bind gaction="doc.show-grids"        keys="&lt;ctrl&gt;&lt;alt&gt;g, &lt;ctrl&gt;&lt;alt&gt;G" />
   <!-- TODO: View, Grid, Snap to Grid Ctrl+Alt+Shift+G.  -->
 
   <!-- New View in Inkscape is equivalent to New Window in Freehand.  -->
@@ -179,12 +182,8 @@ File, Edit, View, Modify, Text, Xtras, Window, Help.
   <bind gaction="win.dialog-open('Trace')"          keys="&lt;alt&gt;&lt;shift&gt;b, &lt;alt&gt;&lt;shift&gt;B" />
   <bind gaction="app.object-to-pattern"             keys="&lt;alt&gt;i, &lt;alt&gt;I" />
   <bind gaction="app.pattern-to-object"             keys="&lt;alt&gt;&lt;shift&gt;i, &lt;alt&gt;&lt;shift&gt;I" />
-  <bind gaction="app.object-set-clip-mask" />
-  <bind gaction="app.object-release-clip-mask" />
   <bind gaction="app.object-set-clip" />
   <bind gaction="app.object-release-clip" />
-
-  <!-- FIXME: currently these bypass the verbs, so the verbs are not bound to ctrl+[] as they should be -->
   <bind gaction="app.object-rotate-90-cw" />
   <bind gaction="app.object-rotate-90-ccw" />
 
@@ -200,7 +199,7 @@ File, Edit, View, Modify, Text, Xtras, Window, Help.
   <bind gaction="app.path-exclusion"             keys="&lt;ctrl&gt;asciicircum, &lt;ctrl&gt;&lt;shift&gt;asciicircum" /> <!-- ^ -->
   <bind gaction="app.path-cut"                   keys="&lt;ctrl&gt;&lt;alt&gt;slash, &lt;ctrl&gt;&lt;alt&gt;&lt;shift&gt;slash" />
   <bind gaction="app.path-division"              keys="&lt;ctrl&gt;slash, &lt;ctrl&gt;&lt;shift&gt;slash" />
-  <bind gaction="win.path-outset"                keys="&lt;ctrl&gt;parenright, &lt;ctrl&gt;&lt;shift&gt;parenright, &lt;ctrl&gt;&lt;shift&gt;0" />
+  <bind gaction="win.path-offset"                keys="&lt;ctrl&gt;parenright, &lt;ctrl&gt;&lt;shift&gt;parenright, &lt;ctrl&gt;&lt;shift&gt;0" />
   <bind gaction="win.path-inset"                 keys="&lt;ctrl&gt;parenleft, &lt;ctrl&gt;&lt;shift&gt;parenleft, &lt;ctrl&gt;&lt;shift&gt;9" />
   <bind gaction="win.path-offset-dynamic"        keys="&lt;ctrl&gt;j, &lt;ctrl&gt;J" />
   <bind gaction="win.path-offset-linked"         keys="&lt;ctrl&gt;&lt;alt&gt;j, &lt;ctrl&gt;&lt;alt&gt;J" />
@@ -256,9 +255,9 @@ File, Edit, View, Modify, Text, Xtras, Window, Help.
 
   <!-- Freehand has a separate find and replace for Text and Graphics -->
   <!-- Edit, Find And Replace, Graphics    Ctrl+F  -->
-  <bind gaction="win.dialog-ope('Find')"                keys="&lt;ctrl&gt;f, &lt;ctrl&gt;F" />
+  <bind gaction="win.dialog-open('Find')"                keys="&lt;ctrl&gt;f, &lt;ctrl&gt;F" />
   <!-- Edit, Find And Replace, Text  Ctrl+Shift+F  -->
-  <bind gaction="win.dialog-ope('Find')"                keys="&lt;ctrl&gt;&lt;shift&gt;f, &lt;ctrl&gt;&lt;shift&gt;F" />
+  <bind gaction="win.dialog-open('Find')"                keys="&lt;ctrl&gt;&lt;shift&gt;f, &lt;ctrl&gt;&lt;shift&gt;F" />
 
   <bind gaction="win.dialog-open('Transform')"          keys="&lt;ctrl&gt;m, &lt;ctrl&gt;M" />
 

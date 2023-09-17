@@ -176,6 +176,11 @@
     <value nick="prefer-dark" value="1"/>
     <value nick="prefer-light" value="2"/>
   </enum>
+<enum id="org.gnome.desktop.GDesktopPointingStickScrollMethod">
+    <value nick="default" value="0"/>
+    <value nick="none" value="1"/>
+    <value nick="on-button-down" value="2"/>
+  </enum>
 </schemalist>
 
 <!-- Generated data ends here -->

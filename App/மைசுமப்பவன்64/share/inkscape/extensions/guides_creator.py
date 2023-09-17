@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # coding=utf-8
 #
 # Copyright (C) 2008 Jonas Termeau - jonas.termeau **AT** gmail.com
@@ -40,7 +40,6 @@ class GuidesOpts:
 
     # pylint: disable=too-few-public-methods
     def __init__(self, svg: inkex.SvgDocumentElement) -> None:
-
         # get page bounds
         self.pages = svg.namedview.get_pages()
         self.viewbox = svg.get_viewbox()
@@ -52,18 +51,10 @@ class GuidesOpts:
         """Update guide origin and width/height based on page number (1-indexed)"""
         self.pagenumber = pagenumber
         pagenumber = pagenumber - 1
-        if pagenumber < len(self.pages):
+        if 0 <= pagenumber < len(self.pages):
             self.page_origin = (self.pages[pagenumber].x, self.pages[pagenumber].y)
             self.width = self.pages[pagenumber].width
             self.height = self.pages[pagenumber].height
-        elif pagenumber == 0:  # Single page document
-            self.page_origin = (
-                self.viewbox[:2]
-                if not self.pages
-                else (self.pages[0].x, self.pages[0].y)
-            )
-            self.width = self.viewbox[2]
-            self.height = self.viewbox[3]
         else:
             raise ValueError("Invalid page number")
 
@@ -138,7 +129,6 @@ class GuidesCreator(inkex.EffectExtension):
         self.store: GuidesOpts = None
 
     def effect(self):
-
         if self.options.delete:
             for guide in self.svg.namedview.get_guides():
                 guide.delete()
@@ -173,7 +163,6 @@ class GuidesCreator(inkex.EffectExtension):
                 )
 
             if from_edges:
-
                 self.draw_guides(1, True, vert=False)
                 self.draw_guides(1, True, vert=True)
 
@@ -310,15 +299,14 @@ class GuidesCreator(inkex.EffectExtension):
         """Draw the guides"""
         newpos = [
             position[0] + self.store.page_origin[0],
-            position[1]
-            + self.store.viewbox[3]
-            - self.store.height
-            - self.store.page_origin[1],
+            -position[1] + self.store.height + self.store.page_origin[1],
         ]
+        # orientations are computed in the pre-1.0 coordinate system
+        orientation = [orientation[0], -orientation[1]]
         if self.options.nodup:
-            self.svg.namedview.new_unique_guide(newpos, orientation)
+            self.svg.namedview.add_unique_guide(newpos, orientation)
         else:
-            self.svg.namedview.new_guide(newpos, orientation)
+            self.svg.namedview.add_guide(newpos, orientation)
 
 
 if __name__ == "__main__":

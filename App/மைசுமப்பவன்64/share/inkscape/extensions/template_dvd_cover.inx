@@ -3,6 +3,9 @@
     <name>DVD Cover</name>
     <id>org.inkscape.template.dvd_cover</id>
 
+    <description>Various DVD Boxes</description>
+    <category context="TemplateCategory">Print</category>
+
     <param name="spine" gui-text="DVD spine width:" type="optiongroup" appearance="combo">
         <option value="14">Normal (14mm)</option>
         <option value="9">Slim (9mm)</option>
@@ -12,17 +15,9 @@
 
     <param name="bleed" gui-text="DVD cover bleed (mm):" type="float" min="0" max="25">3</param>
 
-    <effect needs-live-preview="false">
-        <object-type>all</object-type>
-        <effects-menu hidden="true" />
-    </effect>
-    <inkscape:templateinfo>
-      <inkscape:name>DVD Cover...</inkscape:name>
-      <inkscape:author>Tavmjong Bah</inkscape:author>
-      <inkscape:shortdesc>DVD cover of chosen size.</inkscape:shortdesc>
-      <inkscape:date>2014-10-10</inkscape:date>
-      <inkscape:keywords>dvd cover</inkscape:keywords>
-    </inkscape:templateinfo>
+    <template icon="dvd_box">
+      <preset name="DVD Cover" label="Various Sizes" visibility="icon"/>
+    </template>
     <script>
         <command location="inx" interpreter="python">template_dvd_cover.py</command>
     </script>
