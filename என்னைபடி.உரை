@@ -1,0 +1,9 @@
+# In the root run:
+git config core.symlinks true
+
+# Now run cmd.exe as administrator¹ and cd to .github. Make your symlink:
+mkdir .github
+cd .github
+mklink ReadMe.md ..\என்னைபடி.உரை
+
+# commit .github/README.md and push to GitHub. 
