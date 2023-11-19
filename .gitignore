@@ -1,3 +1,8 @@
 
 .DS_Store
 Data/fontconfig/cache/*
+Data/settings/மைசுமப்பவன்Settings.ini
+Data/settings/extension-errors.log
+Data/recently-used.xbel
+Data/settings/.dbus-keyrings/org_gtk_gdbus_general
+Data/settings/dialogs-state-ex.ini
